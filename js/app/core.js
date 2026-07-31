@@ -7,17 +7,17 @@
 
         // --- DICCIONARIO DE CONCEPTOS COMPLETOS ---
         const definicionesZonas = {
-            "Uso Mixto Especializado": "ConcentraciÃ³n estratÃ©gica de servicios e infraestructuras de salud, educaciÃ³n y usos institucionales a gran escala, compatibles con vivienda de alta densidad.",
-            "Uso Mixto Intensivo": "ConcentraciÃ³n estratÃ©gica de actividades y servicios comerciales de nivel metropolitano, financiero y empresarial, que conviven con vivienda de muy alta densidad.",
+            "Uso Mixto Especializado": "Concentración estratégica de servicios e infraestructuras de salud, educación y usos institucionales a gran escala, compatibles con vivienda de alta densidad.",
+            "Uso Mixto Intensivo": "Concentración estratégica de actividades y servicios comerciales de nivel metropolitano, financiero y empresarial, que conviven con vivienda de muy alta densidad.",
             "Uso Mixto Metropolitano": "Establecimientos de gran escala que concentran una oferta comercial diversa, supermercados, tiendas por departamento y centros de entretenimiento.",
             "Uso Mixto Zonal": "Establecimientos de mediana escala orientados al abastecimiento y servicios de los sectores residenciales adyacentes, con un impacto vial moderado.",
-            "Uso Mixto Vecinal": "Establecimientos de pequeÃ±a escala destinados a cubrir las necesidades diarias de los vecinos, integrados armoniosamente a la trama residencial.",
-            "Uso Residencial Preferente": "Zonas predominantemente residenciales que permiten la inclusiÃ³n limitada de servicios y comercios vecinales en primeros pisos sin alterar la tranquilidad.",
-            "Uso Residencial Especial": "Zonas con una ubicaciÃ³n especÃ­fica dentro de los Conjuntos Habitacionales o Ã¡reas con caracterÃ­sticas normativas particulares para vivienda.",
-            "Uso Residencial Exclusivo": "Ãreas destinadas Ãºnicamente a la vivienda, donde se restringe estrictamente cualquier actividad comercial o de servicios para garantizar la paz vecinal.",
-            "Planes Especiales": "Ãreas sujetas a parÃ¡metros y usos definidos por un Plan Urbano EspecÃ­fico debido a su importancia estratÃ©gica, monumental o paisajÃ­stica.",
-            "Usos EspecÃ­ficos - Otros Usos": "Ãreas destinadas a equipamientos mayores como bases militares, grandes complejos de salud, universidades o infraestructuras de transporte.",
-            "Uso de RecreaciÃ³n PÃºblica": "Espacios zonificados como Zona de RecreaciÃ³n PÃºblica (ZRP), incluyendo parques, plazas y Ã¡reas verdes para el esparcimiento ciudadano."
+            "Uso Mixto Vecinal": "Establecimientos de pequeña escala destinados a cubrir las necesidades diarias de los vecinos, integrados armoniosamente a la trama residencial.",
+            "Uso Residencial Preferente": "Zonas predominantemente residenciales que permiten la inclusión limitada de servicios y comercios vecinales en primeros pisos sin alterar la tranquilidad.",
+            "Uso Residencial Especial": "Zonas con una ubicación específica dentro de los Conjuntos Habitacionales o áreas con características normativas particulares para vivienda.",
+            "Uso Residencial Exclusivo": "Áreas destinadas únicamente a la vivienda, donde se restringe estrictamente cualquier actividad comercial o de servicios para garantizar la paz vecinal.",
+            "Planes Especiales": "Áreas sujetas a parámetros y usos definidos por un Plan Urbano Específico debido a su importancia estratégica, monumental o paisajística.",
+            "Usos Específicos - Otros Usos": "Áreas destinadas a equipamientos mayores como bases militares, grandes complejos de salud, universidades o infraestructuras de transporte.",
+            "Uso de Recreación Pública": "Espacios zonificados como Zona de Recreación Pública (ZRP), incluyendo parques, plazas y áreas verdes para el esparcimiento ciudadano."
         };
 
 // --- ESTADO GLOBAL DE LA APLICACION ---

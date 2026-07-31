@@ -7,17 +7,17 @@
             }).addTo(map);
         }
 
-        // --- LÃ“GICA DEL LOTE Y EL POPUP ---
+        // --- LÓGICA DEL LOTE Y EL POPUP ---
         function pop_usos_compatibles_0(feature, layer) {
             var miZona = feature.properties['USOS_COMPA'] || '';
-            if (miZona === 'Usos EspecÃ­ficos' || miZona === 'Otros Usos') miZona = 'Usos EspecÃ­ficos - Otros Usos';
-            
+            if (miZona === 'Usos Específicos' || miZona === 'Otros Usos') miZona = 'Usos Específicos - Otros Usos';
+
             var zonVig     = feature.properties['ZON_VIG']     || '';
             var zreUsocom  = feature.properties['ZRE_USOCOM']  || '';
-            
+
             // Calculamos el espacio para que en celular el popup no quede tapado por el panel
             var paddingAbajo = window.innerWidth <= 896 ? (window.innerHeight * 0.55) : 50;
-            
+
             layer.bindPopup(miZona, {
                 className: 'popup-limpio',
                 closeButton: false,
@@ -44,17 +44,54 @@
                 case 'Uso Residencial Especial': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(254,172,0,1.0)', interactive: true, }
                 case 'Uso Residencial Exclusivo': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(244,244,244,1.0)', interactive: true, }
                 case 'Planes Especiales': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.5, fill: true, fillOpacity: 1, fillPattern: pattern_usos_compatibles_0_0, interactive: true, }
-                case 'Usos EspecÃ­ficos': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
-                case 'Uso de RecreaciÃ³n PÃºblica': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(164,205,163,1.0)', interactive: true, }
+                case 'Usos Específicos': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
+                case 'Uso de Recreación Pública': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(164,205,163,1.0)', interactive: true, }
                 default: return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
             }
         }
-        
-        map.createPane('pane_usos_compatibles_0'); map.getPane('pane_usos_compatibles_0').style.zIndex = 400; map.getPane('pane_usos_compatibles_0').style['mix-blend-mode'] = 'normal';
-        var layer_usos_compatibles_0 = new L.geoJson(json_usos_compatibles_1, { attribution: '', interactive: true, dataVar: 'json_usos_compatibles_1', layerName: 'layer_usos_compatibles_0', pane: 'pane_usos_compatibles_0', onEachFeature: pop_usos_compatibles_0, style: style_usos_compatibles_0_0, });
-        bounds_group.addLayer(layer_usos_compatibles_0); map.addLayer(layer_usos_compatibles_0);
-        
-        map.createPane('pane_Bordes_1'); map.getPane('pane_Bordes_1').style.zIndex = 401;
-        var layer_Bordes_1 = new L.geoJson(json_Bordes_2, { pane: 'pane_Bordes_1', style: { color: 'rgba(0,0,0,1.0)', weight: 2.0, fillOpacity: 0, interactive: false } });
-        map.addLayer(layer_Bordes_1);
 
+        map.createPane('pane_usos_compatibles_0'); map.getPane('pane_usos_compatibles_0').style.zIndex = 400; map.getPane('pane_usos_compatibles_0').style['mix-blend-mode'] = 'normal';
+        var rendererLotesCanvas = L.canvas({ pane: 'pane_usos_compatibles_0', padding: 0.35, tolerance: 6 });
+        var layer_usos_compatibles_0 = new L.geoJson(json_usos_compatibles_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_usos_compatibles_1',
+            layerName: 'layer_usos_compatibles_0',
+            pane: 'pane_usos_compatibles_0',
+            renderer: rendererLotesCanvas,
+            filter: function(feature) {
+                return String(feature.properties['USOS_COMPA']) !== 'Planes Especiales';
+            },
+            onEachFeature: pop_usos_compatibles_0,
+            style: style_usos_compatibles_0_0,
+        });
+        bounds_group.addLayer(layer_usos_compatibles_0); map.addLayer(layer_usos_compatibles_0);
+
+        var layer_usos_compatibles_planes = new L.geoJson(json_usos_compatibles_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_usos_compatibles_1',
+            layerName: 'layer_usos_compatibles_planes',
+            pane: 'pane_usos_compatibles_0',
+            filter: function(feature) {
+                return String(feature.properties['USOS_COMPA']) === 'Planes Especiales';
+            },
+            onEachFeature: pop_usos_compatibles_0,
+            style: style_usos_compatibles_0_0,
+        });
+        bounds_group.addLayer(layer_usos_compatibles_planes); map.addLayer(layer_usos_compatibles_planes);
+
+        map.createPane('pane_Bordes_1'); map.getPane('pane_Bordes_1').style.zIndex = 401; map.getPane('pane_Bordes_1').style.pointerEvents = 'none';
+        var rendererBordesCanvas = L.canvas({ pane: 'pane_Bordes_1', padding: 0.35 });
+        var layer_Bordes_1 = new L.geoJson(json_Bordes_2, {
+            pane: 'pane_Bordes_1',
+            renderer: rendererBordesCanvas,
+            interactive: false,
+            style: {
+                color: 'rgba(0,0,0,1.0)',
+                weight: 2.0,
+                fill: false,
+                fillOpacity: 0
+            }
+        });
+        map.addLayer(layer_Bordes_1);

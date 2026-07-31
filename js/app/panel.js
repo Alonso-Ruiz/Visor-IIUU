@@ -1,18 +1,19 @@
-﻿        // --- LÃ“GICA DEL PANEL ---
+
+        // --- LÓGICA DEL PANEL ---
         const botonArrastre = document.getElementById('boton-arrastre');
-        
+
         function alternarPanel() {
             panel.classList.toggle('minimizado');
             document.body.classList.toggle('panel-abierto', !panel.classList.contains('minimizado'));
-            
+
             if(panel.classList.contains('minimizado')) {
                 if(capaLoteResaltado) { map.removeLayer(capaLoteResaltado); capaLoteResaltado = null; }
                 map.closePopup();
             }
         }
-        
+
         botonArrastre.addEventListener('click', alternarPanel);
-        
+
         let startY = 0;
         botonArrastre.addEventListener('touchstart', e => startY = e.touches[0].clientY, {passive: true});
         botonArrastre.addEventListener('touchmove', e => {
@@ -42,7 +43,7 @@
             var tituloPanel = zonaActual;
             if (esZRE) {
                 tituloPanel = zonVigActual;
-                if (zreUsocomActual) tituloPanel += ' Â· ' + zreUsocomActual;
+                if (zreUsocomActual) tituloPanel += ' · ' + zreUsocomActual;
             }
             document.getElementById('nombre-uso-titulo').innerHTML = tituloPanel;
             document.getElementById('buscador-actividad').value = '';
@@ -53,7 +54,7 @@
             var divRest = document.getElementById('ventana-restricciones');
 
             if (!esZRE) {
-                var zonaParaFiltro = zonaActual === 'Usos EspecÃ­ficos - Otros Usos' ? 'Usos EspecÃ­ficos - Otros Usos' : zonaActual;
+                var zonaParaFiltro = zonaActual === 'Usos Específicos - Otros Usos' ? 'Usos Específicos - Otros Usos' : zonaActual;
                 var resultadosZona = datosUsos.filter(f => estandarizarTexto(f['Uso Compatible']) === estandarizarTexto(zonaParaFiltro));
                 if (resultadosZona.length > 0) {
                     var obs  = (resultadosZona[0]['Observaciones'] || '').trim();
@@ -70,14 +71,14 @@
                 divObs.style.display  = 'block';
                 divRest.style.display = 'none';
                 document.getElementById('texto-observaciones').innerHTML =
-                    'Zona de ReglamentaciÃ³n Especial. Los giros y su compatibilidad se rigen por el Plan Especial correspondiente a cada ubicaciÃ³n dentro del ' + zonVigActual + '.';
+                    'Zona de Reglamentación Especial. Los giros y su compatibilidad se rigen por el Plan Especial correspondiente a cada ubicación dentro del ' + zonVigActual + '.';
             }
 
             document.getElementById('contenido-scrollable').scrollTop = 0;
             renderizarResultados();
         }
 
-        // Colores por tipo de autorizaciÃ³n
+        // Colores por tipo de autorización
 
         function renderizarResultados() {
             if (!zonaActual) return;
@@ -92,13 +93,13 @@
                 datosActividadesZRE.forEach(function(giro) {
                     var zreInfo = giro.ZRE && giro.ZRE[zreId];
                     if (!zreInfo) return; // esta clase no aplica a este ZRE
-                    // Â¿Al menos un location tiene X o R?
+                    // ¿Al menos un location tiene X o R?
                     var tieneAlguna = Object.values(zreInfo).some(v => v === 'X' || v === 'R');
                     if (!tieneAlguna) return;
 
                     if (!clasesVistas[giro.CLASE]) {
                         clasesVistas[giro.CLASE] = {
-                            clase: giro.CLASE, desc: giro['DESCRIPCIÃ“N DE LA CLASE'],
+                            clase: giro.CLASE, desc: giro['DESCRIPCIÓN DE LA CLASE'],
                             obs: giro.OBSERVACIONES, giros: []
                         };
                     }
@@ -123,8 +124,8 @@
                 });
                 document.getElementById('conteo-resumen').innerHTML =
                     'Mostrando: <strong>' + clases.length + '</strong> clases CIIU.<br>' +
-                    '<span style="color:#66bb6a;">â— ' + nPerm + ' Permitidas</span> | ' +
-                    '<span style="color:#ffca28;">â— ' + nRest + ' Con restricciones</span>';
+                    '<span style="color:#66bb6a;">● ' + nPerm + ' Permitidas</span> | ' +
+                    '<span style="color:#ffca28;">● ' + nRest + ' Con restricciones</span>';
 
                 // Renderiza tarjetas ZRE
                 var htmlContenido = '';
@@ -146,12 +147,12 @@
                             var a = locMap[loc];
                             if (!a) return;
                             var col = colorAuth(a);
-                            ubicacionesHtml += '<span style="background:' + col.bg + ';color:' + col.txt + ';padding:1px 6px;border-radius:3px;font-size:10px;" title="' + loc + '">' + col.label + ' Â· ' + loc.substring(0,30) + (loc.length>30?'â€¦':'') + '</span>';
+                            ubicacionesHtml += '<span style="background:' + col.bg + ';color:' + col.txt + ';padding:1px 6px;border-radius:3px;font-size:10px;" title="' + loc + '">' + col.label + ' · ' + loc.substring(0,30) + (loc.length>30?'…':'') + '</span>';
                         });
                         ubicacionesHtml += '</div>';
                     }
 
-                    // Giros con sus autorizaciones por ubicaciÃ³n
+                    // Giros con sus autorizaciones por ubicación
                     var girosHtml = '<ul class="lista-actividades">';
                     c.giros.forEach(function(g) {
                         var locs = g.ZRE[zreId] || {};
@@ -190,7 +191,7 @@
             }
 
             // ---- MODO ZONAS NORMALES ----
-            var zonaParaFiltro = (zonaActual === 'Usos EspecÃ­ficos - Otros Usos') ? 'Usos EspecÃ­ficos - Otros Usos' : zonaActual;
+            var zonaParaFiltro = (zonaActual === 'Usos Específicos - Otros Usos') ? 'Usos Específicos - Otros Usos' : zonaActual;
             // Mapeo de nombre de zona del Usos.json al campo ZONAS del Actividades.json
             var zonaKeyMap = {
                 'Uso Residencial Exclusivo':  'Uso Residencial Exclusivo',
@@ -201,10 +202,10 @@
                 'Uso Mixto Metropolitano':    'Uso Mixto Metropolitano',
                 'Uso Mixto Intensivo':        'Uso Mixto Intensivo',
                 'Uso Mixto Especializado':    'Uso Mixto Especializado',
-                'Uso de RecreaciÃ³n PÃºblica':  'Uso de RecreaciÃ³n PÃºblica',
-                'Usos EspecÃ­ficos - Otros Usos': 'Otros Usos',
-                'Usos EspecÃ­ficos - EducaciÃ³n':  'EducaciÃ³n',
-                'Usos EspecÃ­ficos - Hospital':   'Hospitales',
+                'Uso de Recreación Pública':  'Uso de Recreación Pública',
+                'Usos Específicos - Otros Usos': 'Otros Usos',
+                'Usos Específicos - Educación':  'Educación',
+                'Usos Específicos - Hospital':   'Hospitales',
             };
             var zonaKeyAct = zonaKeyMap[zonaActual] || zonaActual;
 
@@ -218,26 +219,26 @@
                         return String(g.CLASE) === String(f.Clase) &&
                                estandarizarTexto(g.ACTIVIDAD).includes(busqueda);
                     });
-                    return estandarizarTexto(f['DescripciÃ³n']).includes(busqueda) ||
+                    return estandarizarTexto(f['Descripción']).includes(busqueda) ||
                            estandarizarTexto(f['Clase']).includes(busqueda) || tieneGiro;
                 });
             }
 
-            var permitidos    = resultados.filter(r => String(r['AutorizaciÃ³n']).includes('Permitidas') && !String(r['AutorizaciÃ³n']).includes('restricciÃ³n')).length;
-            var restringidos  = resultados.filter(r => String(r['AutorizaciÃ³n']).includes('restricciÃ³n')).length;
+            var permitidos    = resultados.filter(r => String(r['Autorización']).includes('Permitidas') && !String(r['Autorización']).includes('restricción')).length;
+            var restringidos  = resultados.filter(r => String(r['Autorización']).includes('restricción')).length;
             document.getElementById('conteo-resumen').innerHTML =
                 'Mostrando: <strong>' + resultados.length + '</strong> clases CIIU.<br>' +
-                '<span style="color:#66bb6a;">â— ' + permitidos + ' Permitidas</span> | ' +
-                '<span style="color:#ffca28;">â— ' + restringidos + ' Con restricciones</span>';
+                '<span style="color:#66bb6a;">● ' + permitidos + ' Permitidas</span> | ' +
+                '<span style="color:#ffca28;">● ' + restringidos + ' Con restricciones</span>';
 
             var htmlContenido = '';
             resultados.forEach(function(item) {
-                var esRestringido = String(item['AutorizaciÃ³n']).includes('restricciÃ³n');
+                var esRestringido = String(item['Autorización']).includes('restricción');
                 var cCaja  = esRestringido ? '#ffca28' : '#4CAF50';
                 var cTexto = esRestringido ? '#000' : '#fff';
                 var tAviso = esRestringido ? 'Con restricciones' : 'Permitidas';
 
-                // Giros para esta clase CON su autorizaciÃ³n individual en la zona
+                // Giros para esta clase CON su autorización individual en la zona
                 var girosDeEstaClase = datosActividades.filter(function(g) {
                     return String(g.CLASE) === String(item.Clase);
                 });
@@ -258,7 +259,7 @@
                         girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#aaa;font-style:italic;">' + girosDeEstaClase[0].OBSERVACIONES + '</p>';
                     }
                 } else {
-                    girosHtml = "<p style='margin:8px 0 0;font-size:11px;color:#777;font-style:italic;'>* No hay giros especÃ­ficos detallados.</p>";
+                    girosHtml = "<p style='margin:8px 0 0;font-size:11px;color:#777;font-style:italic;'>* No hay giros específicos detallados.</p>";
                 }
 
                 htmlContenido +=
@@ -267,7 +268,7 @@
                     '<span style="background:' + cCaja + ';color:' + cTexto + ';padding:2px 6px;border-radius:3px;font-size:11px;font-weight:bold;">CIIU: ' + item['Clase'] + '</span>' +
                     '<span style="font-size:10px;font-weight:bold;color:' + cCaja + ';">' + tAviso + '</span>' +
                     '</div>' +
-                    '<strong style="font-size:13px;color:#fff;display:block;margin-bottom:5px;">' + item['DescripciÃ³n'] + '</strong>' +
+                    '<strong style="font-size:13px;color:#fff;display:block;margin-bottom:5px;">' + item['Descripción'] + '</strong>' +
                     girosHtml +
                     '</div>';
             });
@@ -277,4 +278,3 @@
         }
 
         document.getElementById('buscador-actividad').addEventListener('input', renderizarResultados);
-
