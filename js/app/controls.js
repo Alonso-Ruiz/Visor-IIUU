@@ -64,6 +64,26 @@
         };
         legend.addTo(map);
 
+        var transparenciaControl = L.control({position: 'bottomleft'});
+        transparenciaControl.onAdd = function() {
+            var div = L.DomUtil.create('div', 'control-transparencia-mapa transparencia-cerrada');
+            div.id = 'control-transparencia-mapa';
+            div.setAttribute('aria-label', 'Control de transparencia del mapa');
+            div.innerHTML =
+                '<button type="button" id="boton-transparencia-mapa" class="boton-transparencia-mapa" aria-label="Abrir transparencia del mapa" aria-expanded="false">' +
+                    '<i class="fas fa-adjust" aria-hidden="true"></i>' +
+                '</button>' +
+                '<div id="panel-transparencia-mapa" class="panel-transparencia-mapa" aria-hidden="true">' +
+                    '<label for="map-opacity">' +
+                        '<i class="fas fa-layer-group" aria-hidden="true"></i>' +
+                        '<span>Transparencia del mapa</span>' +
+                    '</label>' +
+                    '<input type="range" id="map-opacity" min="0" max="0.95" step="0.05" value="0.9" aria-label="Transparencia del mapa">' +
+                '</div>';
+            return div;
+        };
+        transparenciaControl.addTo(map);
+
         // --- LÓGICA DE VÍAS ---
         function actualizarTamanioLetrasVias() {
             var zoom = map.getZoom();

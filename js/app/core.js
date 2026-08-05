@@ -1,4 +1,11 @@
-﻿var map = L.map('map', { zoomControl:false, maxZoom:28, minZoom:1 }).fitBounds([[-12.094993710275856,-77.0100891034669],[-12.085400753536042,-76.99586998020054]]);
+var map = L.map('map', {
+            zoomControl: false,
+            maxZoom: 28,
+            minZoom: 1,
+            wheelDebounceTime: 70,
+            wheelPxPerZoomLevel: 90
+        }).fitBounds([[-12.094993710275856,-77.0100891034669],[-12.085400753536042,-76.99586998020054]]);
+        window.map = map;
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com">Leaflet</a>');
 
@@ -6,8 +13,12 @@
             maxNativeZoom: 22,
             maxZoom: 28,
             opacity: 0.9,
+            updateWhenIdle: true,
+            updateWhenZooming: false,
+            keepBuffer: 3,
             attribution: '&copy; Google'
         }).addTo(map);
+        window.mapaSatelital = mapaSatelital;
 
         L.control.zoom({ position: 'topleft' }).addTo(map);
         var bounds_group = new L.featureGroup([]);
@@ -42,4 +53,3 @@ function colorAuth(auth) {
     if (auth === 'R') return { bg: '#ffca28', txt: '#000', label: 'Con restricción' };
     return { bg: '#555', txt: '#ccc', label: 'No compatible' };
 }
-

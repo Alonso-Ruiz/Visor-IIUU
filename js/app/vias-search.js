@@ -1,46 +1,111 @@
 ﻿        // Datos cargados via <script> tags (sin fetch, compatible con file://)
         console.log('Datos cargados — Usos:', datosUsos.length, '| Actividades:', datosActividades.length, '| ZRE:', datosActividadesZRE.length);
+        let capaViasEtiquetas = null;
+        let temporizadorViasEtiquetas = null;
+        let rendererViasEtiquetas = null;
         cargarVias();
 
         function cargarVias() {
             (function() { var jsonVias = json_vias;
                 datosVias = jsonVias.features;
                 map.createPane('pane_vias_lineas'); map.getPane('pane_vias_lineas').style.zIndex = 350;
-
-                L.geoJson(jsonVias, {
-                    pane: 'pane_vias_lineas', style: { color: '#ffffff', weight: 1.5, opacity: 0.25, interactive: false },
-                    onEachFeature: function(feature, layer) {
-                        if (feature.properties && feature.properties['NOMBRECOMP']) {
-                            var nombre = String(feature.properties['NOMBRECOMP']).trim();
-                            var nivel = String(feature.properties['NIVEL'] || '').toUpperCase();
-                            var claseNivel = nivel.includes('EXPRESA') ? 'etiqueta-expresa' : nivel.includes('ARTERIAL') ? 'etiqueta-arterial' : nivel.includes('COLECTORA') ? 'etiqueta-colectora' : 'etiqueta-local';
-
-                            try {
-                                var latlngs = layer.getLatLngs();
-                                function enderezar(seg) {
-                                    if (!seg || seg.length === 0) return seg;
-                                    if (Array.isArray(seg[0])) return seg.map(enderezar);
-                                    var p1 = seg[0], p2 = seg[seg.length - 1];
-                                    if (p1.lng > p2.lng || (Math.abs(p1.lng - p2.lng) < 0.00001 && p1.lat > p2.lat)) return seg.slice().reverse();
-                                    return seg;
-                                }
-                                layer.setLatLngs(enderezar(latlngs));
-
-                                if (layer.setText) layer.setText(nombre, { center: true, offset: 6, attributes: { 'class': 'etiqueta-via-curva ' + claseNivel } });
-                                else if (layer.eachLayer) layer.eachLayer(sub => { if (sub.setText) sub.setText(nombre, { center: true, offset: 6, attributes: { 'class': 'etiqueta-via-curva ' + claseNivel } }); });
-                            } catch(e) {}
-                        }
-                    }
-                }).addTo(map);
+                rendererViasEtiquetas = L.svg({ pane: 'pane_vias_lineas', padding: 0.1 });
+                programarActualizacionEtiquetasVias(60);
             })();
+        }
+
+        function clasePorNivelVia(nivel) {
+            nivel = String(nivel || '').toUpperCase();
+            if (nivel.includes('EXPRESA')) return 'etiqueta-expresa';
+            if (nivel.includes('ARTERIAL')) return 'etiqueta-arterial';
+            if (nivel.includes('COLECTORA')) return 'etiqueta-colectora';
+            return 'etiqueta-local';
+        }
+
+        function viaVisiblePorZoom(nivel, zoom) {
+            nivel = String(nivel || '').toUpperCase();
+            if (nivel.includes('EXPRESA')) return zoom >= 14;
+            if (nivel.includes('ARTERIAL')) return zoom >= 15;
+            if (nivel.includes('COLECTORA')) return zoom >= 16;
+            return zoom >= 17;
+        }
+
+        function coordenadaDentroDeVista(coords, bounds) {
+            if (!coords) return false;
+            if (typeof coords[0] === 'number' && typeof coords[1] === 'number') {
+                return bounds.contains([coords[1], coords[0]]);
+            }
+            return coords.some(function(parte) {
+                return coordenadaDentroDeVista(parte, bounds);
+            });
+        }
+
+        function construirEtiquetasVias() {
+            if (capaViasEtiquetas) {
+                map.removeLayer(capaViasEtiquetas);
+                capaViasEtiquetas = null;
+            }
+
+            var zoom = map.getZoom();
+            if (zoom < 14) return;
+
+            var boundsVisibles = map.getBounds().pad(0.25);
+            var featuresVisibles = datosVias.filter(function(feature) {
+                var props = feature.properties || {};
+                return props.NOMBRECOMP &&
+                    viaVisiblePorZoom(props.NIVEL, zoom) &&
+                    feature.geometry &&
+                    coordenadaDentroDeVista(feature.geometry.coordinates, boundsVisibles);
+            });
+
+            if (featuresVisibles.length === 0) return;
+
+            capaViasEtiquetas = L.geoJson({ type: 'FeatureCollection', features: featuresVisibles }, {
+                pane: 'pane_vias_lineas',
+                renderer: rendererViasEtiquetas,
+                style: { color: '#ffffff', weight: 1.5, opacity: 0.25, interactive: false },
+                interactive: false,
+                onEachFeature: function(feature, layer) {
+                    if (feature.properties && feature.properties['NOMBRECOMP']) {
+                        var nombre = String(feature.properties['NOMBRECOMP']).trim();
+                        var claseNivel = clasePorNivelVia(feature.properties['NIVEL']);
+
+                        try {
+                            var latlngs = layer.getLatLngs();
+                            function enderezar(seg) {
+                                if (!seg || seg.length === 0) return seg;
+                                if (Array.isArray(seg[0])) return seg.map(enderezar);
+                                var p1 = seg[0], p2 = seg[seg.length - 1];
+                                if (p1.lng > p2.lng || (Math.abs(p1.lng - p2.lng) < 0.00001 && p1.lat > p2.lat)) return seg.slice().reverse();
+                                return seg;
+                            }
+                            layer.setLatLngs(enderezar(latlngs));
+
+                            if (layer.setText) layer.setText(nombre, { center: true, offset: 6, attributes: { 'class': 'etiqueta-via-curva ' + claseNivel } });
+                            else if (layer.eachLayer) layer.eachLayer(sub => { if (sub.setText) sub.setText(nombre, { center: true, offset: 6, attributes: { 'class': 'etiqueta-via-curva ' + claseNivel } }); });
+                        } catch(e) {}
+                    }
+                }
+            }).addTo(map);
+        }
+
+        function programarActualizacionEtiquetasVias(espera) {
+            clearTimeout(temporizadorViasEtiquetas);
+            temporizadorViasEtiquetas = setTimeout(construirEtiquetasVias, espera || 120);
         }
 
         map.on('movestart zoomstart', function() {
             document.body.classList.add('mapa-en-movimiento');
+            clearTimeout(temporizadorViasEtiquetas);
+            if (capaViasEtiquetas) {
+                map.removeLayer(capaViasEtiquetas);
+                capaViasEtiquetas = null;
+            }
         });
 
         map.on('moveend zoomend', function() {
             document.body.classList.remove('mapa-en-movimiento');
+            programarActualizacionEtiquetasVias(100);
         });
 
         const contenedorBuscadorVias = document.getElementById('buscador-vias-container');
