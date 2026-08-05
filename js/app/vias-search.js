@@ -43,8 +43,35 @@
             document.body.classList.remove('mapa-en-movimiento');
         });
 
+        const contenedorBuscadorVias = document.getElementById('buscador-vias-container');
+        const botonBuscadorVias = document.getElementById('boton-buscar-vias');
         const inputBuscadorVias = document.getElementById('buscador-vias'), sugerenciasVias = document.getElementById('sugerencias-vias');
         let ultimoResultadoVias = {};
+
+        function abrirBuscadorVias() {
+            contenedorBuscadorVias.classList.add('buscador-abierto');
+            contenedorBuscadorVias.classList.remove('buscador-cerrado');
+            if (botonBuscadorVias) botonBuscadorVias.setAttribute('aria-expanded', 'true');
+        }
+
+        function cerrarBuscadorViasSiVacio() {
+            if (inputBuscadorVias.value.trim()) return;
+            contenedorBuscadorVias.classList.add('buscador-cerrado');
+            contenedorBuscadorVias.classList.remove('buscador-abierto');
+            sugerenciasVias.style.display = 'none';
+            if (botonBuscadorVias) botonBuscadorVias.setAttribute('aria-expanded', 'false');
+        }
+
+        if (botonBuscadorVias) {
+            botonBuscadorVias.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                abrirBuscadorVias();
+                inputBuscadorVias.focus();
+            });
+        }
+
+        inputBuscadorVias.addEventListener('focus', abrirBuscadorVias);
 
         function agruparViasPorTexto(texto) {
             const agrup = {};
@@ -106,10 +133,19 @@
             if (e.key === 'Enter') {
                 e.preventDefault();
                 ejecutarBusquedaActual();
+            } else if (e.key === 'Escape') {
+                inputBuscadorVias.value = '';
+                ultimoResultadoVias = {};
+                cerrarBuscadorViasSiVacio();
             }
         });
 
-        document.addEventListener('click', e => { if (!document.getElementById('buscador-vias-container').contains(e.target)) sugerenciasVias.style.display = 'none'; });
+        document.addEventListener('click', e => {
+            if (!contenedorBuscadorVias.contains(e.target)) {
+                sugerenciasVias.style.display = 'none';
+                cerrarBuscadorViasSiVacio();
+            }
+        });
 
         function enfocarVia(segmentos) {
             if (capaResaltadoVia) map.removeLayer(capaResaltadoVia);

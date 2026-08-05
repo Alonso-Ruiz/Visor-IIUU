@@ -19,15 +19,14 @@
         var legend = L.control({position: 'bottomleft'});
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'info legend');
-            div.classList.add(window.innerWidth <= 896 ? 'leyenda-cerrada' : 'leyenda-abierta');
+            div.classList.add('leyenda-cerrada');
             L.DomEvent.disableClickPropagation(div);
-            div.innerHTML += '<button type="button" id="leyenda-header" class="leyenda-header" aria-expanded="' + (window.innerWidth <= 896 ? 'false' : 'true') + '">' +
+            div.innerHTML += '<button type="button" id="leyenda-header" class="leyenda-header" aria-expanded="false">' +
                              '<span class="leyenda-boton-icon" aria-hidden="true"><img src="assets/icon_leyenda.png" alt=""></span>' +
                              '<span><strong>Leyenda de usos</strong><small>Colores del mapa</small></span>' +
-                             '<span id="leyenda-arrow" class="leyenda-arrow">' + (window.innerWidth <= 896 ? '▼' : '▲') + '</span></button>';
+                             '<span id="leyenda-arrow" class="leyenda-arrow">▼</span></button>';
 
-            var displayVal = window.innerWidth <= 896 ? 'none' : 'block';
-            var listaHtml = '<div id="leyenda-lista" class="leyenda-lista" style="display: ' + displayVal + ';">';
+            var listaHtml = '<div id="leyenda-lista" class="leyenda-lista" style="display: none;">';
 
             var cats = [
                 { id: 'Uso Mixto Especializado', n: 'Mixto Especializado', c: '#7a0403' }, { id: 'Uso Mixto Intensivo', n: 'Mixto Intensivo', c: '#b72020' },

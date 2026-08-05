@@ -170,23 +170,23 @@
                     girosHtml += '</ul>';
 
                     if (c.obs) {
-                        girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#aaa;font-style:italic;">' + c.obs + '</p>';
+                        girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#666;font-style:italic;">' + c.obs + '</p>';
                     }
 
                     htmlContenido +=
-                        '<div style="background:#2a2a2a;border-left:5px solid ' + c_borde + ';padding:12px;margin-bottom:12px;border-radius:4px;">' +
+                        '<div style="background:#fff;border:1px solid #e8e8e8;border-left:5px solid ' + c_borde + ';padding:12px;margin-bottom:12px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">' +
                         '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">' +
                         '<span style="background:' + c_borde + ';color:' + (tieneX?'#fff':'#000') + ';padding:2px 6px;border-radius:3px;font-size:11px;font-weight:bold;">CIIU: ' + c.clase + '</span>' +
                         '<span style="font-size:10px;font-weight:bold;color:' + c_borde + ';">' + zreId + '</span>' +
                         '</div>' +
-                        '<strong style="font-size:13px;color:#fff;display:block;margin-bottom:5px;">' + c.desc + '</strong>' +
+                        '<strong style="font-size:13px;color:#222;display:block;margin-bottom:5px;">' + c.desc + '</strong>' +
                         ubicacionesHtml +
                         girosHtml +
                         '</div>';
                 });
 
                 document.getElementById('lista-clases-container').innerHTML = htmlContenido ||
-                    "<p style='color:#777;text-align:center;padding:20px;font-style:italic;'>No hay actividades compatibles para este ZRE.</p>";
+                    "<p style='color:#666;text-align:center;padding:20px;font-style:italic;'>No hay actividades compatibles para este ZRE.</p>";
                 return;
             }
 
@@ -256,25 +256,25 @@
                     });
                     girosHtml += '</ul>';
                     if (girosDeEstaClase[0].OBSERVACIONES) {
-                        girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#aaa;font-style:italic;">' + girosDeEstaClase[0].OBSERVACIONES + '</p>';
+                        girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#666;font-style:italic;">' + girosDeEstaClase[0].OBSERVACIONES + '</p>';
                     }
                 } else {
-                    girosHtml = "<p style='margin:8px 0 0;font-size:11px;color:#777;font-style:italic;'>* No hay giros específicos detallados.</p>";
+                    girosHtml = "<p style='margin:8px 0 0;font-size:11px;color:#666;font-style:italic;'>* No hay giros específicos detallados.</p>";
                 }
 
                 htmlContenido +=
-                    '<div style="background:#2a2a2a;border-left:5px solid ' + cCaja + ';padding:12px;margin-bottom:12px;border-radius:4px;">' +
+                    '<div style="background:#fff;border:1px solid #e8e8e8;border-left:5px solid ' + cCaja + ';padding:12px;margin-bottom:12px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">' +
                     '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">' +
                     '<span style="background:' + cCaja + ';color:' + cTexto + ';padding:2px 6px;border-radius:3px;font-size:11px;font-weight:bold;">CIIU: ' + item['Clase'] + '</span>' +
                     '<span style="font-size:10px;font-weight:bold;color:' + cCaja + ';">' + tAviso + '</span>' +
                     '</div>' +
-                    '<strong style="font-size:13px;color:#fff;display:block;margin-bottom:5px;">' + item['Descripción'] + '</strong>' +
+                    '<strong style="font-size:13px;color:#222;display:block;margin-bottom:5px;">' + item['Descripción'] + '</strong>' +
                     girosHtml +
                     '</div>';
             });
 
             document.getElementById('lista-clases-container').innerHTML = htmlContenido ||
-                "<p style='color:#777;text-align:center;padding:20px;font-style:italic;'>No se encontraron actividades.</p>";
+                "<p style='color:#666;text-align:center;padding:20px;font-style:italic;'>No se encontraron actividades.</p>";
         }
 
         document.getElementById('buscador-actividad').addEventListener('input', renderizarResultados);

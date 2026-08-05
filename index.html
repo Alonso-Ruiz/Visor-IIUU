@@ -27,10 +27,38 @@
                 </div>
             </div>
 
-            <div id="buscador-vias-container">
+            <div id="buscador-vias-container" class="buscador-cerrado">
+                <button type="button" id="boton-buscar-vias" aria-label="Abrir buscador de vías" aria-expanded="false">
+                    <i class="fas fa-search"></i>
+                </button>
                 <i class="fas fa-search icono-lupa"></i>
                 <input type="text" id="buscador-vias" placeholder="Buscar vía..." autocomplete="off" aria-label="Buscar vía">
                 <div id="sugerencias-vias"></div>
+            </div>
+        </div>
+
+        <div id="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+            <div class="modal-content">
+                <button type="button" id="btn-cerrar-portada" class="close-modal-icon" title="Cerrar" aria-label="Cerrar bienvenida">&#10005;</button>
+
+                <img class="modal-logo" src="assets/Escudo_de_San_Borja.png" alt="Escudo de San Borja">
+                <h2 id="welcome-title">Municipalidad de San Borja</h2>
+                <h3>Plano de Usos Compatibles</h3>
+                <p>Este visor permite consultar de forma interactiva la compatibilidad de usos del suelo, revisar la información de cada lote y explorar las actividades permitidas o sujetas a restricciones.</p>
+                <hr class="modal-divider">
+                <p class="modal-help-title">¿Cómo usar el visor?</p>
+                <ul>
+                    <li>Use la lupa para buscar una vía y ubicarla rápidamente en el mapa.</li>
+                    <li>Haga clic sobre cualquier polígono para ver el detalle del lote.</li>
+                    <li>Revise las actividades compatibles, observaciones y restricciones desde el panel de detalle.</li>
+                </ul>
+                <div class="modal-buttons">
+                    <button id="btn-ingresar-visor" class="btn-ingresar" type="button">Ingresar al visor</button>
+                </div>
+                <div class="source">
+                    Fuente: Municipalidad de San Borja
+                    <span class="privacy-note">Este visor utiliza datos públicos y no recopila información personal.</span>
+                </div>
             </div>
         </div>
 
@@ -71,10 +99,11 @@
         <script src="data/usos_compatibles_1.js"></script>
         <script src="data/bordes_2.js"></script>
 
-        <script src="js/app/core.js"></script>
+        <script src="js/app/core.js?v=20260804-satelite2"></script>
         <script src="js/app/layers.js"></script>
         <script src="js/app/controls.js"></script>
         <script src="js/app/panel.js"></script>
+        <script src="js/app/welcome-modal.js"></script>
         <script src="js/app/vias-search.js"></script>
     </body>
 </html>
