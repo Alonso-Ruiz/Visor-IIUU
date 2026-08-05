@@ -78,6 +78,35 @@
             renderizarResultados();
         }
 
+        window.actualizarDetalleRetiro = function(propiedades) {
+            var codigo = String(propiedades['CÓDIGO_RE'] || propiedades['CÃ“DIGO_RE'] || propiedades['CODIGO_RE'] || '').trim();
+            var area = propiedades['AREA'];
+            var areaTexto = isFinite(Number(area)) ? Number(area).toLocaleString('es-PE', { maximumFractionDigits: 2 }) + ' m²' : 'No especificada';
+
+            zonaActual = '';
+            zonVigActual = '';
+            zreUsocomActual = '';
+
+            panel.classList.remove('minimizado');
+            document.body.classList.add('panel-abierto');
+
+            document.getElementById('nombre-uso-titulo').innerHTML = 'Retiro';
+            document.getElementById('buscador-actividad').value = '';
+            document.getElementById('ventanas-zona').style.display = 'none';
+            document.getElementById('conteo-resumen').innerHTML =
+                'Elemento seleccionado: <strong>Retiro con código</strong>';
+            document.getElementById('lista-clases-container').innerHTML =
+                '<div style="background:#fff;border:1px solid #e8e8e8;border-left:5px solid #9a9a9a;padding:12px;margin-bottom:12px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">' +
+                    '<div style="display:flex;justify-content:space-between;margin-bottom:8px;gap:8px;align-items:center;">' +
+                        '<span style="background:#5f5f5f;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px;font-weight:bold;">Código: ' + (codigo || 'Sin código') + '</span>' +
+                        '<span style="font-size:10px;font-weight:bold;color:#5f5f5f;">Retiro</span>' +
+                    '</div>' +
+                    '<strong style="font-size:13px;color:#222;display:block;margin-bottom:6px;">Área normativa asociada al retiro</strong>' +
+                    '<p style="margin:0;font-size:12px;color:#555;">Área: <strong>' + areaTexto + '</strong></p>' +
+                '</div>';
+            document.getElementById('contenido-scrollable').scrollTop = 0;
+        }
+
         // Colores por tipo de autorización
 
         function renderizarResultados() {

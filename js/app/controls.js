@@ -34,15 +34,23 @@
                 { id: 'Uso Mixto Vecinal', n: 'Mixto Vecinal', c: '#f27144' }, { id: 'Uso Residencial Preferente', n: 'Residencial Preferente', c: '#f4c644' },
                 { id: 'Uso Residencial Especial', n: 'Residencial Especial', c: '#feac00' }, { id: 'Uso Residencial Exclusivo', n: 'Residencial Exclusivo', c: '#f4f4f4' },
                 { id: 'Usos Específicos - Otros Usos', n: 'Usos Específicos', c: '#818181' }, { id: 'Uso de Recreación Pública', n: 'Recreación Pública', c: '#a4cda3' },
-                { id: 'Planes Especiales', n: 'Planes Especiales', c: 'repeating-linear-gradient(45deg, #000 0, #000 2px, #fff 2px, #fff 4px)' }
+                { id: 'Planes Especiales', n: 'Planes Especiales', c: 'repeating-linear-gradient(45deg, #000 0, #000 2px, #fff 2px, #fff 4px)' },
+                { id: '__bordes__', n: 'Borde', c: 'linear-gradient(180deg, transparent 0 38%, #111 38% 62%, transparent 62% 100%)', tipo: 'borde' }
             ];
 
             cats.forEach((i, idx) => {
-                var txt = definicionesZonas[i.id];
+                var txt = i.tipo === 'borde' ? 'Límites y bordes de referencia del plano.' : definicionesZonas[i.id];
+                if (window.categoriasUsoActivas && i.tipo !== 'borde') window.categoriasUsoActivas[i.id] = true;
                 listaHtml += `
                 <div>
-                    <div class="leyenda-item-titulo" onclick="toggleConcepto('concepto-${idx}')">
-                        <i style="background: ${i.c};"></i> <span>${i.n}</span>
+                    <div class="leyenda-item-titulo">
+                        <label class="leyenda-check-label" title="Mostrar u ocultar ${i.n}">
+                            <input type="checkbox" class="leyenda-checkbox" data-uso="${i.id}" data-tipo="${i.tipo || 'uso'}" checked>
+                            <span class="leyenda-check-custom" aria-hidden="true"></span>
+                        </label>
+                        <button type="button" class="leyenda-concepto-toggle" data-concepto="concepto-${idx}">
+                            <i style="background: ${i.c};"></i> <span>${i.n}</span>
+                        </button>
                     </div>
                     <div id="concepto-${idx}" class="leyenda-concepto">${txt}</div>
                 </div>`;
@@ -58,6 +66,33 @@
                     this.closest('.legend').classList.toggle('leyenda-abierta', h);
                     this.closest('.legend').classList.toggle('leyenda-cerrada', !h);
                     this.setAttribute('aria-expanded', h ? 'true' : 'false');
+                });
+
+                document.querySelectorAll('.leyenda-concepto-toggle').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        toggleConcepto(this.getAttribute('data-concepto'));
+                    });
+                });
+
+                document.querySelectorAll('.leyenda-checkbox').forEach(function(chk) {
+                    chk.addEventListener('change', function() {
+                        var listaLeyenda = this.closest('.leyenda-lista');
+                        var scrollLeyenda = listaLeyenda ? listaLeyenda.scrollTop : 0;
+
+                        if (!window.categoriasUsoActivas) window.categoriasUsoActivas = {};
+                        if (this.getAttribute('data-tipo') === 'borde') {
+                            if (window.actualizarVisibilidadBordes) window.actualizarVisibilidadBordes(this.checked);
+                        } else {
+                            window.categoriasUsoActivas[this.getAttribute('data-uso')] = this.checked;
+                            if (window.actualizarVisibilidadUsos) window.actualizarVisibilidadUsos();
+                        }
+
+                        if (listaLeyenda) {
+                            requestAnimationFrame(function() {
+                                listaLeyenda.scrollTop = scrollLeyenda;
+                            });
+                        }
+                    });
                 });
             }, 100);
             return div;
