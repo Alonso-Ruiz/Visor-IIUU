@@ -35,12 +35,15 @@
                 { id: 'Uso Residencial Especial', n: 'Residencial Especial', c: '#feac00' }, { id: 'Uso Residencial Exclusivo', n: 'Residencial Exclusivo', c: '#f4f4f4' },
                 { id: 'Usos Específicos - Otros Usos', n: 'Usos Específicos', c: '#818181' }, { id: 'Uso de Recreación Pública', n: 'Recreación Pública', c: '#a4cda3' },
                 { id: 'Planes Especiales', n: 'Planes Especiales', c: 'repeating-linear-gradient(45deg, #000 0, #000 2px, #fff 2px, #fff 4px)' },
+                { id: '__retiros__', n: 'Retiro', c: 'rgba(150,150,150,0.78)', tipo: 'retiro' },
                 { id: '__bordes__', n: 'Borde', c: 'linear-gradient(180deg, transparent 0 38%, #111 38% 62%, transparent 62% 100%)', tipo: 'borde' }
             ];
 
             cats.forEach((i, idx) => {
-                var txt = i.tipo === 'borde' ? 'Límites y bordes de referencia del plano.' : definicionesZonas[i.id];
-                if (window.categoriasUsoActivas && i.tipo !== 'borde') window.categoriasUsoActivas[i.id] = true;
+                var txt = definicionesZonas[i.id];
+                if (i.tipo === 'retiro') txt = 'Áreas de retiro incorporadas al plano.';
+                if (i.tipo === 'borde') txt = 'Límites y bordes de referencia del plano.';
+                if (window.categoriasUsoActivas && !i.tipo) window.categoriasUsoActivas[i.id] = true;
                 listaHtml += `
                 <div>
                     <div class="leyenda-item-titulo">
@@ -82,6 +85,8 @@
                         if (!window.categoriasUsoActivas) window.categoriasUsoActivas = {};
                         if (this.getAttribute('data-tipo') === 'borde') {
                             if (window.actualizarVisibilidadBordes) window.actualizarVisibilidadBordes(this.checked);
+                        } else if (this.getAttribute('data-tipo') === 'retiro') {
+                            if (window.actualizarVisibilidadRetiros) window.actualizarVisibilidadRetiros(this.checked);
                         } else {
                             window.categoriasUsoActivas[this.getAttribute('data-uso')] = this.checked;
                             if (window.actualizarVisibilidadUsos) window.actualizarVisibilidadUsos();

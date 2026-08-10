@@ -122,9 +122,25 @@
         }
 
         function seleccionarRetiroConCodigo(feature, layer) {
+            var props = feature.properties || {};
+            var codigo = String(props['CÓDIGO_RE'] || props['CÃ“DIGO_RE'] || props['CODIGO_RE'] || '').trim();
+            var area = props['AREA'];
+            var areaTexto = isFinite(Number(area)) ? Number(area).toLocaleString('es-PE', { maximumFractionDigits: 2 }) + ' m²' : 'No especificada';
+            var contenidoPopup = '<strong>Retiro</strong>' +
+                (codigo ? '<br><span>Código: ' + codigo + '</span>' : '') +
+                '<br><span>Área: ' + areaTexto + '</span>';
+
+            layer.bindPopup(contenidoPopup, {
+                className: 'popup-limpio',
+                closeButton: false,
+                autoPanPaddingBottomRight: [10, window.innerWidth <= 896 ? (window.innerHeight * 0.55) : 50],
+                autoPanPaddingTopLeft: [10, 50]
+            });
+
             layer.on('click', function(e) {
                 resaltarLote(feature);
                 if (window.actualizarDetalleRetiro) window.actualizarDetalleRetiro(feature.properties || {});
+                layer.openPopup(e.latlng);
                 if (L.DomEvent) L.DomEvent.stop(e);
             });
         }
@@ -142,6 +158,18 @@
                 style: style_retiros_con_codigos_0
             });
             window.layer_retiros_con_codigos = layer_retiros_con_codigos;
+            window.actualizarVisibilidadRetiros = function(visible) {
+                if (visible) {
+                    if (!map.hasLayer(layer_retiros_con_codigos)) map.addLayer(layer_retiros_con_codigos);
+                } else {
+                    if (map.hasLayer(layer_retiros_con_codigos)) map.removeLayer(layer_retiros_con_codigos);
+                    if (window.capaLoteResaltado) {
+                        map.removeLayer(window.capaLoteResaltado);
+                        window.capaLoteResaltado = null;
+                    }
+                    map.closePopup();
+                }
+            };
             bounds_group.addLayer(layer_retiros_con_codigos);
             map.addLayer(layer_retiros_con_codigos);
         }
