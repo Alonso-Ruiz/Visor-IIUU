@@ -21,12 +21,13 @@
             var div = L.DomUtil.create('div', 'info legend');
             div.classList.add('leyenda-cerrada');
             L.DomEvent.disableClickPropagation(div);
-            div.innerHTML += '<button type="button" id="leyenda-header" class="leyenda-header" aria-expanded="false">' +
+            div.innerHTML += '<button type="button" id="leyenda-header" class="leyenda-header" aria-label="Abrir leyenda de usos" aria-expanded="false">' +
                              '<span class="leyenda-boton-icon" aria-hidden="true"><img src="assets/icon_leyenda.png" alt=""></span>' +
                              '<span><strong>Leyenda de usos</strong><small>Colores del mapa</small></span>' +
                              '<span id="leyenda-arrow" class="leyenda-arrow">▼</span></button>';
 
-            var listaHtml = '<div id="leyenda-lista" class="leyenda-lista" style="display: none;">';
+            var listaHtml = '<div id="leyenda-lista" class="leyenda-lista" style="display: none;">' +
+                            '<div class="leyenda-panel-titulo"><strong>Leyenda de usos</strong><small>Colores del mapa</small></div>';
 
             var cats = [
                 { id: 'Uso Mixto Especializado', n: 'Mixto Especializado', c: '#7a0403' }, { id: 'Uso Mixto Intensivo', n: 'Mixto Intensivo', c: '#b72020' },
@@ -34,15 +35,11 @@
                 { id: 'Uso Mixto Vecinal', n: 'Mixto Vecinal', c: '#f27144' }, { id: 'Uso Residencial Preferente', n: 'Residencial Preferente', c: '#f4c644' },
                 { id: 'Uso Residencial Especial', n: 'Residencial Especial', c: '#feac00' }, { id: 'Uso Residencial Exclusivo', n: 'Residencial Exclusivo', c: '#f4f4f4' },
                 { id: 'Usos Específicos - Otros Usos', n: 'Usos Específicos', c: '#818181' }, { id: 'Uso de Recreación Pública', n: 'Recreación Pública', c: '#a4cda3' },
-                { id: 'Planes Especiales', n: 'Planes Especiales', c: 'repeating-linear-gradient(45deg, #000 0, #000 2px, #fff 2px, #fff 4px)' },
-                { id: '__retiros__', n: 'Retiro', c: 'rgba(150,150,150,0.78)', tipo: 'retiro' },
-                { id: '__bordes__', n: 'Borde', c: 'linear-gradient(180deg, transparent 0 38%, #111 38% 62%, transparent 62% 100%)', tipo: 'borde' }
+                { id: 'Planes Especiales', n: 'Planes Especiales', c: 'repeating-linear-gradient(45deg, #000 0, #000 2px, #fff 2px, #fff 4px)' }
             ];
 
             cats.forEach((i, idx) => {
                 var txt = definicionesZonas[i.id];
-                if (i.tipo === 'retiro') txt = 'Áreas de retiro incorporadas al plano.';
-                if (i.tipo === 'borde') txt = 'Límites y bordes de referencia del plano.';
                 if (window.categoriasUsoActivas && !i.tipo) window.categoriasUsoActivas[i.id] = true;
                 listaHtml += `
                 <div>
@@ -69,6 +66,7 @@
                     this.closest('.legend').classList.toggle('leyenda-abierta', h);
                     this.closest('.legend').classList.toggle('leyenda-cerrada', !h);
                     this.setAttribute('aria-expanded', h ? 'true' : 'false');
+                    this.setAttribute('aria-label', h ? 'Cerrar leyenda de usos' : 'Abrir leyenda de usos');
                 });
 
                 document.querySelectorAll('.leyenda-concepto-toggle').forEach(function(btn) {
@@ -83,14 +81,8 @@
                         var scrollLeyenda = listaLeyenda ? listaLeyenda.scrollTop : 0;
 
                         if (!window.categoriasUsoActivas) window.categoriasUsoActivas = {};
-                        if (this.getAttribute('data-tipo') === 'borde') {
-                            if (window.actualizarVisibilidadBordes) window.actualizarVisibilidadBordes(this.checked);
-                        } else if (this.getAttribute('data-tipo') === 'retiro') {
-                            if (window.actualizarVisibilidadRetiros) window.actualizarVisibilidadRetiros(this.checked);
-                        } else {
-                            window.categoriasUsoActivas[this.getAttribute('data-uso')] = this.checked;
-                            if (window.actualizarVisibilidadUsos) window.actualizarVisibilidadUsos();
-                        }
+                        window.categoriasUsoActivas[this.getAttribute('data-uso')] = this.checked;
+                        if (window.actualizarVisibilidadUsos) window.actualizarVisibilidadUsos();
 
                         if (listaLeyenda) {
                             requestAnimationFrame(function() {
@@ -103,6 +95,72 @@
             return div;
         };
         legend.addTo(map);
+
+        // --- CAPAS AUXILIARES: RETIROS Y BORDES ---
+        var capasAuxiliaresControl = L.control({position: 'bottomleft'});
+        capasAuxiliaresControl.onAdd = function() {
+            var div = L.DomUtil.create('div', 'control-capas-auxiliares capas-auxiliares-cerradas');
+            div.id = 'control-capas-auxiliares';
+            div.innerHTML =
+                '<button type="button" id="boton-capas-auxiliares" class="boton-capas-auxiliares" aria-label="Abrir capas adicionales" aria-expanded="false">' +
+                    '<i class="fas fa-clone" aria-hidden="true"></i>' +
+                '</button>' +
+                '<div id="panel-capas-auxiliares" class="panel-capas-auxiliares" aria-hidden="true">' +
+                    '<div class="panel-capas-titulo"><i class="fas fa-clone" aria-hidden="true"></i><span>Capas adicionales</span></div>' +
+                    '<label class="capa-auxiliar-item" for="capa-retiros-visible">' +
+                        '<input type="checkbox" id="capa-retiros-visible" checked>' +
+                        '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                        '<i class="muestra-capa muestra-retiro" aria-hidden="true"></i>' +
+                        '<span>Retiro</span>' +
+                    '</label>' +
+                    '<label class="capa-auxiliar-item" for="capa-bordes-visible">' +
+                        '<input type="checkbox" id="capa-bordes-visible" checked>' +
+                        '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                        '<i class="muestra-capa muestra-borde" aria-hidden="true"></i>' +
+                        '<span>Borde</span>' +
+                    '</label>' +
+                '</div>';
+
+            L.DomEvent.disableClickPropagation(div);
+            L.DomEvent.disableScrollPropagation(div);
+            return div;
+        };
+        capasAuxiliaresControl.addTo(map);
+
+        (function iniciarCapasAuxiliares() {
+            var control = document.getElementById('control-capas-auxiliares');
+            var boton = document.getElementById('boton-capas-auxiliares');
+            var panel = document.getElementById('panel-capas-auxiliares');
+            var retiros = document.getElementById('capa-retiros-visible');
+            var bordes = document.getElementById('capa-bordes-visible');
+
+            function alternarPanel(forzarAbierto) {
+                var abrir = typeof forzarAbierto === 'boolean'
+                    ? forzarAbierto
+                    : !control.classList.contains('capas-auxiliares-abiertas');
+
+                control.classList.toggle('capas-auxiliares-abiertas', abrir);
+                control.classList.toggle('capas-auxiliares-cerradas', !abrir);
+                boton.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+                boton.setAttribute('aria-label', abrir ? 'Cerrar capas adicionales' : 'Abrir capas adicionales');
+                panel.setAttribute('aria-hidden', abrir ? 'false' : 'true');
+            }
+
+            boton.addEventListener('click', function() { alternarPanel(); });
+            retiros.addEventListener('change', function() {
+                if (window.actualizarVisibilidadRetiros) window.actualizarVisibilidadRetiros(this.checked);
+            });
+            bordes.addEventListener('change', function() {
+                if (window.actualizarVisibilidadBordes) window.actualizarVisibilidadBordes(this.checked);
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!control.contains(e.target)) alternarPanel(false);
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') alternarPanel(false);
+            });
+        })();
 
         var transparenciaControl = L.control({position: 'bottomleft'});
         transparenciaControl.onAdd = function() {
