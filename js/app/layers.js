@@ -52,7 +52,7 @@
                     return;
                 }
                 resaltarLote(feature);
-                if(window.actualizarLista) window.actualizarLista(miZona, zonVig, zreUsocom);
+                if(window.actualizarLista) window.actualizarLista(miZona, zonVig, zreUsocom, feature.properties || {});
             });
         }
 

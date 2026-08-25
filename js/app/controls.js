@@ -9,6 +9,94 @@
         };
         norteControl.addTo(map);
 
+        function cerrarPanelesMapa(excepto) {
+            if (excepto !== 'leyenda') {
+                var leyenda = document.querySelector('.info.legend');
+                var listaLeyenda = document.getElementById('leyenda-lista');
+                var flechaLeyenda = document.getElementById('leyenda-arrow');
+                var botonLeyenda = document.getElementById('leyenda-header');
+                if (leyenda && listaLeyenda) {
+                    listaLeyenda.style.display = 'none';
+                    leyenda.classList.remove('leyenda-abierta');
+                    leyenda.classList.add('leyenda-cerrada');
+                    if (flechaLeyenda) flechaLeyenda.innerHTML = '▼';
+                    if (botonLeyenda) {
+                        botonLeyenda.setAttribute('aria-expanded', 'false');
+                        botonLeyenda.setAttribute('aria-label', 'Abrir leyenda de usos');
+                    }
+                }
+            }
+
+            if (excepto !== 'capas') {
+                var capas = document.getElementById('control-capas-auxiliares');
+                var botonCapas = document.getElementById('boton-capas-auxiliares');
+                var panelCapas = document.getElementById('panel-capas-auxiliares');
+                if (capas && panelCapas) {
+                    capas.classList.remove('capas-auxiliares-abiertas');
+                    capas.classList.add('capas-auxiliares-cerradas');
+                    panelCapas.setAttribute('aria-hidden', 'true');
+                    if (botonCapas) {
+                        botonCapas.setAttribute('aria-expanded', 'false');
+                        botonCapas.setAttribute('aria-label', 'Abrir capas adicionales');
+                    }
+                }
+            }
+
+            if (excepto !== 'transparencia') {
+                var transparencia = document.getElementById('control-transparencia-mapa');
+                var botonTransparencia = document.getElementById('boton-transparencia-mapa');
+                var panelTransparencia = document.getElementById('panel-transparencia-mapa');
+                if (transparencia && panelTransparencia) {
+                    transparencia.classList.remove('transparencia-abierta');
+                    transparencia.classList.add('transparencia-cerrada');
+                    panelTransparencia.setAttribute('aria-hidden', 'true');
+                    if (botonTransparencia) {
+                        botonTransparencia.setAttribute('aria-expanded', 'false');
+                        botonTransparencia.setAttribute('aria-label', 'Abrir transparencia del mapa');
+                    }
+                }
+            }
+        }
+
+        window.cerrarPanelesMapa = cerrarPanelesMapa;
+
+        var informacionControl = L.control({position: 'bottomleft'});
+        informacionControl.onAdd = function() {
+            var div = L.DomUtil.create('div', 'control-info-titulo titulo-info-cerrado');
+            div.id = 'control-info-titulo';
+            div.innerHTML =
+                '<button type="button" id="boton-info-titulo" class="boton-info-titulo" aria-label="Mostrar encabezado del visor" aria-expanded="true">' +
+                    '<i class="fas fa-info" aria-hidden="true"></i>' +
+                '</button>';
+            L.DomEvent.disableClickPropagation(div);
+            return div;
+        };
+        informacionControl.addTo(map);
+
+        (function iniciarTituloInformativo() {
+            var tarjeta = document.getElementById('tarjeta-titulo');
+            var bloque = document.getElementById('bloque-superior-izquierdo');
+            var boton = document.getElementById('boton-info-titulo');
+            if (!tarjeta || !bloque || !boton) return;
+
+            function fijarVisible(visible) {
+                bloque.classList.toggle('titulo-oculto', !visible);
+                document.body.classList.toggle('titulo-visible', visible);
+                document.body.classList.toggle('titulo-oculto', !visible);
+                boton.setAttribute('aria-expanded', visible ? 'true' : 'false');
+                boton.setAttribute('aria-label', visible ? 'Ocultar encabezado del visor' : 'Mostrar encabezado del visor');
+            }
+
+            boton.addEventListener('click', function() {
+                cerrarPanelesMapa();
+                fijarVisible(bloque.classList.contains('titulo-oculto'));
+            });
+
+            setTimeout(function() {
+                fijarVisible(false);
+            }, 3600);
+        })();
+
         // --- LEYENDA (INTERACTIVA) ---
         window.toggleConcepto = function(id) {
             var el = document.getElementById(id);
@@ -21,6 +109,7 @@
             var div = L.DomUtil.create('div', 'info legend');
             div.classList.add('leyenda-cerrada');
             L.DomEvent.disableClickPropagation(div);
+            L.DomEvent.disableScrollPropagation(div);
             div.innerHTML += '<button type="button" id="leyenda-header" class="leyenda-header" aria-label="Abrir leyenda de usos" aria-expanded="false">' +
                              '<span class="leyenda-boton-icon" aria-hidden="true"><img src="assets/icon_leyenda.png" alt=""></span>' +
                              '<span><strong>Leyenda de usos</strong><small>Colores del mapa</small></span>' +
@@ -58,9 +147,20 @@
             div.innerHTML += listaHtml + '</div>';
 
             setTimeout(function() {
+                var listaScroll = document.getElementById('leyenda-lista');
+                if (listaScroll) {
+                    var detenerPropagacionMapa = function(e) {
+                        e.stopPropagation();
+                    };
+                    ['wheel', 'mousewheel', 'DOMMouseScroll', 'touchstart', 'touchmove', 'pointerdown', 'pointermove'].forEach(function(evento) {
+                        listaScroll.addEventListener(evento, detenerPropagacionMapa, { passive: true });
+                    });
+                }
+
                 document.getElementById('leyenda-header').addEventListener('click', function() {
                     var l = document.getElementById('leyenda-lista'); var a = document.getElementById('leyenda-arrow');
                     var h = l.style.display === 'none';
+                    if (h) cerrarPanelesMapa('leyenda');
                     l.style.display = h ? 'block' : 'none';
                     a.innerHTML = h ? '▲' : '▼';
                     this.closest('.legend').classList.toggle('leyenda-abierta', h);
@@ -139,6 +239,7 @@
                     ? forzarAbierto
                     : !control.classList.contains('capas-auxiliares-abiertas');
 
+                if (abrir) cerrarPanelesMapa('capas');
                 control.classList.toggle('capas-auxiliares-abiertas', abrir);
                 control.classList.toggle('capas-auxiliares-cerradas', !abrir);
                 boton.setAttribute('aria-expanded', abrir ? 'true' : 'false');

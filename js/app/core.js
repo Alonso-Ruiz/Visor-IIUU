@@ -42,6 +42,7 @@ var map = L.map('map', {
 let capaLoteResaltado = null;
 let datosVias = []; // datosUsos, datosActividades, datosActividadesZRE cargados via script tags
 let zonaActual = "", zonVigActual = "", zreUsocomActual = "";
+let loteActual = {};
 let panel = document.getElementById('panel-usos');
 let capaResaltadoVia = null;
 

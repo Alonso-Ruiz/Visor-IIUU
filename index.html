@@ -8,11 +8,12 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20260805-legend4">
+        <link rel="stylesheet" href="css/app.css?v=20260824-ui7">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js"></script>
         <script src="js/actividades.js"></script>
         <script src="js/actividades_zre.js"></script>
+        <script src="js/restricciones.js?v=20260824-restricciones1"></script>
         <script src="data/vias.js"></script>
     </head>
     <body>
@@ -36,6 +37,10 @@
                 <div id="sugerencias-vias"></div>
             </div>
         </div>
+
+        <button type="button" id="boton-detalle-movil" aria-label="Abrir detalle del lote" aria-expanded="false">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
 
         <div id="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
             <div class="modal-content">
@@ -70,7 +75,7 @@
                     <h3 id="nombre-uso-titulo">Seleccione un polígono</h3>
                     <p id="ayuda-panel">Haz clic en un lote del mapa para consultar usos compatibles.</p>
                 </div>
-                <input type="text" id="buscador-actividad" placeholder="Buscar actividad..." aria-label="Buscar actividad compatible">
+                <input type="text" id="buscador-actividad" placeholder="Buscar actividad o codigo" aria-label="Buscar actividad compatible">
             </div>
 
             <div id="contenido-scrollable">
@@ -103,11 +108,11 @@
         <script src="js/app/core.js?v=20260805-legend2"></script>
         <script src="js/app/legend-filters.js?v=20260805-legend2"></script>
         <script src="js/app/layers.js?v=20260810-retiros1"></script>
-        <script src="js/app/controls.js?v=20260824-toolbar1"></script>
-        <script src="js/app/panel.js?v=20260805-bordes1"></script>
+        <script src="js/app/controls.js?v=20260824-scroll1"></script>
+        <script src="js/app/panel.js?v=20260824-ciiu4"></script>
         <script src="js/app/welcome-modal.js"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>
-        <script src="js/app/map-opacity.js?v=20260805-legend2"></script>
-        <script src="js/app/vias-search.js?v=20260805-legend2"></script>
+        <script src="js/app/map-opacity.js?v=20260824-toolbar2"></script>
+        <script src="js/app/vias-search.js?v=20260824-ui1"></script>
     </body>
 </html>

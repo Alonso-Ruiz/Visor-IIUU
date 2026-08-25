@@ -159,6 +159,7 @@
 
             panel.classList.add('minimizado');
             document.body.classList.remove('panel-abierto');
+            if (window.sincronizarBotonDetalleMovil) window.sincronizarBotonDetalleMovil();
         }
 
         function ejecutarBusquedaActual() {

@@ -17,6 +17,7 @@
                 ? forzarAbierto
                 : !control.classList.contains('transparencia-abierta');
 
+            if (abrir && window.cerrarPanelesMapa) window.cerrarPanelesMapa('transparencia');
             control.classList.toggle('transparencia-abierta', abrir);
             control.classList.toggle('transparencia-cerrada', !abrir);
             boton.setAttribute('aria-expanded', abrir ? 'true' : 'false');
