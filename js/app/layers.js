@@ -31,6 +31,7 @@
         function pop_usos_compatibles_0(feature, layer) {
             var miZona = feature.properties['USOS_COMPA'] || '';
             if (miZona === 'Usos Específicos' || miZona === 'Otros Usos') miZona = 'Usos Específicos - Otros Usos';
+            if (window.normalizarCategoriaUso) miZona = window.normalizarCategoriaUso(miZona);
 
             var zonVig     = feature.properties['ZON_VIG']     || '';
             var zreUsocom  = feature.properties['ZRE_USOCOM']  || '';
@@ -59,7 +60,10 @@
         var pattern_usos_compatibles_0_0 = new L.StripePattern({ weight: 0.45, spaceWeight: 1.0, color: '#000000', opacity: 1.0, spaceOpacity: 0, angle: 315 });
         pattern_usos_compatibles_0_0.addTo(map);
         function style_usos_compatibles_0_0(feature) {
-            switch(String(feature.properties['USOS_COMPA'])) {
+            var categoriaEstilo = window.normalizarCategoriaUso
+                ? window.normalizarCategoriaUso(feature.properties['USOS_COMPA'])
+                : String(feature.properties['USOS_COMPA']);
+            switch(categoriaEstilo) {
                 case 'Uso Mixto Especializado': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(122,4,3,1.0)', interactive: true, }
                 case 'Uso Mixto Intensivo': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(183,32,32,1.0)', interactive: true, }
                 case 'Uso Mixto Metropolitano': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(155,88,71,1.0)', interactive: true, }
@@ -69,7 +73,12 @@
                 case 'Uso Residencial Especial': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(254,172,0,1.0)', interactive: true, }
                 case 'Uso Residencial Exclusivo': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(244,244,244,1.0)', interactive: true, }
                 case 'Planes Especiales': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.5, fill: true, fillOpacity: 1, fillPattern: pattern_usos_compatibles_0_0, interactive: true, }
+                case 'Planes Especiales - Uso Mixto Zonal': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(244,122,122,1.0)', interactive: true, }
+                case 'Planes Especiales - Uso Mixto Vecinal': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(242,113,68,1.0)', interactive: true, }
                 case 'Usos Específicos': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
+                case 'Usos Específicos - Otros Usos': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
+                case 'Usos Específicos - Educación': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
+                case 'Usos Específicos - Hospital': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
                 case 'Uso de Recreación Pública': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(164,205,163,1.0)', interactive: true, }
                 default: return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
             }

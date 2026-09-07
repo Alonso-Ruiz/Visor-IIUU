@@ -123,8 +123,13 @@
                 { id: 'Uso Mixto Metropolitano', n: 'Mixto Metropolitano', c: '#9b5847' }, { id: 'Uso Mixto Zonal', n: 'Mixto Zonal', c: '#f47a7a' },
                 { id: 'Uso Mixto Vecinal', n: 'Mixto Vecinal', c: '#f27144' }, { id: 'Uso Residencial Preferente', n: 'Residencial Preferente', c: '#f4c644' },
                 { id: 'Uso Residencial Especial', n: 'Residencial Especial', c: '#feac00' }, { id: 'Uso Residencial Exclusivo', n: 'Residencial Exclusivo', c: '#f4f4f4' },
-                { id: 'Usos Específicos - Otros Usos', n: 'Usos Específicos', c: '#818181' }, { id: 'Uso de Recreación Pública', n: 'Recreación Pública', c: '#a4cda3' },
-                { id: 'Planes Especiales', n: 'Planes Especiales', c: 'repeating-linear-gradient(45deg, #000 0, #000 2px, #fff 2px, #fff 4px)' }
+                { id: 'Usos Específicos - Otros Usos', n: 'Usos Específicos - Otros Usos', c: '#818181' },
+                { id: 'Usos Específicos - Educación', n: 'Usos Específicos - Educación', c: '#818181' },
+                { id: 'Usos Específicos - Hospital', n: 'Usos Específicos - Hospital', c: '#818181' },
+                { id: 'Uso de Recreación Pública', n: 'Recreación Pública', c: '#a4cda3' },
+                { id: 'Planes Especiales', n: 'Planes Especiales', c: 'repeating-linear-gradient(45deg, #000 0, #000 2px, #fff 2px, #fff 4px)' },
+                { id: 'Planes Especiales - Uso Mixto Zonal', n: 'P.E. Uso Mixto Zonal', c: '#f47a7a' },
+                { id: 'Planes Especiales - Uso Mixto Vecinal', n: 'P.E. Uso Mixto Vecinal', c: '#f27144' }
             ];
 
             cats.forEach((i, idx) => {

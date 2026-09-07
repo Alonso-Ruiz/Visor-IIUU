@@ -34,7 +34,11 @@ var map = L.map('map', {
             "Uso Residencial Especial": "Zonas con una ubicación específica dentro de los Conjuntos Habitacionales o áreas con características normativas particulares para vivienda.",
             "Uso Residencial Exclusivo": "Áreas destinadas únicamente a la vivienda, donde se restringe estrictamente cualquier actividad comercial o de servicios para garantizar la paz vecinal.",
             "Planes Especiales": "Áreas sujetas a parámetros y usos definidos por un Plan Urbano Específico debido a su importancia estratégica, monumental o paisajística.",
+            "Planes Especiales - Uso Mixto Zonal": "Polígonos de Planes Especiales con compatibilidad orientada a uso mixto zonal, sujetos a las condiciones del ZRE correspondiente.",
+            "Planes Especiales - Uso Mixto Vecinal": "Polígonos de Planes Especiales con compatibilidad orientada a uso mixto vecinal, sujetos a las condiciones del ZRE correspondiente.",
             "Usos Específicos - Otros Usos": "Áreas destinadas a equipamientos mayores como bases militares, grandes complejos de salud, universidades o infraestructuras de transporte.",
+            "Usos Específicos - Educación": "Áreas destinadas a equipamiento educativo, consultadas como uso específico dentro del índice de compatibilidad.",
+            "Usos Específicos - Hospital": "Áreas destinadas a equipamiento de salud, consultadas como uso específico dentro del índice de compatibilidad.",
             "Uso de Recreación Pública": "Espacios zonificados como Zona de Recreación Pública (ZRP), incluyendo parques, plazas y áreas verdes para el esparcimiento ciudadano."
         };
 

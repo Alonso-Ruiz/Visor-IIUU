@@ -3,13 +3,22 @@
         const botonArrastre = document.getElementById('boton-arrastre');
 
         function obtenerAreaLote() {
-            return loteActual && (loteActual.AREA_M2 || loteActual.Area_ha || loteActual.AREA);
+            return loteActual && (loteActual.AREA_M2 || loteActual['ÁREA_M2'] || loteActual['�REA_M2'] || loteActual.Area_ha || loteActual.AREA);
         }
 
         function escaparHtml(valor) {
             return String(valor === null || valor === undefined ? '' : valor)
                 .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        }
+
+        function obtenerPropiedad(obj, nombres) {
+            obj = obj || {};
+            for (var i = 0; i < nombres.length; i++) {
+                var valor = obj[nombres[i]];
+                if (valor !== null && valor !== undefined && String(valor).trim() !== '') return valor;
+            }
+            return '';
         }
 
         function renderizarCondiciones(regla, titulo) {
@@ -36,6 +45,15 @@
                 '<p class="regimen-nota"><strong>Declaratoria posterior:</strong> ' + escaparHtml(regimen.nota) + '</p>' +
                 '<p class="regimen-nota"><strong>Vigencia:</strong> ' + escaparHtml(regimen.vigencia) + '</p>' +
                 '<p class="regimen-nota">' + escaparHtml(regimen.cierre) + '</p>';
+        }
+
+        function esZonaReglamentacionEspecial(nombreZona, zonVig) {
+            return String(nombreZona || '').indexOf('Planes Especiales') === 0 && /^ZRE-\d/.test(String(zonVig || '').trim());
+        }
+
+        function usoEspecialDesdeCategoria(nombreZona) {
+            var partes = String(nombreZona || '').split(' - ');
+            return partes.length > 1 ? partes.slice(1).join(' - ') : '';
         }
 
         function renderizarBusquedaGlobal(busqueda) {
@@ -197,11 +215,12 @@
             document.body.classList.add('panel-abierto');
             if (window.sincronizarBotonDetalleMovil) window.sincronizarBotonDetalleMovil();
 
-            var esZRE = (zonaActual === 'Planes Especiales') && /^ZRE-\d/.test(zonVigActual);
+            var esZRE = esZonaReglamentacionEspecial(zonaActual, zonVigActual);
             var tituloPanel = zonaActual;
             if (esZRE) {
                 tituloPanel = zonVigActual;
-                if (zreUsocomActual) tituloPanel += ' · ' + zreUsocomActual;
+                var usoZre = zreUsocomActual || usoEspecialDesdeCategoria(zonaActual) || 'Planes Especiales';
+                if (usoZre) tituloPanel += ' - ' + usoZre;
             }
             document.getElementById('nombre-uso-titulo').innerHTML = tituloPanel;
             document.getElementById('buscador-actividad').value = '';
@@ -241,8 +260,19 @@
                 contVentanas.style.display = 'flex';
                 divObs.style.display  = 'block';
                 divRest.style.display = 'none';
+                var codigoZre = obtenerPropiedad(loteActual, ['CÓDIGO', 'C�DIGO', 'CODIGO']);
+                var ubicacionZre = obtenerPropiedad(loteActual, ['UBICACIÓN', 'UBICACI�N', 'UBICACION']);
+                var tramoZre = obtenerPropiedad(loteActual, ['TRAMO']);
+                var detalleZre = '';
+                if (codigoZre || tramoZre || ubicacionZre) {
+                    detalleZre = '<br><strong>Detalle del polígono:</strong> ' +
+                        (codigoZre ? 'Código ' + escaparHtml(codigoZre) : '') +
+                        (tramoZre ? (codigoZre ? ' | ' : '') + 'Tramo ' + escaparHtml(tramoZre) : '') +
+                        (ubicacionZre ? ((codigoZre || tramoZre) ? ' | ' : '') + escaparHtml(ubicacionZre) : '');
+                }
                 document.getElementById('texto-observaciones').innerHTML =
-                    'Zona de Reglamentación Especial. Los giros y su compatibilidad se rigen por el Plan Especial correspondiente a cada ubicación dentro del ' + zonVigActual + '.';
+                    'Zona de Reglamentación Especial. Los giros y su compatibilidad se rigen por el Plan Especial correspondiente a cada ubicación dentro del ' + zonVigActual + '.' +
+                    detalleZre;
             }
 
             document.getElementById('contenido-scrollable').scrollTop = 0;
@@ -288,7 +318,7 @@
                 renderizarBusquedaGlobal(busqueda);
                 return;
             }
-            var esZRE    = (zonaActual === 'Planes Especiales') && /^ZRE-\d/.test(zonVigActual);
+            var esZRE    = esZonaReglamentacionEspecial(zonaActual, zonVigActual);
             var zreId    = zonVigActual; // e.g. "ZRE-1"
 
             // ---- MODO ZRE ----
