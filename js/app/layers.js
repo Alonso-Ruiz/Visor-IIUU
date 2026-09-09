@@ -57,7 +57,26 @@
             });
         }
 
-        var pattern_usos_compatibles_0_0 = new L.StripePattern({ weight: 0.45, spaceWeight: 1.0, color: '#000000', opacity: 1.0, spaceOpacity: 0, angle: 315 });
+        map.createPane('pane_usos_compatibles_0');
+        map.getPane('pane_usos_compatibles_0').style.zIndex = 400;
+        map.getPane('pane_usos_compatibles_0').style['mix-blend-mode'] = 'normal';
+        map.createPane('pane_tramado_planes_especiales');
+        map.getPane('pane_tramado_planes_especiales').style.zIndex = 401;
+        map.getPane('pane_tramado_planes_especiales').style['mix-blend-mode'] = 'normal';
+
+        // El tramado vive en un SVG independiente, encima de la capa que
+        // conserva el color y los bordes originales de cada poligono.
+        var rendererPlanesEspecialesSvg = L.svg({ pane: 'pane_tramado_planes_especiales', padding: 0.35 });
+        var pattern_usos_compatibles_0_0 = new L.StripePattern({
+            pane: 'pane_tramado_planes_especiales',
+            renderer: rendererPlanesEspecialesSvg,
+            weight: 0.45,
+            spaceWeight: 1.0,
+            color: '#000000',
+            opacity: 1.0,
+            spaceOpacity: 0,
+            angle: 315
+        });
         pattern_usos_compatibles_0_0.addTo(map);
         function style_usos_compatibles_0_0(feature) {
             var categoriaEstilo = window.normalizarCategoriaUso
@@ -72,7 +91,7 @@
                 case 'Uso Residencial Preferente': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(244,198,68,1.0)', interactive: true, }
                 case 'Uso Residencial Especial': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(254,172,0,1.0)', interactive: true, }
                 case 'Uso Residencial Exclusivo': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(244,244,244,1.0)', interactive: true, }
-                case 'Planes Especiales': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.5, fill: true, fillOpacity: 1, fillPattern: pattern_usos_compatibles_0_0, interactive: true, }
+                case 'Planes Especiales': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(244,244,244,1.0)', interactive: true, }
                 case 'Planes Especiales - Uso Mixto Zonal': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(244,122,122,1.0)', interactive: true, }
                 case 'Planes Especiales - Uso Mixto Vecinal': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(242,113,68,1.0)', interactive: true, }
                 case 'Usos Específicos': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
@@ -84,7 +103,24 @@
             }
         }
 
-        map.createPane('pane_usos_compatibles_0'); map.getPane('pane_usos_compatibles_0').style.zIndex = 400; map.getPane('pane_usos_compatibles_0').style['mix-blend-mode'] = 'normal';
+        function esPlanEspecialRayado(feature) {
+            var categoria = window.normalizarCategoriaUso
+                ? window.normalizarCategoriaUso(feature.properties['USOS_COMPA'])
+                : String(feature.properties['USOS_COMPA']);
+            return categoria.indexOf('Planes Especiales') === 0;
+        }
+
+        function style_tramado_planes_especiales() {
+            return {
+                pane: 'pane_tramado_planes_especiales',
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillPattern: pattern_usos_compatibles_0_0,
+                interactive: true
+            };
+        }
+
         var rendererLotesCanvas = L.canvas({ pane: 'pane_usos_compatibles_0', padding: 0.35, tolerance: 6 });
         var layer_usos_compatibles_0 = new L.geoJson(json_usos_compatibles_1, {
             attribution: '',
@@ -93,9 +129,6 @@
             layerName: 'layer_usos_compatibles_0',
             pane: 'pane_usos_compatibles_0',
             renderer: rendererLotesCanvas,
-            filter: function(feature) {
-                return String(feature.properties['USOS_COMPA']) !== 'Planes Especiales';
-            },
             onEachFeature: pop_usos_compatibles_0,
             style: style_usos_compatibles_0_0,
         });
@@ -107,12 +140,11 @@
             interactive: true,
             dataVar: 'json_usos_compatibles_1',
             layerName: 'layer_usos_compatibles_planes',
-            pane: 'pane_usos_compatibles_0',
-            filter: function(feature) {
-                return String(feature.properties['USOS_COMPA']) === 'Planes Especiales';
-            },
+            pane: 'pane_tramado_planes_especiales',
+            renderer: rendererPlanesEspecialesSvg,
+            filter: esPlanEspecialRayado,
             onEachFeature: pop_usos_compatibles_0,
-            style: style_usos_compatibles_0_0,
+            style: style_tramado_planes_especiales,
         });
         window.layer_usos_compatibles_planes = layer_usos_compatibles_planes;
         bounds_group.addLayer(layer_usos_compatibles_planes); map.addLayer(layer_usos_compatibles_planes);

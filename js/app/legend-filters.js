@@ -30,22 +30,22 @@
         return oculto;
     };
 
-    function actualizarCapa(capa) {
+    function actualizarCapa(capa, obtenerEstilo) {
         if (!capa || !capa.eachLayer) return;
 
         capa.eachLayer(function(layer) {
             if (!layer.feature || !layer.setStyle) return;
-            layer.setStyle(window.aplicarVisibilidadCategoria(style_usos_compatibles_0_0(layer.feature), layer.feature));
+            layer.setStyle(window.aplicarVisibilidadCategoria(obtenerEstilo(layer.feature), layer.feature));
         });
     }
 
     window.actualizarVisibilidadUsos = function() {
         if (window.layer_usos_compatibles_0) {
-            actualizarCapa(window.layer_usos_compatibles_0);
+            actualizarCapa(window.layer_usos_compatibles_0, style_usos_compatibles_0_0);
         }
 
         if (window.layer_usos_compatibles_planes) {
-            actualizarCapa(window.layer_usos_compatibles_planes);
+            actualizarCapa(window.layer_usos_compatibles_planes, style_tramado_planes_especiales);
         }
 
         if (window.capaLoteResaltado) {
