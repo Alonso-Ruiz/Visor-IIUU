@@ -8,7 +8,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20260824-ui7">
+        <link rel="stylesheet" href="css/app.css?v=20260911-legend-position1">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js"></script>
         <script src="js/actividades.js"></script>
@@ -69,9 +69,17 @@
 
         <div id="panel-usos" class="minimizado">
             <div class="cabecera-negra">
-                <div class="area-arrastre" id="boton-arrastre"><div class="barra-movil"></div></div>
                 <div class="panel-titulos">
+                    <span class="panel-contexto">Plano de usos compatibles</span>
                     <h4>Detalle del lote</h4>
+                </div>
+                <button type="button" class="area-arrastre" id="boton-arrastre" aria-label="Cerrar detalle del lote">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="panel-resumen">
+                <div class="panel-titulos">
                     <h3 id="nombre-uso-titulo">Seleccione un polígono</h3>
                     <p id="ayuda-panel">Haz clic en un lote del mapa para consultar usos compatibles.</p>
                 </div>
@@ -105,10 +113,10 @@
         <script src="data/poligono_retiros_con_codigos_2.js"></script>
         <script src="data/bordes_2.js"></script>
 
-        <script src="js/app/core.js?v=20260907-zre1"></script>
+        <script src="js/app/core.js?v=20260911-compact1"></script>
         <script src="js/app/legend-filters.js?v=20260909-planes-overlay1"></script>
         <script src="js/app/layers.js?v=20260909-planes-overlay1"></script>
-        <script src="js/app/controls.js?v=20260909-planes-overlay1"></script>
+        <script src="js/app/controls.js?v=20260911-panel1"></script>
         <script src="js/app/panel.js?v=20260907-zre1"></script>
         <script src="js/app/welcome-modal.js"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>

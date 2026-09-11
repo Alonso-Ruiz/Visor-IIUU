@@ -1,4 +1,4 @@
-﻿        L.control.scale({position: 'bottomleft', metric: true, imperial: false}).addTo(map);
+﻿        L.control.scale({position: 'bottomright', metric: true, imperial: false}).addTo(map);
         var norteControl = L.control({position: 'bottomleft'});
         norteControl.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'norte-magnetico-flotante');
@@ -282,7 +282,7 @@
                         '<i class="fas fa-layer-group" aria-hidden="true"></i>' +
                         '<span>Transparencia del mapa</span>' +
                     '</label>' +
-                    '<input type="range" id="map-opacity" min="0" max="0.95" step="0.05" value="0.9" aria-label="Transparencia del mapa">' +
+                    '<input type="range" id="map-opacity" min="0" max="0.95" step="0.05" value="0.5" aria-label="Transparencia del mapa">' +
                 '</div>';
             return div;
         };

@@ -29,7 +29,7 @@
             var opacidad = parseFloat(valor);
 
             if (Number.isNaN(opacidad)) {
-                opacidad = 0.9;
+                opacidad = 0.5;
             }
 
             opacidad = Math.max(0, Math.min(0.95, opacidad));
