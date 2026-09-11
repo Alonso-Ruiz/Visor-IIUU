@@ -27,6 +27,23 @@
             if (capaLoteResaltado.bringToFront) capaLoteResaltado.bringToFront();
         }
 
+        function enfocarSeleccionMovil(layer) {
+            if (window.innerWidth > 896 || !layer || !layer.getBounds) return;
+            var limites = layer.getBounds();
+            if (!limites || !limites.isValid()) return;
+
+            map.closePopup();
+            window.setTimeout(function() {
+                map.flyToBounds(limites, {
+                    paddingTopLeft: [18, 82],
+                    paddingBottomRight: [18, Math.round(window.innerHeight * 0.58)],
+                    maxZoom: 20,
+                    animate: true,
+                    duration: 0.45
+                });
+            }, 40);
+        }
+
         // --- LÓGICA DEL LOTE Y EL POPUP ---
         function pop_usos_compatibles_0(feature, layer) {
             var miZona = feature.properties['USOS_COMPA'] || '';
@@ -54,6 +71,7 @@
                 }
                 resaltarLote(feature);
                 if(window.actualizarLista) window.actualizarLista(miZona, zonVig, zreUsocom, feature.properties || {});
+                enfocarSeleccionMovil(layer);
             });
         }
 
@@ -181,7 +199,8 @@
             layer.on('click', function(e) {
                 resaltarLote(feature);
                 if (window.actualizarDetalleRetiro) window.actualizarDetalleRetiro(feature.properties || {});
-                layer.openPopup(e.latlng);
+                if (window.innerWidth > 896) layer.openPopup(e.latlng);
+                enfocarSeleccionMovil(layer);
                 if (L.DomEvent) L.DomEvent.stop(e);
             });
         }

@@ -1,6 +1,7 @@
 
         // --- LÓGICA DEL PANEL ---
         const botonArrastre = document.getElementById('boton-arrastre');
+        const botonAlturaPanel = document.getElementById('boton-altura-panel');
 
         function obtenerAreaLote() {
             return loteActual && (loteActual.AREA_M2 || loteActual['ÁREA_M2'] || loteActual['�REA_M2'] || loteActual.Area_ha || loteActual.AREA);
@@ -151,13 +152,30 @@
         }
 
         function alternarPanel() {
-            panel.classList.toggle('minimizado');
-            document.body.classList.toggle('panel-abierto', !panel.classList.contains('minimizado'));
+            var abrir = panel.classList.contains('minimizado');
+            panel.classList.toggle('minimizado', !abrir);
+            panel.classList.remove('panel-expandido');
+            document.body.classList.toggle('panel-abierto', abrir);
 
-            if(panel.classList.contains('minimizado')) {
+            if(!abrir) {
                 if(capaLoteResaltado) { map.removeLayer(capaLoteResaltado); capaLoteResaltado = null; }
                 map.closePopup();
             }
+
+            sincronizarAlturaPanel();
+        }
+
+        function sincronizarAlturaPanel() {
+            if (!botonAlturaPanel) return;
+            var expandido = panel.classList.contains('panel-expandido');
+            botonAlturaPanel.setAttribute('aria-label', expandido ? 'Reducir detalle del lote' : 'Expandir detalle del lote');
+            botonAlturaPanel.setAttribute('aria-expanded', expandido ? 'true' : 'false');
+        }
+
+        function establecerPanelExpandido(expandido) {
+            if (panel.classList.contains('minimizado')) return;
+            panel.classList.toggle('panel-expandido', expandido);
+            sincronizarAlturaPanel();
         }
 
         botonArrastre.addEventListener('click', alternarPanel);
@@ -188,21 +206,40 @@
             sincronizarBotonDetalle();
         })();
 
-        let startY = 0;
-        botonArrastre.addEventListener('touchstart', e => startY = e.touches[0].clientY, {passive: true});
-        botonArrastre.addEventListener('touchmove', e => {
-            let diff = e.touches[0].clientY - startY;
-            if (diff > 40) {
-                panel.classList.add('minimizado');
-                document.body.classList.remove('panel-abierto');
-                if(capaLoteResaltado) { map.removeLayer(capaLoteResaltado); capaLoteResaltado = null; }
-                map.closePopup();
-            }
-            else if (diff < -40) {
-                panel.classList.remove('minimizado');
-                document.body.classList.add('panel-abierto');
-            }
-        }, {passive: true});
+        if (botonAlturaPanel) {
+            botonAlturaPanel.addEventListener('click', function(e) {
+                e.stopPropagation();
+                establecerPanelExpandido(!panel.classList.contains('panel-expandido'));
+            });
+        }
+
+        (function iniciarNivelesPanelMovil() {
+            var cabecera = panel.querySelector('.cabecera-negra');
+            if (!cabecera) return;
+            var inicioY = 0;
+
+            cabecera.addEventListener('touchstart', function(e) {
+                if (e.target.closest('#boton-arrastre, #boton-altura-panel')) return;
+                inicioY = e.touches[0].clientY;
+            }, {passive: true});
+
+            cabecera.addEventListener('touchend', function(e) {
+                if (!inicioY || e.target.closest('#boton-arrastre, #boton-altura-panel')) return;
+                var diferencia = e.changedTouches[0].clientY - inicioY;
+                inicioY = 0;
+
+                if (diferencia < -42) {
+                    establecerPanelExpandido(true);
+                } else if (diferencia > 42) {
+                    if (panel.classList.contains('panel-expandido')) {
+                        establecerPanelExpandido(false);
+                    } else {
+                        alternarPanel();
+                        if (window.sincronizarBotonDetalleMovil) window.sincronizarBotonDetalleMovil();
+                    }
+                }
+            }, {passive: true});
+        })();
 
         window.actualizarLista = function(nombreZona, zonVig, zreUsocom, propiedadesLote) {
             if(!nombreZona) return;
@@ -211,8 +248,10 @@
             zreUsocomActual = String(zreUsocom || '').trim();
             loteActual      = propiedadesLote || {};
 
+            panel.classList.remove('panel-expandido');
             panel.classList.remove('minimizado');
             document.body.classList.add('panel-abierto');
+            sincronizarAlturaPanel();
             if (window.sincronizarBotonDetalleMovil) window.sincronizarBotonDetalleMovil();
 
             var esZRE = esZonaReglamentacionEspecial(zonaActual, zonVigActual);
@@ -289,8 +328,10 @@
             zreUsocomActual = '';
             loteActual = {};
 
+            panel.classList.remove('panel-expandido');
             panel.classList.remove('minimizado');
             document.body.classList.add('panel-abierto');
+            sincronizarAlturaPanel();
             if (window.sincronizarBotonDetalleMovil) window.sincronizarBotonDetalleMovil();
 
             document.getElementById('nombre-uso-titulo').innerHTML = 'Retiro';
