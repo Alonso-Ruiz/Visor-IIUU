@@ -27,13 +27,31 @@
             if (capaLoteResaltado.bringToFront) capaLoteResaltado.bringToFront();
         }
 
-        function enfocarSeleccionMovil(layer) {
-            if (window.innerWidth > 896 || !layer || !layer.getBounds) return;
+        function enfocarSeleccion(layer) {
+            if (!layer || !layer.getBounds) return;
             var limites = layer.getBounds();
             if (!limites || !limites.isValid()) return;
 
-            map.closePopup();
+            var esMovil = window.innerWidth <= 896;
+            if (esMovil) map.closePopup();
+
             window.setTimeout(function() {
+                if (!esMovil) {
+                    var panelDetalle = document.getElementById('panel-usos');
+                    var anchoPanel = panelDetalle && !panelDetalle.classList.contains('minimizado')
+                        ? Math.round(panelDetalle.getBoundingClientRect().width)
+                        : 0;
+
+                    map.flyToBounds(limites, {
+                        paddingTopLeft: [24, 64],
+                        paddingBottomRight: [anchoPanel + 24, 24],
+                        maxZoom: 20,
+                        animate: true,
+                        duration: 0.45
+                    });
+                    return;
+                }
+
                 map.flyToBounds(limites, {
                     paddingTopLeft: [18, 82],
                     paddingBottomRight: [18, Math.round(window.innerHeight * 0.58)],
@@ -71,7 +89,7 @@
                 }
                 resaltarLote(feature);
                 if(window.actualizarLista) window.actualizarLista(miZona, zonVig, zreUsocom, feature.properties || {});
-                enfocarSeleccionMovil(layer);
+                enfocarSeleccion(layer);
             });
         }
 
@@ -200,7 +218,7 @@
                 resaltarLote(feature);
                 if (window.actualizarDetalleRetiro) window.actualizarDetalleRetiro(feature.properties || {});
                 if (window.innerWidth > 896) layer.openPopup(e.latlng);
-                enfocarSeleccionMovil(layer);
+                enfocarSeleccion(layer);
                 if (L.DomEvent) L.DomEvent.stop(e);
             });
         }
