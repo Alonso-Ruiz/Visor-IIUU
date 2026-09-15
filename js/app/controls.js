@@ -115,7 +115,7 @@
                              '<span><strong>Leyenda de usos</strong><small>Colores del mapa</small></span>' +
                              '<span id="leyenda-arrow" class="leyenda-arrow">▼</span></button>';
 
-            var listaHtml = '<div id="leyenda-lista" class="leyenda-lista" style="display: none;">' +
+            var listaHtml = '<div id="leyenda-lista" class="leyenda-lista mobile-tool-panel mobile-tool-panel--legend mobile-tool-panel--scrollable" style="display: none;">' +
                             '<div class="leyenda-panel-titulo"><strong>Leyenda de usos</strong><small>Colores del mapa</small></div>';
 
             var cats = [
@@ -210,7 +210,7 @@
                 '<button type="button" id="boton-capas-auxiliares" class="boton-capas-auxiliares" aria-label="Abrir capas adicionales" aria-expanded="false">' +
                     '<i class="fas fa-clone" aria-hidden="true"></i>' +
                 '</button>' +
-                '<div id="panel-capas-auxiliares" class="panel-capas-auxiliares" aria-hidden="true">' +
+                '<div id="panel-capas-auxiliares" class="panel-capas-auxiliares mobile-tool-panel mobile-tool-panel--compact" aria-hidden="true">' +
                     '<div class="panel-capas-titulo"><i class="fas fa-clone" aria-hidden="true"></i><span>Capas adicionales</span></div>' +
                     '<label class="capa-auxiliar-item" for="capa-retiros-visible">' +
                         '<input type="checkbox" id="capa-retiros-visible" checked>' +
@@ -277,7 +277,7 @@
                 '<button type="button" id="boton-transparencia-mapa" class="boton-transparencia-mapa" aria-label="Abrir transparencia del mapa" aria-expanded="false">' +
                     '<i class="fas fa-adjust" aria-hidden="true"></i>' +
                 '</button>' +
-                '<div id="panel-transparencia-mapa" class="panel-transparencia-mapa" aria-hidden="true">' +
+                '<div id="panel-transparencia-mapa" class="panel-transparencia-mapa mobile-tool-panel mobile-tool-panel--compact" aria-hidden="true">' +
                     '<label for="map-opacity">' +
                         '<i class="fas fa-layer-group" aria-hidden="true"></i>' +
                         '<span>Transparencia del mapa</span>' +

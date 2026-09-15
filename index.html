@@ -8,7 +8,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20260911-mobile-header1">
+        <link rel="stylesheet" href="css/app.css?v=20260915-mobile-panels3">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js"></script>
         <script src="js/actividades.js"></script>
@@ -20,7 +20,7 @@
         <div id="map"></div>
 
         <div id="bloque-superior-izquierdo">
-            <div id="tarjeta-titulo">
+            <div id="tarjeta-titulo" class="mobile-tool-panel mobile-tool-panel--compact">
                 <div class="icono-mapa"><i class="fas fa-map-marked-alt"></i></div>
                 <div class="texto-titulo">
                     <h1>Plano de Usos Compatibles</h1>
@@ -41,6 +41,12 @@
         <button type="button" id="boton-detalle-movil" aria-label="Abrir detalle del lote" aria-expanded="false">
             <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
+
+        <div id="brujula-movil" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="presentation">
+                <path d="M12 2.25 19.15 21 12 17.1 4.85 21 12 2.25Z"></path>
+            </svg>
+        </div>
 
         <div id="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
             <div class="modal-content">
@@ -117,7 +123,7 @@
         <script src="js/app/core.js?v=20260911-compact1"></script>
         <script src="js/app/legend-filters.js?v=20260909-planes-overlay1"></script>
         <script src="js/app/layers.js?v=20260911-mobile-focus1"></script>
-        <script src="js/app/controls.js?v=20260911-panel1"></script>
+        <script src="js/app/controls.js?v=20260915-mobile-panels1"></script>
         <script src="js/app/panel.js?v=20260911-mobile-snap1"></script>
         <script src="js/app/welcome-modal.js"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>

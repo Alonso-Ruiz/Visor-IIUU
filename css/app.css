@@ -3055,3 +3055,605 @@ body.panel-abierto .leaflet-bottom {
         transform: none !important;
     }
 }
+
+/* --- REDISEÑO MÓVIL 2026: mapa a pantalla completa y controles táctiles --- */
+#brujula-movil {
+    display: none;
+}
+
+@media (max-width: 896px) {
+    :root {
+        --mobile-green: #008f63;
+        --mobile-green-dark: #064d42;
+        --mobile-surface: rgba(255, 255, 255, 0.97);
+        --mobile-shadow: 0 8px 24px rgba(18, 43, 35, 0.18);
+        --mobile-safe-bottom: max(12px, env(safe-area-inset-bottom));
+        --mobile-tool-panel-gutter: 14px;
+        --mobile-tool-panel-gap: 10px;
+        --mobile-tool-panel-bottom: calc(var(--mobile-safe-bottom) + 82px + var(--mobile-tool-panel-gap));
+        --mobile-tool-panel-radius: 20px;
+        --mobile-tool-panel-padding: 14px 16px;
+    }
+
+    #map {
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Buscador principal: siempre visible, amplio y alineado con el menú. */
+    #bloque-superior-izquierdo {
+        top: max(14px, env(safe-area-inset-top));
+        right: 78px;
+        left: 14px;
+        z-index: 1040;
+        width: auto;
+        gap: 0;
+        transition: right 0.26s cubic-bezier(0.22, 0.8, 0.25, 1);
+    }
+
+    #tarjeta-titulo {
+        display: flex;
+        border: 0;
+        pointer-events: auto;
+    }
+
+    #bloque-superior-izquierdo.titulo-oculto #tarjeta-titulo {
+        display: none;
+    }
+
+    .icono-mapa {
+        color: var(--mobile-green);
+    }
+
+    #buscador-vias-container,
+    #buscador-vias-container.buscador-cerrado,
+    #buscador-vias-container.buscador-abierto {
+        width: 100%;
+        height: 58px;
+        border: 1px solid rgba(17, 57, 47, 0.08);
+        border-radius: 18px;
+        background: var(--mobile-surface);
+        box-shadow: var(--mobile-shadow);
+        overflow: visible;
+        transition: box-shadow 0.2s ease, width 0.26s cubic-bezier(0.22, 0.8, 0.25, 1);
+    }
+
+    body.panel-abierto #bloque-superior-izquierdo {
+        right: 14px;
+    }
+
+    #boton-buscar-vias {
+        display: none;
+    }
+
+    .icono-lupa,
+    #buscador-vias-container.buscador-abierto .icono-lupa {
+        top: 18px;
+        left: 18px;
+        z-index: 2;
+        opacity: 1;
+        color: var(--mobile-green-dark);
+        font-size: 20px;
+    }
+
+    #buscador-vias,
+    #buscador-vias-container.buscador-abierto #buscador-vias {
+        min-height: 58px;
+        padding: 13px 16px 13px 52px;
+        border: 0;
+        border-radius: 18px;
+        background: transparent;
+        color: #23332e;
+        font-size: 16px;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    #buscador-vias::placeholder {
+        color: #77827f;
+        opacity: 1;
+    }
+
+    #buscador-vias:focus {
+        border: 0;
+        box-shadow: inset 0 0 0 2px rgba(0, 143, 99, 0.42);
+    }
+
+    #sugerencias-vias {
+        top: calc(100% + 8px);
+        border-radius: 16px;
+        box-shadow: var(--mobile-shadow);
+        overflow: hidden auto;
+    }
+
+    .sugerencia-item {
+        min-height: 48px;
+        box-sizing: border-box;
+        padding: 15px 16px;
+        font-size: 14px;
+    }
+
+    #boton-detalle-movil,
+    #bloque-superior-izquierdo:not(.titulo-oculto) + #boton-detalle-movil {
+        top: max(14px, env(safe-area-inset-top));
+        right: 14px;
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        background: var(--mobile-green);
+        font-size: 25px;
+        box-shadow: 0 8px 22px rgba(0, 84, 59, 0.28);
+        transform: none;
+    }
+
+    #boton-detalle-movil i {
+        transform: scaleX(1.08);
+    }
+
+    #boton-detalle-movil:active,
+    #bloque-superior-izquierdo:not(.titulo-oculto) + #boton-detalle-movil:active {
+        transform: scale(0.96);
+    }
+
+    /* Brújula visual flotante; el control Norte real permanece en la barra inferior. */
+    #brujula-movil {
+        position: fixed;
+        top: calc(max(14px, env(safe-area-inset-top)) + 76px);
+        right: 14px;
+        z-index: 1000;
+        display: grid;
+        width: 54px;
+        height: 54px;
+        place-items: center;
+        border: 1px solid rgba(17, 57, 47, 0.08);
+        border-radius: 50%;
+        background: var(--mobile-surface);
+        box-shadow: var(--mobile-shadow);
+        pointer-events: none;
+    }
+
+    #brujula-movil svg {
+        width: 27px;
+        height: 27px;
+        fill: var(--mobile-green);
+        transform: rotate(0deg);
+    }
+
+    /* Zoom vertical cómodo debajo de la brújula. */
+    .leaflet-control-zoom {
+        top: calc(max(14px, env(safe-area-inset-top)) + 144px) !important;
+        right: 14px !important;
+        bottom: auto !important;
+        width: 54px;
+        padding: 4px 0;
+        border: 1px solid rgba(17, 57, 47, 0.08) !important;
+        border-radius: 18px !important;
+        background: var(--mobile-surface);
+        box-shadow: var(--mobile-shadow) !important;
+    }
+
+    .leaflet-control-zoom a,
+    .leaflet-control-zoom a:first-child,
+    .leaflet-control-zoom a:last-child {
+        width: 54px !important;
+        height: 48px !important;
+        background: transparent !important;
+        color: var(--mobile-green-dark) !important;
+        font-size: 28px !important;
+        font-weight: 400;
+        line-height: 46px !important;
+    }
+
+    .leaflet-control-zoom a + a {
+        position: relative;
+        border-top: 0 !important;
+    }
+
+    .leaflet-control-zoom a + a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 12px;
+        left: 12px;
+        height: 1px;
+        background: #e0e8e5;
+    }
+
+    .leaflet-control-zoom a:hover,
+    .leaflet-control-zoom a:focus {
+        background: #edf8f3 !important;
+        color: var(--mobile-green) !important;
+    }
+
+    /* Barra de herramientas inferior: cinco acciones reales, con rótulos. */
+    .leaflet-bottom.leaflet-left {
+        right: 0 !important;
+        bottom: var(--mobile-safe-bottom) !important;
+        left: 0 !important;
+        z-index: 1002;
+        display: flex;
+        height: 82px;
+        box-sizing: border-box;
+        align-items: stretch;
+        justify-content: space-around;
+        gap: 0;
+        padding: 8px 14px 7px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+    }
+
+    .leaflet-bottom.leaflet-left::before {
+        content: "";
+        position: absolute;
+        inset: 0 10px;
+        z-index: 0;
+        border: 1px solid rgba(17, 57, 47, 0.08);
+        border-radius: 24px;
+        background: var(--mobile-surface);
+        box-shadow: 0 8px 30px rgba(18, 43, 35, 0.22);
+        backdrop-filter: blur(14px);
+        pointer-events: none;
+    }
+
+    .leaflet-bottom.leaflet-left > .leaflet-control:not(.leaflet-control-scale) {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        width: 25% !important;
+        height: 66px !important;
+        min-height: 66px !important;
+        flex: 1 1 25% !important;
+        align-items: flex-start;
+        justify-content: center;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0;
+        border-radius: 14px;
+        background: transparent;
+        overflow: visible;
+    }
+
+    .leaflet-bottom.leaflet-left > .leaflet-control:not(.leaflet-control-scale)::after {
+        position: absolute;
+        right: 1px;
+        bottom: 1px;
+        left: 1px;
+        color: var(--mobile-green-dark);
+        font-size: clamp(9px, 2.55vw, 12px);
+        font-weight: 600;
+        line-height: 1.05;
+        text-align: center;
+        white-space: nowrap;
+        pointer-events: none;
+    }
+
+    .leaflet-bottom.leaflet-left .norte-magnetico-flotante::after { content: "Norte"; }
+    .leaflet-bottom.leaflet-left .control-info-titulo::after { content: "Información"; }
+    .leaflet-bottom.leaflet-left .info.legend::after { content: "Leyenda"; }
+    .leaflet-bottom.leaflet-left .control-capas-auxiliares::after { content: "Capas"; }
+    .leaflet-bottom.leaflet-left .control-transparencia-mapa::after { content: "Transparencia"; }
+
+    .leaflet-bottom.leaflet-left .norte-magnetico-flotante {
+        display: none !important;
+    }
+
+    .leaflet-bottom.leaflet-left .norte-magnetico-flotante,
+    .leaflet-bottom.leaflet-left .control-info-titulo,
+    .leaflet-bottom.leaflet-left .info.legend,
+    .leaflet-bottom.leaflet-left .control-capas-auxiliares,
+    .leaflet-bottom.leaflet-left .control-transparencia-mapa,
+    .leaflet-bottom.leaflet-left .info.legend.leyenda-abierta,
+    .leaflet-bottom.leaflet-left .info.legend.leyenda-cerrada {
+        width: 25% !important;
+        height: 66px !important;
+        min-height: 66px !important;
+        flex: 1 1 25% !important;
+    }
+
+    .leaflet-bottom.leaflet-left .norte-magnetico-flotante svg {
+        width: 29px;
+        height: 29px;
+        margin-top: 5px;
+    }
+
+    .leaflet-bottom.leaflet-left .norte-magnetico-flotante svg polygon {
+        fill: var(--mobile-green);
+        stroke: var(--mobile-green);
+    }
+
+    .leaflet-bottom.leaflet-left .norte-magnetico-flotante svg text {
+        display: none;
+    }
+
+    .leaflet-bottom.leaflet-left .boton-info-titulo,
+    .leaflet-bottom.leaflet-left .info.legend .leyenda-header,
+    .leaflet-bottom.leaflet-left .info.legend.leyenda-abierta .leyenda-header,
+    .leaflet-bottom.leaflet-left .info.legend.leyenda-cerrada .leyenda-header,
+    .leaflet-bottom.leaflet-left .boton-capas-auxiliares,
+    .leaflet-bottom.leaflet-left .boton-transparencia-mapa {
+        width: 100% !important;
+        height: 43px !important;
+        min-height: 43px !important;
+        flex: 0 0 43px !important;
+        margin: 0 !important;
+        border-radius: 13px;
+        background: transparent !important;
+        color: var(--mobile-green-dark) !important;
+        font-size: 24px;
+    }
+
+    .leaflet-bottom.leaflet-left .boton-info-titulo {
+        width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        flex-basis: 38px !important;
+        margin-top: 2px !important;
+        background: var(--mobile-green-dark) !important;
+        color: #fff !important;
+        font-size: 20px;
+    }
+
+    .leaflet-bottom.leaflet-left .boton-info-titulo i {
+        font-size: 18px !important;
+        line-height: 1 !important;
+        transform: none !important;
+    }
+
+    .leaflet-bottom.leaflet-left .boton-capas-auxiliares i,
+    .leaflet-bottom.leaflet-left .boton-transparencia-mapa i {
+        font-size: 23px;
+    }
+
+    .leaflet-bottom.leaflet-left .info.legend .leyenda-boton-icon {
+        width: 43px;
+        height: 43px;
+        max-width: 43px;
+        max-height: 43px;
+        overflow: visible;
+    }
+
+    .leaflet-bottom.leaflet-left .info.legend .leyenda-boton-icon img {
+        display: none;
+    }
+
+    .leaflet-bottom.leaflet-left .info.legend .leyenda-header::after {
+        content: "\f03a";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        color: var(--mobile-green-dark);
+        font-family: "Font Awesome 5 Free";
+        font-size: 23px;
+        font-weight: 900;
+        line-height: 1;
+        transform: translateY(-2px);
+    }
+
+    .leaflet-bottom.leaflet-left .info.legend .leyenda-header,
+    .leaflet-bottom.leaflet-left .info.legend.leyenda-abierta .leyenda-header,
+    .leaflet-bottom.leaflet-left .info.legend.leyenda-cerrada .leyenda-header {
+        position: absolute !important;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .leaflet-bottom.leaflet-left .info.legend .leyenda-header::before {
+        display: none;
+    }
+
+    /* Geometría compartida por Información, Leyenda, Capas y Transparencia. */
+    .mobile-tool-panel,
+    .leaflet-bottom.leaflet-left .info.legend .mobile-tool-panel,
+    .leaflet-bottom.leaflet-left .control-capas-auxiliares .mobile-tool-panel,
+    .leaflet-bottom.leaflet-left .control-transparencia-mapa .mobile-tool-panel {
+        position: fixed !important;
+        right: var(--mobile-tool-panel-gutter) !important;
+        bottom: var(--mobile-tool-panel-bottom) !important;
+        left: var(--mobile-tool-panel-gutter) !important;
+        z-index: 1040 !important;
+        width: auto !important;
+        max-width: none !important;
+        box-sizing: border-box;
+        margin: 0 !important;
+        padding: var(--mobile-tool-panel-padding) !important;
+        border: 1px solid rgba(17, 57, 47, 0.08) !important;
+        border-radius: var(--mobile-tool-panel-radius) !important;
+        background: var(--mobile-surface) !important;
+        box-shadow: var(--mobile-shadow) !important;
+        backdrop-filter: blur(14px);
+        transform: none;
+    }
+
+    .mobile-tool-panel--legend {
+        max-height: min(58dvh, 520px) !important;
+    }
+
+    .mobile-tool-panel--scrollable {
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .control-capas-auxiliares.capas-auxiliares-abiertas .panel-capas-auxiliares {
+        transform: none;
+    }
+
+    .mobile-tool-panel--compact {
+        min-height: 0;
+    }
+
+    #panel-transparencia-mapa label {
+        margin-bottom: 14px;
+    }
+
+    #panel-transparencia-mapa input[type="range"] {
+        width: calc(100% - 16px);
+        margin: 3px 8px 2px;
+        box-sizing: border-box;
+    }
+
+    /* Escala sobre la barra, sin competir con las acciones. */
+    .leaflet-bottom.leaflet-left .leaflet-control-scale,
+    .leaflet-bottom.leaflet-left .leaflet-control-scale.leaflet-control,
+    .leaflet-bottom.leaflet-right .leaflet-control-scale,
+    .leaflet-bottom.leaflet-right .leaflet-control-scale.leaflet-control {
+        right: 14px !important;
+        bottom: calc(96px + var(--mobile-safe-bottom)) !important;
+        width: 104px;
+        padding: 5px 7px;
+        border: 0;
+        border-radius: 10px;
+        background: var(--mobile-surface);
+        box-shadow: 0 5px 16px rgba(18, 43, 35, 0.18) !important;
+    }
+
+    .leaflet-bottom.leaflet-left .leaflet-control-scale-line,
+    .leaflet-bottom.leaflet-right .leaflet-control-scale-line {
+        color: var(--mobile-green-dark) !important;
+        border-color: var(--mobile-green-dark) !important;
+        font-size: 11px;
+        line-height: 13px;
+    }
+
+    /* Detalle del lote como bottom sheet con superficie y tarjetas limpias. */
+    #panel-usos {
+        height: min(66dvh, 620px);
+        max-height: calc(100dvh - 28px);
+        border-radius: 26px 26px 0 0;
+        background: #f6f8f7;
+        box-shadow: 0 -12px 36px rgba(18, 43, 35, 0.25);
+    }
+
+    #panel-usos.panel-expandido {
+        top: max(10px, env(safe-area-inset-top));
+        height: calc(100dvh - max(10px, env(safe-area-inset-top)));
+        border-radius: 26px 26px 0 0;
+    }
+
+    #panel-usos.minimizado {
+        height: min(66dvh, 620px) !important;
+    }
+
+    .boton-altura-panel {
+        top: 3px;
+        z-index: 5;
+        width: 64px;
+        height: 24px;
+    }
+
+    .boton-altura-panel::before {
+        top: 8px;
+        left: 12px;
+        width: 40px;
+        height: 5px;
+        background: #c7d0cd;
+    }
+
+    #panel-usos .cabecera-negra,
+    .cabecera-negra,
+    #panel-usos.minimizado .cabecera-negra {
+        min-height: 84px;
+        padding: 27px 18px 13px;
+        border-radius: 26px 26px 0 0;
+        background: #fff;
+    }
+
+    .panel-contexto {
+        margin-bottom: 4px;
+        color: var(--mobile-green);
+        font-size: 10px;
+    }
+
+    .cabecera-negra h4 {
+        color: #1d2c27;
+        font-size: 21px;
+    }
+
+    .area-arrastre {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+        background: #edf6f2;
+        color: var(--mobile-green-dark);
+        font-size: 18px;
+    }
+
+    .panel-resumen {
+        padding: 12px 16px 15px;
+        border-bottom: 1px solid #e2e9e6;
+        background: #fff;
+        box-shadow: 0 5px 14px rgba(18, 43, 35, 0.05);
+    }
+
+    #nombre-uso-titulo {
+        margin-bottom: 5px;
+        font-size: 17px;
+    }
+
+    #ayuda-panel,
+    #panel-usos.minimizado #ayuda-panel {
+        margin-bottom: 11px;
+        font-size: 13px;
+    }
+
+    #buscador-actividad {
+        min-height: 46px;
+        padding: 11px 14px 11px 42px;
+        border: 1px solid #d6e1dd;
+        border-radius: 14px;
+        background-color: #f6f9f8;
+        background-image: radial-gradient(circle, transparent 45%, var(--mobile-green-dark) 47% 56%, transparent 58%), linear-gradient(45deg, transparent 45%, var(--mobile-green-dark) 47% 55%, transparent 57%);
+        background-position: 14px 12px, 28px 27px;
+        background-size: 18px 18px, 8px 8px;
+        background-repeat: no-repeat;
+        font-size: 14px;
+    }
+
+    #contenido-scrollable {
+        padding: 14px 14px calc(24px + env(safe-area-inset-bottom));
+        background: #f6f8f7;
+    }
+
+    #ventanas-zona > div,
+    .tarjeta-clase,
+    #lista-clases-container > div {
+        border-radius: 14px !important;
+        box-shadow: 0 4px 14px rgba(18, 43, 35, 0.07) !important;
+    }
+
+    body.panel-abierto .leaflet-bottom.leaflet-left,
+    body.panel-abierto .leaflet-control-zoom,
+    body.panel-abierto #brujula-movil,
+    body.panel-abierto .leaflet-control-scale {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+@media (max-width: 390px) {
+    .leaflet-bottom.leaflet-left > .leaflet-control:not(.leaflet-control-scale)::after {
+        font-size: 9px;
+    }
+
+    #bloque-superior-izquierdo {
+        right: 72px;
+        left: 10px;
+    }
+
+    body.panel-abierto #bloque-superior-izquierdo {
+        right: 10px;
+    }
+
+    #boton-detalle-movil,
+    #bloque-superior-izquierdo:not(.titulo-oculto) + #boton-detalle-movil {
+        right: 10px;
+    }
+}
