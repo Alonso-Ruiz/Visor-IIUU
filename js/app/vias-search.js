@@ -111,7 +111,25 @@
         const contenedorBuscadorVias = document.getElementById('buscador-vias-container');
         const botonBuscadorVias = document.getElementById('boton-buscar-vias');
         const inputBuscadorVias = document.getElementById('buscador-vias'), sugerenciasVias = document.getElementById('sugerencias-vias');
+        const botonLimpiarVias = document.getElementById('boton-limpiar-vias');
         let ultimoResultadoVias = {};
+
+        function actualizarBotonLimpiarVias() {
+            if (botonLimpiarVias) botonLimpiarVias.hidden = !inputBuscadorVias.value.trim();
+        }
+
+        function limpiarBusquedaVia() {
+            inputBuscadorVias.value = '';
+            ultimoResultadoVias = {};
+            sugerenciasVias.innerHTML = '';
+            sugerenciasVias.style.display = 'none';
+            if (capaResaltadoVia) {
+                map.removeLayer(capaResaltadoVia);
+                capaResaltadoVia = null;
+            }
+            actualizarBotonLimpiarVias();
+            cerrarBuscadorViasSiVacio();
+        }
 
         function abrirBuscadorVias() {
             contenedorBuscadorVias.classList.add('buscador-abierto');
@@ -155,6 +173,7 @@
         function seleccionarVia(nombre, segmentos) {
             enfocarVia(segmentos);
             inputBuscadorVias.value = nombre;
+            actualizarBotonLimpiarVias();
             sugerenciasVias.style.display = 'none';
 
             panel.classList.add('minimizado');
@@ -179,7 +198,15 @@
         inputBuscadorVias.addEventListener('input', function() {
             const txt = estandarizarTexto(this.value); sugerenciasVias.innerHTML = '';
             ultimoResultadoVias = {};
-            if (txt.length < 2) { sugerenciasVias.style.display = 'none'; return; }
+            actualizarBotonLimpiarVias();
+            if (txt.length < 2) {
+                sugerenciasVias.style.display = 'none';
+                if (!txt && capaResaltadoVia) {
+                    map.removeLayer(capaResaltadoVia);
+                    capaResaltadoVia = null;
+                }
+                return;
+            }
             const agrup = agruparViasPorTexto(txt);
             ultimoResultadoVias = agrup;
             const res = Object.keys(agrup).slice(0, 5);
@@ -200,11 +227,17 @@
                 e.preventDefault();
                 ejecutarBusquedaActual();
             } else if (e.key === 'Escape') {
-                inputBuscadorVias.value = '';
-                ultimoResultadoVias = {};
-                cerrarBuscadorViasSiVacio();
+                limpiarBusquedaVia();
             }
         });
+
+        if (botonLimpiarVias) {
+            botonLimpiarVias.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                limpiarBusquedaVia();
+            });
+        }
 
         document.addEventListener('click', e => {
             if (!contenedorBuscadorVias.contains(e.target)) {

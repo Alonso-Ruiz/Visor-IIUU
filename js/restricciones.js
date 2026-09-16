@@ -1,185 +1,205 @@
-// Reglas operativas del "Cuadro de Restricciones - Índice de Usos".
-// La clasificación agrupa las clases CIIU según las categorías del cuadro fuente.
+// Reglas de restricción del Índice de Usos de San Borja.
+// Las restricciones ordinarias provienen de IIUU.docx y las restricciones
+// de ZRE se leen por giro y ubicación desde datosActividadesZRE.
 (function () {
     'use strict';
 
-    var gruposPorClase = {
-        'comercio-gastronomico': ['1071', '5610', '5621', '5629'],
-        'alojamiento': ['5510'],
-        'financiero': ['6419', '6499', '6511', '6530', '6611', '6612'],
-        'educacion': ['8510', '8521', '8522', '8530', '8541', '8542', '8549'],
-        'salud': ['8610', '8620', '8690'],
-        'asistencia-social': ['8710', '8720', '8730', '8790', '8810', '8890'],
-        'recreativas': ['5911', '5914', '5920', '6010', '9000', '9101', '9102', '9200', '9311', '9312', '9319', '9321', '9329'],
-        'comercio-productos': ['4510', '4530', '4540', '4711', '4719', '4721', '4722', '4741', '4742', '4751', '4752', '4753', '4759', '4761', '4763', '4764', '4771', '4772', '4773', '4774', '4791'],
-        'oficinas-consultoria': ['6190', '6209', '6810', '6820', '6910', '6920', '7010', '7310', '7420', '7490', '7810', '7911', '7912', '8010', '8230', '8411', '8413', '9412', '9491', '9900'],
-        'servicios-personales': ['1410', '1811', '4520', '5221', '5310', '5320', '7500', '9523', '9529', '9601', '9602', '9609']
+    var UBICACIONES_ZRE = {
+        'ZRE-1': {
+            sanJuanCalles: 'San Juan Masías - Calle El Comercio, Jr. De la Historia y Av. De la Arqueología',
+            sanJuanAvenidas: 'San Juan Masías - Av. Aviación y Av. Canadá',
+            elBosque: 'El Bosque y El Bosque de San Borja',
+            pequenosAgricultores: 'Pequeños Agricultores Todos los Santos'
+        },
+        'ZRE-2': {
+            calles: 'Papa Juan XXIII - Calle Géminis, Calle Gamma, Calle Joaquín Madrid y Calle Alfa',
+            avenidas: 'Papa Juan XXIII - Av. Aviación y Av. Angamos Este'
+        },
+        'ZRE-3': { unica: 'Área rústica del Subsector 12-A' },
+        'ZRE-4': { unica: 'Centro Cultural de la Nación' }
     };
 
-    var nombresGrupo = {
-        'comercio-gastronomico': 'Comercio gastronómico',
-        'alojamiento': 'Alojamiento',
-        'financiero': 'Financiero',
-        'educacion': 'Educación',
-        'salud': 'Salud',
-        'asistencia-social': 'Asistencia social',
-        'recreativas': 'Recreativas',
-        'comercio-productos': 'Comercio de venta de productos',
-        'oficinas-consultoria': 'Oficinas y consultoría',
-        'servicios-personales': 'Otras actividades de servicios personales'
-    };
+    function normalizar(valor) {
+        return String(valor || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase().replace(/\s+/g, ' ').trim();
+    }
 
-    function grupoDeClase(clase) {
-        clase = String(clase || '');
-        return Object.keys(gruposPorClase).find(function (grupo) {
-            return gruposPorClase[grupo].includes(clase);
-        }) || '';
+    function contiene(texto, opciones) {
+        return opciones.some(function (opcion) { return texto.indexOf(opcion) !== -1; });
+    }
+
+    function propiedad(objeto, nombres) {
+        objeto = objeto || {};
+        for (var i = 0; i < nombres.length; i++) {
+            var valor = objeto[nombres[i]];
+            if (valor !== null && valor !== undefined && String(valor).trim() !== '') return valor;
+        }
+        return '';
     }
 
     function condicion(etiqueta, valor, estado) {
         return { etiqueta: etiqueta, valor: valor, estado: estado || '' };
     }
 
-    function reglaBase(grupo, minLote, areaUtil, existente, obraNueva, cesionario) {
-        var condiciones = [];
-        if (minLote !== null && minLote !== undefined) condiciones.push(condicion('Área mínima del lote', typeof minLote === 'number' ? minLote + ' m²' : minLote, typeof minLote === 'number' ? 'area-minima' : ''));
-        if (areaUtil !== null && areaUtil !== undefined) condiciones.push(condicion('Área útil máxima', typeof areaUtil === 'number' ? areaUtil + ' m²' : areaUtil));
-        if (existente) condiciones.push(condicion('Edificación existente', existente));
-        if (obraNueva) condiciones.push(condicion('Obra nueva, remodelación o ampliación', obraNueva));
-        if (cesionario) condiciones.push(condicion('Establecimiento por cesionario', cesionario));
-        return { grupo: nombresGrupo[grupo] || grupo, condiciones: condiciones };
+    function regla(condiciones, sinRestriccion) {
+        return { condiciones: condiciones || [], sinRestriccion: Boolean(sinRestriccion) };
     }
 
-    function restriccionesNormales(zona, clase, contexto) {
-        var grupo = grupoDeClase(clase);
-        var zonVig = String((contexto && contexto.zonVig) || '').toUpperCase();
-        var regla;
+    function conExcepcionPorConformidad(condiciones) {
+        condiciones.push(condicion(
+            'Edificación existente con conformidad de obra',
+            'La limitación de nivel no se aplica cuando la edificación cuenta con conformidad de obra para ese uso.'
+        ));
+        return condiciones;
+    }
 
+    function evaluarAreaLote(resultado, areaM2) {
+        var area = Number(areaM2);
+        if (!Number.isFinite(area)) return resultado;
+        resultado.condiciones.forEach(function (item) {
+            if (item.estado !== 'area-minima' && item.estado !== 'area-maxima') return;
+            var limite = Number(String(item.valor).replace(/[^\d.]/g, ''));
+            if (!Number.isFinite(limite)) return;
+            item.estado = item.estado === 'area-minima'
+                ? (area >= limite ? 'cumple' : 'no-cumple')
+                : (area <= limite ? 'cumple' : 'no-cumple');
+            item.detalle = 'Área del lote seleccionado: ' + area.toLocaleString('es-PE', { maximumFractionDigits: 2 }) + ' m²';
+        });
+        return resultado;
+    }
+
+    function zonificacionEsEquipamiento(zonVig) {
+        var zona = normalizar(zonVig).replace(/\s/g, '');
+        return zona === 'e' || zona === 'h' || zona === 'ou' ||
+            zona === 'zspc(e)' || zona === 'zspc(h)' || zona === 'zspc(ou)';
+    }
+
+    function restriccionesOrdinarias(zona, contexto) {
+        contexto = contexto || {};
+        var condiciones;
         if (zona === 'Uso Mixto Especializado') {
-            if (grupo === 'salud') {
-                if (zonVig === 'H') return { grupo: nombresGrupo[grupo], sinRestriccion: true, condiciones: [condicion('Zonificación vigente', 'H: permitido sin restricción adicional por este cuadro')] };
-                regla = reglaBase(grupo, 500, 2500);
-                regla.condiciones.unshift(condicion('Zonificación vigente', 'Aplicable en cualquier zonificación distinta de H'));
-                return regla;
+            if (zonificacionEsEquipamiento(contexto.zonVig)) {
+                return regla([
+                    condicion('Zonificación vigente', 'En lotes zonificados como ZSPC (E), ZSPC (H) u OU no existe restricción de área ni de nivel por compatibilidad, tanto para edificaciones existentes como para obra nueva, remodelación o ampliación.')
+                ], true);
             }
-            if (['comercio-gastronomico', 'oficinas-consultoria', 'comercio-productos'].includes(grupo)) {
-                return reglaBase(grupo, 500, 2500, 'Hasta el 3.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso');
-            }
-            if (grupo === 'asistencia-social') return { grupo: nombresGrupo[grupo], sinRestriccion: true, condiciones: [condicion('Condición', 'Permitido sin restricción adicional por este cuadro')] };
+            condiciones = [
+                condicion('Superficie mínima del lote', '500 m²', 'area-minima'),
+                condicion('Edificación existente', 'Hasta el tercer nivel.'),
+                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área ni de nivel por compatibilidad.')
+            ];
+            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
         }
 
         if (zona === 'Uso Mixto Intensivo') {
-            if (['comercio-gastronomico', 'servicios-personales', 'comercio-productos', 'educacion', 'salud'].includes(grupo)) {
-                return reglaBase(grupo, null, null, 'Hasta el 2.º nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso');
-            }
-            if (['alojamiento', 'oficinas-consultoria', 'financiero'].includes(grupo)) {
-                return reglaBase(grupo, null, null, 'Hasta el 3.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso');
-            }
-            if (grupo === 'asistencia-social') return { grupo: nombresGrupo[grupo], sinRestriccion: true, condiciones: [condicion('Condición', 'Permitido sin restricción adicional por este cuadro')] };
+            return regla([
+                condicion('Edificación existente', 'Sin límite de área ni de nivel por compatibilidad.'),
+                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área ni de nivel por compatibilidad.')
+            ], true);
         }
 
         if (zona === 'Uso Mixto Metropolitano') {
-            if (['comercio-gastronomico', 'servicios-personales', 'comercio-productos', 'educacion', 'salud'].includes(grupo)) {
-                return reglaBase(grupo, 300, 1300, 'Hasta el 2.º nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso');
-            }
-            if (['alojamiento', 'oficinas-consultoria', 'financiero'].includes(grupo)) {
-                return reglaBase(grupo, 300, 2200, 'Hasta el 3.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso');
-            }
-            if (grupo === 'asistencia-social') {
-                regla = reglaBase(grupo, 300, 2200);
-                regla.condiciones.unshift(condicion('Zonificación vigente', 'Únicamente en RDA', zonVig === 'RDA' ? 'cumple' : 'no-verificable'));
-                return regla;
-            }
+            condiciones = [
+                condicion('Edificación existente', 'Área útil máxima de 1 000 m² y hasta el tercer nivel.', 'area-maxima'),
+                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área ni de nivel por compatibilidad.')
+            ];
+            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
         }
 
         if (zona === 'Uso Mixto Zonal') {
-            if (['comercio-gastronomico', 'servicios-personales', 'comercio-productos'].includes(grupo)) {
-                return reglaBase(grupo, 400, 1200, 'Hasta el 1.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 3.er nivel', 'Hasta el 3.er nivel');
-            }
-            if (['alojamiento', 'oficinas-consultoria', 'financiero', 'educacion', 'salud'].includes(grupo)) {
-                return reglaBase(grupo, 400, 2000, 'Hasta el 2.º nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 3.er nivel', 'Hasta el 3.er nivel');
-            }
-            if (grupo === 'asistencia-social') {
-                regla = reglaBase(grupo, 400, 2000);
-                regla.condiciones.unshift(condicion('Zonificación vigente', 'Únicamente en RDM, RDA o CV', ['RDM', 'RDA', 'CV'].includes(zonVig) ? 'cumple' : 'no-verificable'));
-                return regla;
-            }
+            condiciones = [
+                condicion('Edificación existente', 'Área útil máxima de 750 m² y hasta el tercer nivel.', 'area-maxima'),
+                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área por compatibilidad y hasta el tercer nivel.')
+            ];
+            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
         }
 
         if (zona === 'Uso Mixto Vecinal') {
-            if (['servicios-personales', 'comercio-productos'].includes(grupo)) {
-                return reglaBase(grupo, 300, 600, 'Hasta el 1.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 1.er nivel', 'Hasta el 1.er nivel');
-            }
-            if (grupo === 'oficinas-consultoria') {
-                return reglaBase(grupo, 300, 1200, 'Hasta el 2.º nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 2.º nivel', 'Hasta el 2.º nivel');
-            }
-            if (grupo === 'salud') {
-                regla = reglaBase(grupo, 300, 1200, 'Hasta el 2.º nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 2.º nivel', 'Hasta el 2.º nivel');
-                regla.condiciones.unshift(condicion('Ubicación vial', 'Únicamente en la vía Bailetti'));
-                return regla;
-            }
-            if (grupo === 'asistencia-social') return reglaBase(grupo, 300, 1900);
-        }
-
-        if (zona === 'Uso Residencial Especial') {
-            if (['servicios-personales', 'comercio-productos', 'oficinas-consultoria', 'financiero', 'salud'].includes(grupo)) {
-                return reglaBase(grupo, 'Según la edificación preexistente', 'Según el 1.er nivel de la edificación', 'Hasta el 1.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso');
-            }
+            condiciones = [
+                condicion('Edificación existente', 'Área útil máxima de 500 m² y hasta el primer nivel.', 'area-maxima'),
+                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área por compatibilidad y hasta el segundo nivel.')
+            ];
+            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
         }
 
         if (zona === 'Uso Residencial Preferente') {
-            if (['comercio-productos', 'educacion'].includes(grupo)) {
-                return reglaBase(grupo, 400, 700, 'Hasta el 1.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 1.er nivel', 'No aplica');
-            }
-            if (['salud', 'asistencia-social'].includes(grupo)) {
-                return reglaBase(grupo, 400, 1300, 'Hasta el 2.º nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 2.º nivel', 'No aplica');
-            }
+            condiciones = [
+                condicion('Edificación existente', 'Área máxima de 300 m² del establecimiento, hasta el primer nivel y únicamente en predios en esquina.', 'area-maxima'),
+                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área por compatibilidad y hasta el primer nivel.')
+            ];
+            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
         }
 
-        return { grupo: nombresGrupo[grupo] || 'Clase no agrupada', condiciones: [] };
+        return regla([]);
     }
 
-    function restriccionesZRE(zreId) {
-        if (zreId === 'ZRE-1') return reglaBase('Todas las actividades', 100, 200, 'Hasta el 1.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 2.º nivel', 'Hasta el 2.º nivel');
-        if (zreId === 'ZRE-2') return reglaBase('Todas las actividades', 'Según la edificación preexistente', 200, 'Hasta el 1.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 2.º nivel', 'Hasta el 2.º nivel');
-        if (zreId === 'ZRE-3') return reglaBase('Todas las actividades', 100, 200, 'Hasta el 1.er nivel, o en todos los niveles si cuenta con conformidad de obra para tal uso', 'Hasta el 2.º nivel', 'Hasta el 2.º nivel');
-        return { grupo: 'Todas las actividades', condiciones: [] };
+    function resolverUbicacionZRE(zreId, propiedadesLote) {
+        var via = normalizar(propiedad(propiedadesLote, ['VIA COLIND', 'VIA_COLIND', 'VÍA COLINDANTE', 'VIA COLINDANTE']));
+        var uso = normalizar(propiedad(propiedadesLote, ['ZRE_USOCOM']));
+
+        if (zreId === 'ZRE-1') {
+            if (contiene(via, ['aviacion', 'canada'])) return UBICACIONES_ZRE['ZRE-1'].sanJuanAvenidas;
+            if (contiene(via, ['comercio', 'historia', 'arqueologia'])) return UBICACIONES_ZRE['ZRE-1'].sanJuanCalles;
+            if (contiene(via, ['san luis', 'paseo del bosque'])) return UBICACIONES_ZRE['ZRE-1'].elBosque;
+            if (contiene(via, ['roma', 'joaquin madrid', 'melissa'])) return UBICACIONES_ZRE['ZRE-1'].pequenosAgricultores;
+            if (uso.indexOf('mixto controlado') !== -1) return UBICACIONES_ZRE['ZRE-1'].sanJuanAvenidas;
+            if (uso.indexOf('mixto restringido') !== -1) return UBICACIONES_ZRE['ZRE-1'].sanJuanCalles;
+            return '';
+        }
+
+        if (zreId === 'ZRE-2') {
+            if (contiene(via, ['aviacion', 'angamos'])) return UBICACIONES_ZRE['ZRE-2'].avenidas;
+            if (contiene(via, ['geminis', 'gamma', 'joaquin madrid', 'alfa', 'lambda'])) return UBICACIONES_ZRE['ZRE-2'].calles;
+            if (uso.indexOf('mixto controlado') !== -1) return UBICACIONES_ZRE['ZRE-2'].avenidas;
+            if (uso.indexOf('mixto restringido') !== -1) return UBICACIONES_ZRE['ZRE-2'].calles;
+            return '';
+        }
+
+        if (zreId === 'ZRE-3') return UBICACIONES_ZRE['ZRE-3'].unica;
+        if (zreId === 'ZRE-4') return UBICACIONES_ZRE['ZRE-4'].unica;
+        return '';
     }
 
-    function evaluarArea(regla, areaM2) {
-        var area = Number(areaM2);
-        if (!Number.isFinite(area)) return regla;
-        regla.condiciones.forEach(function (c) {
-            if (c.estado !== 'area-minima') return;
-            var minimo = Number(String(c.valor).replace(/[^\d.]/g, ''));
-            if (!Number.isFinite(minimo)) return;
-            c.estado = area >= minimo ? 'cumple' : 'no-cumple';
-            c.detalle = 'Área del lote seleccionado: ' + area.toLocaleString('es-PE', { maximumFractionDigits: 2 }) + ' m²';
-        });
-        return regla;
+    function autorizacionZRE(giro, zreId, ubicacion) {
+        if (!giro || !ubicacion || !giro.ZRE || !giro.ZRE[zreId]) return null;
+        var valor = giro.ZRE[zreId][ubicacion];
+        return valor === 'X' || valor === 'R' ? valor : null;
+    }
+
+    function restriccionGiroZRE(giro, zreId, ubicacion) {
+        var autorizacion = autorizacionZRE(giro, zreId, ubicacion);
+        if (!autorizacion) return regla([]);
+        if (autorizacion === 'X') {
+            return regla([condicion('Compatibilidad', 'Permitido sin restricción adicional por compatibilidad de uso.')], true);
+        }
+
+        var datos = giro.RESTRICCIONES && giro.RESTRICCIONES[zreId] && giro.RESTRICCIONES[zreId][ubicacion];
+        if (!datos) {
+            return regla([condicion(
+                'Validación requerida',
+                'La matriz principal marca este giro con R, pero la hoja auxiliar no consigna un parámetro específico. Requiere validación técnica antes de autorizar.'
+            )]);
+        }
+        var condiciones = [];
+        if (datos.existente) condiciones.push(condicion('Edificación existente (m² de área útil)', datos.existente));
+        if (datos.obraNueva) condiciones.push(condicion('Obra nueva, remodelación o ampliación', datos.obraNueva));
+        return regla(condiciones);
     }
 
     window.RESTRICCIONES_IIUU = {
-        grupoDeClase: grupoDeClase,
+        ubicacionesZRE: UBICACIONES_ZRE,
+        resolverUbicacionZRE: resolverUbicacionZRE,
+        autorizacionZRE: autorizacionZRE,
         obtener: function (zona, clase, contexto) {
-            return evaluarArea(restriccionesNormales(zona, clase, contexto || {}), contexto && contexto.areaM2);
+            return restriccionesOrdinarias(zona, contexto || {});
         },
-        obtenerZRE: function (zreId, contexto) {
-            return evaluarArea(restriccionesZRE(zreId), contexto && contexto.areaM2);
-        },
+        obtenerZRE: restriccionGiroZRE,
         regimenResidencialExclusivo: {
-            titulo: 'Régimen transitorio aplicable',
-            resumen: 'Excepcionalmente se toma como referencia exclusiva la columna Uso Mixto Vecinal. Solo se muestran los giros marcados con “R”.',
+            titulo: 'Condición de compatibilidad',
+            resumen: 'El Uso Residencial Exclusivo mantiene su carácter residencial.',
             condiciones: [
-                'La clase CIIU debe estar calificada con “R” en la columna Uso Mixto Vecinal.',
-                'El giro específico debe pertenecer a esa clase CIIU y estar aprobado mediante regulación distrital.',
-                'El establecimiento debe contar con declaratoria de edificación o de fábrica inscrita en SUNARP que identifique el ambiente como tienda, local comercial, comercio o denominación equivalente.',
-                'El uso comercial o la actividad debe estar respaldado por una licencia de funcionamiento municipal emitida antes de la publicación de la Ordenanza.',
-                'La ubicación, delimitación, área techada y niveles deben coincidir exactamente con el antecedente municipal y con la declaratoria inscrita; no se admite diferencia de área.'
-            ],
-            nota: 'La declaratoria puede inscribirse después de la publicación solo si corresponde a un uso comercial autorizado previamente. La inscripción posterior, por sí sola, no permite acogerse al régimen.',
-            vigencia: 'El régimen no modifica el Uso Residencial Exclusivo y queda sin efecto cuando entre en vigencia la nueva zonificación de San Borja, sin perjuicio de las licencias otorgadas durante su vigencia.',
-            cierre: 'El acogimiento no exime del cumplimiento de niveles operacionales, estándares de calidad, seguridad, autorizaciones sectoriales y demás disposiciones aplicables.'
+                'Se consideran compatibles las unidades inmobiliarias que cuenten con declaratoria de fábrica inscrita, con uso de tienda, local comercial o uso equivalente, conforme a la normativa vigente.'
+            ]
         }
     };
 })();

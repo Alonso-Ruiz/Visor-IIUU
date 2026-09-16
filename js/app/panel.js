@@ -38,14 +38,26 @@
                 '<ul>' + items + '</ul></div>';
         }
 
+        function renderizarRestriccionGiroZre(regla) {
+            if (!regla || regla.sinRestriccion || !regla.condiciones || !regla.condiciones.length) return '';
+            return '<div class="restriccion-giro-zre">' + regla.condiciones.map(function(c) {
+                return '<div><strong>' + escaparHtml(c.etiqueta) + ':</strong> ' + escaparHtml(c.valor) + '</div>';
+            }).join('') + '</div>';
+        }
+
         function renderizarRegimenTransitorio() {
             var regimen = window.RESTRICCIONES_IIUU && window.RESTRICCIONES_IIUU.regimenResidencialExclusivo;
             if (!regimen) return '';
-            return '<p class="regimen-resumen">' + escaparHtml(regimen.resumen) + '</p>' +
-                '<ol class="regimen-lista">' + regimen.condiciones.map(function(c) { return '<li>' + escaparHtml(c) + '</li>'; }).join('') + '</ol>' +
-                '<p class="regimen-nota"><strong>Declaratoria posterior:</strong> ' + escaparHtml(regimen.nota) + '</p>' +
-                '<p class="regimen-nota"><strong>Vigencia:</strong> ' + escaparHtml(regimen.vigencia) + '</p>' +
-                '<p class="regimen-nota">' + escaparHtml(regimen.cierre) + '</p>';
+            var html = regimen.resumen ? '<p class="regimen-resumen">' + escaparHtml(regimen.resumen) + '</p>' : '';
+            if (regimen.condiciones && regimen.condiciones.length) {
+                html += '<ol class="regimen-lista">' + regimen.condiciones.map(function(c) {
+                    return '<li>' + escaparHtml(c) + '</li>';
+                }).join('') + '</ol>';
+            }
+            if (regimen.nota) html += '<p class="regimen-nota"><strong>Declaratoria posterior:</strong> ' + escaparHtml(regimen.nota) + '</p>';
+            if (regimen.vigencia) html += '<p class="regimen-nota"><strong>Vigencia:</strong> ' + escaparHtml(regimen.vigencia) + '</p>';
+            if (regimen.cierre) html += '<p class="regimen-nota">' + escaparHtml(regimen.cierre) + '</p>';
+            return html;
         }
 
         function esZonaReglamentacionEspecial(nombreZona, zonVig) {
@@ -159,6 +171,7 @@
 
             if(!abrir) {
                 if(capaLoteResaltado) { map.removeLayer(capaLoteResaltado); capaLoteResaltado = null; }
+                if (window.limpiarBordeBloqueSeleccionado) window.limpiarBordeBloqueSeleccionado();
                 map.closePopup();
             }
 
@@ -284,8 +297,7 @@
                     var rest = (resultadosZona[0]['Restricciones'] || '').trim();
                     var zonasConCuadroDetallado = [
                         'Uso Mixto Especializado', 'Uso Mixto Intensivo', 'Uso Mixto Metropolitano',
-                        'Uso Mixto Zonal', 'Uso Mixto Vecinal', 'Uso Residencial Especial',
-                        'Uso Residencial Preferente'
+                        'Uso Mixto Zonal', 'Uso Mixto Vecinal', 'Uso Residencial Preferente'
                     ];
                     if (zonasConCuadroDetallado.includes(zonaActual)) rest = '';
                     contVentanas.style.display = (obs || rest) ? 'flex' : 'none';
@@ -302,6 +314,9 @@
                 var codigoZre = obtenerPropiedad(loteActual, ['CÓDIGO', 'C�DIGO', 'CODIGO']);
                 var ubicacionZre = obtenerPropiedad(loteActual, ['UBICACIÓN', 'UBICACI�N', 'UBICACION']);
                 var tramoZre = obtenerPropiedad(loteActual, ['TRAMO']);
+                var matrizZre = window.RESTRICCIONES_IIUU && window.RESTRICCIONES_IIUU.resolverUbicacionZRE
+                    ? window.RESTRICCIONES_IIUU.resolverUbicacionZRE(zonVigActual, loteActual)
+                    : '';
                 var detalleZre = '';
                 if (codigoZre || tramoZre || ubicacionZre) {
                     detalleZre = '<br><strong>Detalle del polígono:</strong> ' +
@@ -311,6 +326,8 @@
                 }
                 document.getElementById('texto-observaciones').innerHTML =
                     'Zona de Reglamentación Especial. Los giros y su compatibilidad se rigen por el Plan Especial correspondiente a cada ubicación dentro del ' + zonVigActual + '.' +
+                    (matrizZre ? '<br><strong>Matriz aplicable:</strong> ' + escaparHtml(matrizZre) :
+                        '<br><strong>Matriz aplicable:</strong> Esta ubicación no corresponde a los frentes comerciales definidos en el cuadro ZRE.') +
                     detalleZre;
             }
 
@@ -331,14 +348,26 @@
 
             // ---- MODO ZRE ----
             if (esZRE) {
-                // Agrupa giros por clase
+                var motorRestricciones = window.RESTRICCIONES_IIUU;
+                var matrizZre = motorRestricciones && motorRestricciones.resolverUbicacionZRE
+                    ? motorRestricciones.resolverUbicacionZRE(zreId, loteActual)
+                    : '';
+
+                if (!matrizZre) {
+                    document.getElementById('conteo-resumen').innerHTML =
+                        'Mostrando: <strong>0</strong> clases CIIU para la ubicación seleccionada.';
+                    document.getElementById('lista-clases-container').innerHTML =
+                        "<p class='mensaje-vacio'>El lote no se ubica en uno de los frentes comerciales definidos en la matriz del " + escaparHtml(zreId) + '.</p>';
+                    return;
+                }
+
+                // Agrupa únicamente los giros compatibles con el frente del lote seleccionado.
                 var clasesVistas = {};
                 datosActividadesZRE.forEach(function(giro) {
-                    var zreInfo = giro.ZRE && giro.ZRE[zreId];
-                    if (!zreInfo) return; // esta clase no aplica a este ZRE
-                    // ¿Al menos un location tiene X o R?
-                    var tieneAlguna = Object.values(zreInfo).some(v => v === 'X' || v === 'R');
-                    if (!tieneAlguna) return;
+                    var autorizacion = motorRestricciones && motorRestricciones.autorizacionZRE
+                        ? motorRestricciones.autorizacionZRE(giro, zreId, matrizZre)
+                        : giro.ZRE && giro.ZRE[zreId] && giro.ZRE[zreId][matrizZre];
+                    if (autorizacion !== 'X' && autorizacion !== 'R') return;
 
                     if (!clasesVistas[giro.CLASE]) {
                         clasesVistas[giro.CLASE] = {
@@ -346,26 +375,32 @@
                             obs: giro.OBSERVACIONES, giros: []
                         };
                     }
+                    giro._autorizacionSeleccionada = autorizacion;
                     clasesVistas[giro.CLASE].giros.push(giro);
                 });
 
                 var clases = Object.values(clasesVistas);
                 if (busqueda) {
-                    clases = clases.filter(function(c) {
-                        return estandarizarTexto(c.desc).includes(busqueda) ||
-                               estandarizarTexto(c.clase).includes(busqueda) ||
-                               c.giros.some(g => estandarizarTexto(g.ACTIVIDAD).includes(busqueda));
-                    });
+                    clases = clases.map(function(c) {
+                        var coincideClase = estandarizarTexto(c.desc).includes(busqueda) ||
+                            estandarizarTexto(c.clase).includes(busqueda);
+                        if (!coincideClase) {
+                            c.giros = c.giros.filter(function(giro) {
+                                return estandarizarTexto(giro.ACTIVIDAD).includes(busqueda);
+                            });
+                        }
+                        return c;
+                    }).filter(function(c) { return c.giros.length > 0; });
                 }
 
                 // Conteos
                 var nPerm = 0, nRest = 0;
                 clases.forEach(function(c) {
-                    var tieneX = c.giros.some(g => Object.values(g.ZRE[zreId]||{}).includes('X'));
-                    var tieneR = c.giros.some(g => Object.values(g.ZRE[zreId]||{}).includes('R')) && !tieneX;
-                    if (tieneX) nPerm++; else if (tieneR) nRest++;
+                    if (c.giros.some(function(g) { return g._autorizacionSeleccionada === 'X'; })) nPerm++;
+                    if (c.giros.some(function(g) { return g._autorizacionSeleccionada === 'R'; })) nRest++;
                 });
                 document.getElementById('conteo-resumen').innerHTML =
+                    '<strong>Ubicación:</strong> ' + escaparHtml(matrizZre) + '<br>' +
                     'Mostrando: <strong>' + clases.length + '</strong> clases CIIU.<br>' +
                     '<span style="color:#66bb6a;">● ' + nPerm + ' Permitidas</span> | ' +
                     '<span style="color:#d89d00;">● ' + nRest + ' Sujetos a condiciones</span>';
@@ -373,62 +408,37 @@
                 // Renderiza tarjetas ZRE
                 var htmlContenido = '';
                 clases.forEach(function(c) {
-                    var zreInfo = c.giros[0] && c.giros[0].ZRE && c.giros[0].ZRE[zreId] || {};
-                    var todasAuth = [];
-                    c.giros.forEach(g => { if(g.ZRE[zreId]) Object.values(g.ZRE[zreId]).forEach(v => { if(v) todasAuth.push(v); }); });
-                    var tieneX = todasAuth.includes('X');
-                    var c_borde = tieneX ? '#4CAF50' : '#ffca28';
+                    var tieneRestriccion = c.giros.some(function(g) { return g._autorizacionSeleccionada === 'R'; });
+                    var c_borde = tieneRestriccion ? '#ffca28' : '#4CAF50';
 
-                    // Encabezado de ubicaciones (solo para ZRE-1 que tiene varias)
-                    var ubicacionesHtml = '';
-                    var locaciones = Object.keys(Object.values(c.giros[0].ZRE[zreId]||{}));
-                    var locMap = c.giros[0].ZRE[zreId] || {};
-                    var locKeys = Object.keys(locMap);
-                    if (locKeys.length > 1) {
-                        ubicacionesHtml = '<div style="margin:6px 0 8px 0; display:flex; flex-wrap:wrap; gap:4px;">';
-                        locKeys.forEach(function(loc) {
-                            var a = locMap[loc];
-                            if (!a) return;
-                            var col = colorAuth(a);
-                            ubicacionesHtml += '<span style="background:' + col.bg + ';color:' + col.txt + ';padding:1px 6px;border-radius:3px;font-size:10px;" title="' + loc + '">' + col.label + ' · ' + loc.substring(0,30) + (loc.length>30?'…':'') + '</span>';
-                        });
-                        ubicacionesHtml += '</div>';
-                    }
-
-                    // Giros con sus autorizaciones por ubicación
+                    // Cada giro conserva la autorización y, si corresponde, su restricción específica.
                     var girosHtml = '<ul class="lista-actividades">';
                     c.giros.forEach(function(g) {
-                        var locs = g.ZRE[zreId] || {};
-                        var authBadges = '';
-                        Object.entries(locs).forEach(function([loc, a]) {
-                            if (!a) return;
-                            var col = colorAuth(a);
-                            authBadges += '<span style="background:' + col.bg + ';color:' + col.txt + ';padding:1px 5px;border-radius:3px;font-size:10px;margin-left:4px;" title="' + loc + '">' + col.label + '</span>';
-                        });
-                        girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;">' +
-                            '<span>' + g.ACTIVIDAD + '</span>' +
-                            '<span style="flex-shrink:0;">' + authBadges + '</span>' +
+                        var autorizacion = g._autorizacionSeleccionada;
+                        var col = colorAuth(autorizacion);
+                        var reglaGiro = motorRestricciones && motorRestricciones.obtenerZRE
+                            ? motorRestricciones.obtenerZRE(g, zreId, matrizZre)
+                            : null;
+                        girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;flex-wrap:wrap;">' +
+                            '<span>' + escaparHtml(g.ACTIVIDAD) + '</span>' +
+                            '<span style="background:' + col.bg + ';color:' + col.txt + ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>' +
+                            (autorizacion === 'R' ? renderizarRestriccionGiroZre(reglaGiro) : '') +
                             '</li>';
                     });
                     girosHtml += '</ul>';
 
                     if (c.obs) {
-                        girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#666;font-style:italic;">' + c.obs + '</p>';
+                        girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#666;font-style:italic;">' + escaparHtml(c.obs) + '</p>';
                     }
-
-                    var reglaZre = window.RESTRICCIONES_IIUU ? window.RESTRICCIONES_IIUU.obtenerZRE(zreId, { areaM2: obtenerAreaLote() }) : null;
-                    var condicionesHtml = renderizarCondiciones(reglaZre, 'Restricciones del Plan Especial');
 
                     htmlContenido +=
                         '<div style="background:#fff;border:1px solid #e8e8e8;border-left:5px solid ' + c_borde + ';padding:12px;margin-bottom:12px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">' +
                         '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">' +
-                        '<span style="background:' + c_borde + ';color:' + (tieneX?'#fff':'#000') + ';padding:2px 6px;border-radius:3px;font-size:11px;font-weight:bold;">CIIU: ' + c.clase + '</span>' +
+                        '<span style="background:' + c_borde + ';color:' + (tieneRestriccion?'#000':'#fff') + ';padding:2px 6px;border-radius:3px;font-size:11px;font-weight:bold;">CIIU: ' + escaparHtml(c.clase) + '</span>' +
                         '<span style="font-size:10px;font-weight:bold;color:' + c_borde + ';">' + zreId + '</span>' +
                         '</div>' +
-                        '<strong style="font-size:13px;color:#222;display:block;margin-bottom:5px;">' + c.desc + '</strong>' +
-                        ubicacionesHtml +
+                        '<strong style="font-size:13px;color:#222;display:block;margin-bottom:5px;">' + escaparHtml(c.desc) + '</strong>' +
                         girosHtml +
-                        condicionesHtml +
                         '</div>';
                 });
 

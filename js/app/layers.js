@@ -1,5 +1,84 @@
 ﻿// --- SISTEMA DE RESALTADO ---
-        function resaltarLote(feature) {
+        var capaBloqueSeleccionado = null;
+
+        function puntoEnAnillo(punto, anillo) {
+            var dentro = false;
+            for (var i = 0, j = anillo.length - 1; i < anillo.length; j = i++) {
+                var xi = anillo[i][0], yi = anillo[i][1];
+                var xj = anillo[j][0], yj = anillo[j][1];
+                var cruza = ((yi > punto[1]) !== (yj > punto[1])) &&
+                    (punto[0] < (xj - xi) * (punto[1] - yi) / (yj - yi) + xi);
+                if (cruza) dentro = !dentro;
+            }
+            return dentro;
+        }
+
+        function puntoEnBloque(punto, geometria) {
+            if (!geometria || geometria.type !== 'MultiPolygon') return false;
+            return geometria.coordinates.some(function(poligono) {
+                return puntoEnAnillo(punto, poligono[0]) && !poligono.slice(1).some(function(anillo) {
+                    return puntoEnAnillo(punto, anillo);
+                });
+            });
+        }
+
+        function areaCajaBloque(geometria) {
+            var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            function revisar(coordenadas) {
+                if (typeof coordenadas[0] === 'number') {
+                    minX = Math.min(minX, coordenadas[0]);
+                    minY = Math.min(minY, coordenadas[1]);
+                    maxX = Math.max(maxX, coordenadas[0]);
+                    maxY = Math.max(maxY, coordenadas[1]);
+                    return;
+                }
+                coordenadas.forEach(revisar);
+            }
+            revisar(geometria.coordinates);
+            return (maxX - minX) * (maxY - minY);
+        }
+
+        window.limpiarBordeBloqueSeleccionado = function() {
+            if (capaBloqueSeleccionado) map.removeLayer(capaBloqueSeleccionado);
+            capaBloqueSeleccionado = null;
+        };
+
+        function resaltarBloqueDelLote(layer) {
+            window.limpiarBordeBloqueSeleccionado();
+            if (!layer || !layer.getBounds || !window.json_Bordes_1) return;
+
+            var centro = layer.getBounds().getCenter();
+            var punto = [centro.lng, centro.lat];
+            var candidatos = json_Bordes_1.features.filter(function(bloque) {
+                return puntoEnBloque(punto, bloque.geometry);
+            });
+            if (!candidatos.length) return;
+
+            candidatos.sort(function(a, b) {
+                return areaCajaBloque(a.geometry) - areaCajaBloque(b.geometry);
+            });
+
+            if (!map.getPane('pane_bloque_seleccionado')) {
+                map.createPane('pane_bloque_seleccionado');
+                map.getPane('pane_bloque_seleccionado').style.zIndex = 640;
+                map.getPane('pane_bloque_seleccionado').style.pointerEvents = 'none';
+            }
+
+            capaBloqueSeleccionado = L.geoJson(candidatos[0], {
+                pane: 'pane_bloque_seleccionado',
+                style: {
+                    color: '#111111',
+                    weight: 3,
+                    opacity: 0.96,
+                    fill: false,
+                    interactive: false
+                },
+                interactive: false
+            }).addTo(map);
+            window.capaBloqueSeleccionado = capaBloqueSeleccionado;
+        }
+
+        function resaltarLote(feature, layer) {
             if (capaLoteResaltado) map.removeLayer(capaLoteResaltado);
             window.capaLoteResaltado = null;
             if (!map.getPane('pane_lote_resaltado')) {
@@ -25,6 +104,7 @@
             }).addTo(map);
             window.capaLoteResaltado = capaLoteResaltado;
             if (capaLoteResaltado.bringToFront) capaLoteResaltado.bringToFront();
+            resaltarBloqueDelLote(layer);
         }
 
         function enfocarSeleccion(layer) {
@@ -88,7 +168,7 @@
                     if (L.DomEvent) L.DomEvent.stop(e);
                     return;
                 }
-                resaltarLote(feature);
+                resaltarLote(feature, layer);
                 if(window.actualizarLista) window.actualizarLista(miZona, zonVig, zreUsocom, feature.properties || {});
                 enfocarSeleccion(layer);
             });
@@ -185,26 +265,3 @@
         });
         window.layer_usos_compatibles_planes = layer_usos_compatibles_planes;
         bounds_group.addLayer(layer_usos_compatibles_planes); map.addLayer(layer_usos_compatibles_planes);
-
-        map.createPane('pane_Bordes_1'); map.getPane('pane_Bordes_1').style.zIndex = 460; map.getPane('pane_Bordes_1').style.pointerEvents = 'none';
-        var rendererBordesCanvas = L.canvas({ pane: 'pane_Bordes_1', padding: 0.35 });
-        var layer_Bordes_1 = new L.geoJson(json_Bordes_1, {
-            pane: 'pane_Bordes_1',
-            renderer: rendererBordesCanvas,
-            interactive: false,
-            style: {
-                color: 'rgba(0,0,0,1.0)',
-                weight: 2.0,
-                fill: false,
-                fillOpacity: 0
-            }
-        });
-        window.layer_Bordes_1 = layer_Bordes_1;
-        window.actualizarVisibilidadBordes = function(visible) {
-            if (visible) {
-                if (!map.hasLayer(layer_Bordes_1)) map.addLayer(layer_Bordes_1);
-            } else if (map.hasLayer(layer_Bordes_1)) {
-                map.removeLayer(layer_Bordes_1);
-            }
-        };
-        map.addLayer(layer_Bordes_1);

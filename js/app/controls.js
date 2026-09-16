@@ -91,9 +91,40 @@
                     '</button>' +
                     '<ol class="lista-anexos">' +
                         '<li><a href="anexos/01-Ordenanza-2851.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf" aria-hidden="true"></i><span><strong>Ordenanza Nº 2851</strong><small>Ordenanza que aprueba el Índice de Usos para el distrito de San Borja</small></span></a></li>' +
-                        '<li><a href="anexos/02-Indice-Usos-CIIU-Rev4-MSB.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf" aria-hidden="true"></i><span><strong>Propuesta de Índice de Usos</strong><small>Actividades Urbanas CIIU Rev. 4 - MSB</small></span></a></li>' +
-                        '<li><a href="anexos/03-Indice-Usos-ZRE-CIIU-Rev4-MSB.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf" aria-hidden="true"></i><span><strong>Propuesta de Índices de Usos ZRE</strong><small>Actividades Urbanas ZRE CIIU Rev. 4 - MSB</small></span></a></li>' +
+                        '<li><a href="anexos/02-Anexo-01-Plano-Usos-Compatibles.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf" aria-hidden="true"></i><span><strong>Anexo N° 01</strong><small>Plano de usos compatibles del distrito de San Borja</small></span></a></li>' +
+                        '<li><a href="anexos/03-Anexo-02-Indice-Usos-CIIU-Rev4.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf" aria-hidden="true"></i><span><strong>Anexo N° 02</strong><small>Índice de usos para la ubicación de actividades urbanas del distrito de San Borja - CIIU Rev. 4</small></span></a></li>' +
+                        '<li><a href="anexos/04-Anexo-03-Indice-Usos-ZRE-CIIU-Rev4.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf" aria-hidden="true"></i><span><strong>Anexo N° 03</strong><small>Índice de usos para las Zonas de Reglamentación Especial (ZRE) - CIIU Rev. 4</small></span></a></li>' +
                     '</ol>' +
+                    '<div class="anexos-desplegable">' +
+                        '<button type="button" id="boton-listado-aprobados" class="boton-listado-aprobados" aria-expanded="false" aria-controls="listado-aprobados">' +
+                            '<span><i class="fas fa-check-circle" aria-hidden="true"></i>Listado de Clases aprobadas según Usos Compatibles</span>' +
+                            '<i class="fas fa-chevron-down" aria-hidden="true"></i>' +
+                        '</button>' +
+                        '<div id="listado-aprobados" class="listado-aprobados" aria-hidden="true">' +
+                            '<p>Seleccione un uso para consultar su listado aprobado.</p>' +
+                            '<strong class="listado-aprobados-grupo">Usos compatibles</strong>' +
+                            '<ul>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Mixto-Especializado.pdf" target="_blank" rel="noopener">Uso Mixto Especializado</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Mixto-Intensivo.pdf" target="_blank" rel="noopener">Uso Mixto Intensivo</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Mixto-Metropolitano.pdf" target="_blank" rel="noopener">Uso Mixto Metropolitano</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Mixto-Zonal.pdf" target="_blank" rel="noopener">Uso Mixto Zonal</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Mixto-Vecinal.pdf" target="_blank" rel="noopener">Uso Mixto Vecinal</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Residencial-Preferente.pdf" target="_blank" rel="noopener">Uso Residencial Preferente</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Residencial-Especial.pdf" target="_blank" rel="noopener">Uso Residencial Especial</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Especifico-Educacion.pdf" target="_blank" rel="noopener">Uso Específico - Educación</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Especifico-Hospitales.pdf" target="_blank" rel="noopener">Uso Específico - Hospitales</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Usos-Especificos-Otros-Usos.pdf" target="_blank" rel="noopener">Usos Específicos - Otros Usos</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/Uso-Recreacion-Publica.pdf" target="_blank" rel="noopener">Uso de Recreación Pública</a></li>' +
+                            '</ul>' +
+                            '<strong class="listado-aprobados-grupo">Planes Especiales</strong>' +
+                            '<ul class="listado-zre">' +
+                                '<li><a href="anexos/listado-aprobados/ZRE-1.pdf" target="_blank" rel="noopener">ZRE-1</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/ZRE-2.pdf" target="_blank" rel="noopener">ZRE-2</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/ZRE-3.pdf" target="_blank" rel="noopener">ZRE-3</a></li>' +
+                                '<li><a href="anexos/listado-aprobados/ZRE-4.pdf" target="_blank" rel="noopener">ZRE-4</a></li>' +
+                            '</ul>' +
+                        '</div>' +
+                    '</div>' +
                 '</section>';
             L.DomEvent.disableClickPropagation(div);
             L.DomEvent.disableScrollPropagation(div);
@@ -106,6 +137,16 @@
             var boton = document.getElementById('boton-info-titulo');
             var panel = document.getElementById('panel-anexos');
             var titulo = document.getElementById('panel-anexos-titulo');
+            var botonListado = document.getElementById('boton-listado-aprobados');
+            var listado = document.getElementById('listado-aprobados');
+
+            function alternarListado(forzarAbierto) {
+                var abrir = typeof forzarAbierto === 'boolean'
+                    ? forzarAbierto
+                    : listado.getAttribute('aria-hidden') === 'true';
+                listado.setAttribute('aria-hidden', abrir ? 'false' : 'true');
+                botonListado.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+            }
 
             function alternarPanel(forzarAbierto) {
                 var abrir = typeof forzarAbierto === 'boolean'
@@ -117,10 +158,12 @@
                 panel.setAttribute('aria-hidden', abrir ? 'false' : 'true');
                 boton.setAttribute('aria-expanded', abrir ? 'true' : 'false');
                 boton.setAttribute('aria-label', abrir ? 'Cerrar anexos' : 'Abrir anexos');
+                if (!abrir) alternarListado(false);
             }
 
             boton.addEventListener('click', function() { alternarPanel(); });
             titulo.addEventListener('click', function() { alternarPanel(false); });
+            botonListado.addEventListener('click', function() { alternarListado(); });
             document.addEventListener('click', function(e) {
                 if (!control.contains(e.target)) alternarPanel(false);
             });
@@ -239,7 +282,7 @@
         };
         legend.addTo(map);
 
-        // --- CAPAS AUXILIARES: BORDES Y PLANES ESPECIALES ---
+        // --- CAPAS AUXILIARES: PLANES ESPECIALES ---
         var capasAuxiliaresControl = L.control({position: 'bottomleft'});
         capasAuxiliaresControl.onAdd = function() {
             var div = L.DomUtil.create('div', 'control-capas-auxiliares capas-auxiliares-cerradas');
@@ -250,12 +293,6 @@
                 '</button>' +
                 '<div id="panel-capas-auxiliares" class="panel-capas-auxiliares mobile-tool-panel mobile-tool-panel--compact" aria-hidden="true">' +
                     '<button type="button" id="panel-capas-titulo" class="panel-capas-titulo" aria-label="Cerrar capas adicionales"><i class="fas fa-clone" aria-hidden="true"></i><span>Capas adicionales</span></button>' +
-                    '<label class="capa-auxiliar-item" for="capa-bordes-visible">' +
-                        '<input type="checkbox" id="capa-bordes-visible" checked>' +
-                        '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
-                        '<i class="muestra-capa muestra-borde" aria-hidden="true"></i>' +
-                        '<span>Borde</span>' +
-                    '</label>' +
                     '<div class="capa-zre-grupo">' +
                         '<div class="capa-zre-principal">' +
                             '<label class="capa-auxiliar-item capa-zre-item-principal" for="capa-zre-visible">' +
@@ -305,7 +342,6 @@
             var boton = document.getElementById('boton-capas-auxiliares');
             var panel = document.getElementById('panel-capas-auxiliares');
             var tituloPanel = document.getElementById('panel-capas-titulo');
-            var bordes = document.getElementById('capa-bordes-visible');
             var zrePrincipal = document.getElementById('capa-zre-visible');
             var botonZre = document.getElementById('boton-desplegar-zre');
             var listaZre = document.getElementById('lista-zonas-zre');
@@ -326,10 +362,6 @@
 
             boton.addEventListener('click', function() { alternarPanel(); });
             tituloPanel.addEventListener('click', function() { alternarPanel(false); });
-            bordes.addEventListener('change', function() {
-                if (window.actualizarVisibilidadBordes) window.actualizarVisibilidadBordes(this.checked);
-            });
-
             function sincronizarCheckZrePrincipal() {
                 var activas = checksZre.filter(function(check) { return check.checked; }).length;
                 zrePrincipal.checked = activas === checksZre.length;

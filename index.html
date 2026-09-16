@@ -8,20 +8,24 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20260916-anexos1">
+        <link rel="stylesheet" href="css/app.css?v=20260916-anexos5">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js?v=20260915-datos-unificados1"></script>
-        <script src="js/restricciones.js?v=20260824-restricciones1"></script>
+        <script src="js/restricciones.js?v=20260916-area-lote1"></script>
         <script src="data/vias.js"></script>
     </head>
     <body>
-        <header id="encabezado-institucional" class="encabezado-institucional" aria-label="Municipalidad de San Borja — Visor de la Ordenanza número 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja">
+        <header id="encabezado-institucional" class="encabezado-institucional" aria-label="Municipalidad de San Borja — Ordenanza número 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja — Visor de índice de uso">
             <div class="encabezado-marca">
                 <img src="assets/Escudo_de_San_Borja.png" alt="Escudo de San Borja">
                 <span class="encabezado-municipalidad">Municipalidad<br>de San Borja</span>
             </div>
             <span class="encabezado-separador" aria-hidden="true"></span>
-            <h1>Visor de la Ordenanza Nº 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja</h1>
+            <div class="encabezado-titulos">
+                <h1>Ordenanza Nº 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja</h1>
+                <span class="encabezado-titulo-separador" aria-hidden="true"></span>
+                <p class="encabezado-subtitulo">Visor de índice de uso</p>
+            </div>
         </header>
 
         <div id="map"></div>
@@ -33,6 +37,9 @@
                 </button>
                 <i class="fas fa-search icono-lupa"></i>
                 <input type="text" id="buscador-vias" placeholder="Buscar vía..." autocomplete="off" aria-label="Buscar vía">
+                <button type="button" id="boton-limpiar-vias" aria-label="Limpiar búsqueda de vía" title="Limpiar búsqueda" hidden>
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
                 <div id="sugerencias-vias"></div>
             </div>
         </div>
@@ -76,8 +83,7 @@
             <button type="button" id="boton-altura-panel" class="boton-altura-panel" aria-label="Expandir detalle del lote"></button>
             <div class="cabecera-negra">
                 <div class="panel-titulos">
-                    <span class="panel-contexto">Plano de usos compatibles</span>
-                    <h4>Detalle del lote</h4>
+                    <h4>Actividades urbanas permitidas y permitidas con restricción en el lote</h4>
                 </div>
                 <button type="button" class="area-arrastre" id="boton-arrastre" aria-label="Cerrar detalle del lote">
                     <i class="fas fa-times" aria-hidden="true"></i>
@@ -115,17 +121,17 @@
         <script src="js/leaflet.pattern.js"></script>
         <script src="js/leaflet-hash.js"></script>
 
-        <script src="data/usos_compatibles_0.js?v=20260916-qgis1"></script>
-        <script src="data/Bordes_1.js?v=20260916-qgis1"></script>
+        <script src="data/usos_compatibles_0.js?v=20260916-qgis2"></script>
+        <script src="data/Bordes_1.js?v=20260916-qgis2"></script>
 
         <script src="js/app/core.js?v=20260916-definiciones1"></script>
-        <script src="js/app/legend-filters.js?v=20260916-zre-layers1"></script>
-        <script src="js/app/layers.js?v=20260916-qgis-layers2"></script>
-        <script src="js/app/controls.js?v=20260916-anexos1"></script>
-        <script src="js/app/panel.js?v=20260916-no-retiros1"></script>
+        <script src="js/app/legend-filters.js?v=20260916-bloque1"></script>
+        <script src="js/app/layers.js?v=20260916-bloque2"></script>
+        <script src="js/app/controls.js?v=20260916-bordes2"></script>
+        <script src="js/app/panel.js?v=20260916-correccion-restricciones1"></script>
         <script src="js/app/welcome-modal.js"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>
         <script src="js/app/map-opacity.js?v=20260824-toolbar2"></script>
-        <script src="js/app/vias-search.js?v=20260824-ui1"></script>
+        <script src="js/app/vias-search.js?v=20260916-limpiar1"></script>
     </body>
 </html>

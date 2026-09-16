@@ -65,5 +65,7 @@
             map.removeLayer(window.capaLoteResaltado);
             window.capaLoteResaltado = null;
         }
+
+        if (window.limpiarBordeBloqueSeleccionado) window.limpiarBordeBloqueSeleccionado();
     };
 })();
