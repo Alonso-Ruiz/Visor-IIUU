@@ -82,7 +82,8 @@
             });
 
             layer.on('click', function(e) {
-                if (window.categoriaUsoVisible && !window.categoriaUsoVisible(feature.properties['USOS_COMPA'])) {
+                if ((window.categoriaUsoVisible && !window.categoriaUsoVisible(feature.properties['USOS_COMPA'])) ||
+                    (window.zonaZreVisible && !window.zonaZreVisible(feature))) {
                     map.closePopup();
                     if (L.DomEvent) L.DomEvent.stop(e);
                     return;

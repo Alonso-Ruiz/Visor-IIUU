@@ -1,5 +1,11 @@
 (function() {
     window.categoriasUsoActivas = window.categoriasUsoActivas || {};
+    window.zonasZreActivas = window.zonasZreActivas || {
+        'ZRE-1': true,
+        'ZRE-2': true,
+        'ZRE-3': true,
+        'ZRE-4': true
+    };
 
     window.normalizarCategoriaUso = function(valor) {
         var categoria = String(valor || '');
@@ -20,8 +26,15 @@
         return window.categoriasUsoActivas[categoria] !== false;
     };
 
+    window.zonaZreVisible = function(feature) {
+        var propiedades = feature && feature.properties ? feature.properties : {};
+        var zre = String(propiedades['ZON_VIG'] || '').trim().toUpperCase();
+        if (!/^ZRE-[1-4]$/.test(zre)) return true;
+        return window.zonasZreActivas[zre] !== false;
+    };
+
     window.aplicarVisibilidadCategoria = function(estilo, feature) {
-        if (window.categoriaUsoVisible(feature.properties['USOS_COMPA'])) return estilo;
+        if (window.categoriaUsoVisible(feature.properties['USOS_COMPA']) && window.zonaZreVisible(feature)) return estilo;
 
         var oculto = Object.assign({}, estilo);
         oculto.opacity = 0;

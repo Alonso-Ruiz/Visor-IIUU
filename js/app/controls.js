@@ -60,43 +60,6 @@
 
         window.cerrarPanelesMapa = cerrarPanelesMapa;
 
-        var informacionControl = L.control({position: 'bottomleft'});
-        informacionControl.onAdd = function() {
-            var div = L.DomUtil.create('div', 'control-info-titulo titulo-info-cerrado');
-            div.id = 'control-info-titulo';
-            div.innerHTML =
-                '<button type="button" id="boton-info-titulo" class="boton-info-titulo" aria-label="Mostrar encabezado del visor" aria-expanded="true">' +
-                    '<i class="fas fa-info" aria-hidden="true"></i>' +
-                '</button>';
-            L.DomEvent.disableClickPropagation(div);
-            return div;
-        };
-        informacionControl.addTo(map);
-
-        (function iniciarTituloInformativo() {
-            var tarjeta = document.getElementById('tarjeta-titulo');
-            var bloque = document.getElementById('bloque-superior-izquierdo');
-            var boton = document.getElementById('boton-info-titulo');
-            if (!tarjeta || !bloque || !boton) return;
-
-            function fijarVisible(visible) {
-                bloque.classList.toggle('titulo-oculto', !visible);
-                document.body.classList.toggle('titulo-visible', visible);
-                document.body.classList.toggle('titulo-oculto', !visible);
-                boton.setAttribute('aria-expanded', visible ? 'true' : 'false');
-                boton.setAttribute('aria-label', visible ? 'Ocultar encabezado del visor' : 'Mostrar encabezado del visor');
-            }
-
-            boton.addEventListener('click', function() {
-                cerrarPanelesMapa();
-                fijarVisible(bloque.classList.contains('titulo-oculto'));
-            });
-
-            setTimeout(function() {
-                fijarVisible(false);
-            }, 3600);
-        })();
-
         // --- LEYENDA (INTERACTIVA) ---
         window.toggleConcepto = function(id) {
             var el = document.getElementById(id);
@@ -116,7 +79,7 @@
                              '<span id="leyenda-arrow" class="leyenda-arrow">▼</span></button>';
 
             var listaHtml = '<div id="leyenda-lista" class="leyenda-lista mobile-tool-panel mobile-tool-panel--legend mobile-tool-panel--scrollable" style="display: none;">' +
-                            '<div class="leyenda-panel-titulo"><strong>Leyenda de usos</strong><small>Colores del mapa</small></div>';
+                            '<button type="button" id="leyenda-panel-titulo" class="leyenda-panel-titulo" aria-label="Cerrar leyenda de usos"><strong>Leyenda de usos</strong><small>Colores del mapa</small></button>';
 
             var cats = [
                 { id: 'Uso Mixto Especializado', n: 'Mixto Especializado', c: '#7a0403' }, { id: 'Uso Mixto Intensivo', n: 'Mixto Intensivo', c: '#b72020' },
@@ -126,10 +89,7 @@
                 { id: 'Usos Específicos - Otros Usos', n: 'Usos Específicos - Otros Usos', c: '#818181' },
                 { id: 'Usos Específicos - Educación', n: 'Usos Específicos - Educación', c: '#818181' },
                 { id: 'Usos Específicos - Hospital', n: 'Usos Específicos - Hospital', c: '#818181' },
-                { id: 'Uso de Recreación Pública', n: 'Recreación Pública', c: '#a4cda3' },
-                { id: 'Planes Especiales', n: 'Planes Especiales', c: 'repeating-linear-gradient(45deg, rgba(0,0,0,.75) 0, rgba(0,0,0,.75) 1px, #f4f4f4 1px, #f4f4f4 4px)' },
-                { id: 'Planes Especiales - Uso Mixto Zonal', n: 'P.E. Uso Mixto Zonal', c: 'repeating-linear-gradient(45deg, rgba(0,0,0,.75) 0, rgba(0,0,0,.75) 1px, #f47a7a 1px, #f47a7a 4px)' },
-                { id: 'Planes Especiales - Uso Mixto Vecinal', n: 'P.E. Uso Mixto Vecinal', c: 'repeating-linear-gradient(45deg, rgba(0,0,0,.75) 0, rgba(0,0,0,.75) 1px, #f27144 1px, #f27144 4px)' }
+                { id: 'Uso de Recreación Pública', n: 'Recreación Pública', c: '#a4cda3' }
             ];
 
             cats.forEach((i, idx) => {
@@ -162,16 +122,25 @@
                     });
                 }
 
-                document.getElementById('leyenda-header').addEventListener('click', function() {
+                function fijarLeyendaAbierta(abierta) {
                     var l = document.getElementById('leyenda-lista'); var a = document.getElementById('leyenda-arrow');
-                    var h = l.style.display === 'none';
-                    if (h) cerrarPanelesMapa('leyenda');
-                    l.style.display = h ? 'block' : 'none';
-                    a.innerHTML = h ? '▲' : '▼';
-                    this.closest('.legend').classList.toggle('leyenda-abierta', h);
-                    this.closest('.legend').classList.toggle('leyenda-cerrada', !h);
-                    this.setAttribute('aria-expanded', h ? 'true' : 'false');
-                    this.setAttribute('aria-label', h ? 'Cerrar leyenda de usos' : 'Abrir leyenda de usos');
+                    var botonPrincipal = document.getElementById('leyenda-header');
+                    var contenedor = botonPrincipal.closest('.legend');
+                    if (abierta) cerrarPanelesMapa('leyenda');
+                    l.style.display = abierta ? 'block' : 'none';
+                    a.innerHTML = abierta ? '▲' : '▼';
+                    contenedor.classList.toggle('leyenda-abierta', abierta);
+                    contenedor.classList.toggle('leyenda-cerrada', !abierta);
+                    botonPrincipal.setAttribute('aria-expanded', abierta ? 'true' : 'false');
+                    botonPrincipal.setAttribute('aria-label', abierta ? 'Cerrar leyenda de usos' : 'Abrir leyenda de usos');
+                }
+
+                document.getElementById('leyenda-header').addEventListener('click', function() {
+                    fijarLeyendaAbierta(document.getElementById('leyenda-lista').style.display === 'none');
+                });
+
+                document.getElementById('leyenda-panel-titulo').addEventListener('click', function() {
+                    fijarLeyendaAbierta(false);
                 });
 
                 document.querySelectorAll('.leyenda-concepto-toggle').forEach(function(btn) {
@@ -211,7 +180,7 @@
                     '<i class="fas fa-clone" aria-hidden="true"></i>' +
                 '</button>' +
                 '<div id="panel-capas-auxiliares" class="panel-capas-auxiliares mobile-tool-panel mobile-tool-panel--compact" aria-hidden="true">' +
-                    '<div class="panel-capas-titulo"><i class="fas fa-clone" aria-hidden="true"></i><span>Capas adicionales</span></div>' +
+                    '<button type="button" id="panel-capas-titulo" class="panel-capas-titulo" aria-label="Cerrar capas adicionales"><i class="fas fa-clone" aria-hidden="true"></i><span>Capas adicionales</span></button>' +
                     '<label class="capa-auxiliar-item" for="capa-retiros-visible">' +
                         '<input type="checkbox" id="capa-retiros-visible" checked>' +
                         '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
@@ -224,6 +193,42 @@
                         '<i class="muestra-capa muestra-borde" aria-hidden="true"></i>' +
                         '<span>Borde</span>' +
                     '</label>' +
+                    '<div class="capa-zre-grupo">' +
+                        '<div class="capa-zre-principal">' +
+                            '<label class="capa-auxiliar-item capa-zre-item-principal" for="capa-zre-visible">' +
+                                '<input type="checkbox" id="capa-zre-visible" checked>' +
+                                '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                                '<i class="muestra-capa muestra-zre" aria-hidden="true"></i>' +
+                                '<span>Planes Especiales (ZRE)</span>' +
+                            '</label>' +
+                            '<button type="button" id="boton-desplegar-zre" class="boton-desplegar-zre" aria-label="Mostrar zonas de reglamentación especial" aria-expanded="false">' +
+                                '<i class="fas fa-chevron-down" aria-hidden="true"></i>' +
+                            '</button>' +
+                        '</div>' +
+                        '<div id="lista-zonas-zre" class="lista-zonas-zre" aria-hidden="true">' +
+                            '<p class="capa-zre-descripcion">' + definicionesZonas['Planes Especiales'] + '</p>' +
+                            '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-1-visible">' +
+                                '<input type="checkbox" id="capa-zre-1-visible" data-zre="ZRE-1" checked>' +
+                                '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                                '<span><strong>ZRE-1</strong><small>San Juan Masías, El Bosque y Pequeños Agricultores</small></span>' +
+                            '</label>' +
+                            '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-2-visible">' +
+                                '<input type="checkbox" id="capa-zre-2-visible" data-zre="ZRE-2" checked>' +
+                                '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                                '<span><strong>ZRE-2</strong><small>Papa Juan XXIII</small></span>' +
+                            '</label>' +
+                            '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-3-visible">' +
+                                '<input type="checkbox" id="capa-zre-3-visible" data-zre="ZRE-3" checked>' +
+                                '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                                '<span><strong>ZRE-3</strong><small>Área rústica del Subsector 12-A</small></span>' +
+                            '</label>' +
+                            '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-4-visible">' +
+                                '<input type="checkbox" id="capa-zre-4-visible" data-zre="ZRE-4" checked>' +
+                                '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                                '<span><strong>ZRE-4</strong><small>Centro Cultural de la Nación</small></span>' +
+                            '</label>' +
+                        '</div>' +
+                    '</div>' +
                 '</div>';
 
             L.DomEvent.disableClickPropagation(div);
@@ -236,8 +241,13 @@
             var control = document.getElementById('control-capas-auxiliares');
             var boton = document.getElementById('boton-capas-auxiliares');
             var panel = document.getElementById('panel-capas-auxiliares');
+            var tituloPanel = document.getElementById('panel-capas-titulo');
             var retiros = document.getElementById('capa-retiros-visible');
             var bordes = document.getElementById('capa-bordes-visible');
+            var zrePrincipal = document.getElementById('capa-zre-visible');
+            var botonZre = document.getElementById('boton-desplegar-zre');
+            var listaZre = document.getElementById('lista-zonas-zre');
+            var checksZre = Array.prototype.slice.call(document.querySelectorAll('.capa-zre-subitem input[data-zre]'));
 
             function alternarPanel(forzarAbierto) {
                 var abrir = typeof forzarAbierto === 'boolean'
@@ -253,11 +263,47 @@
             }
 
             boton.addEventListener('click', function() { alternarPanel(); });
+            tituloPanel.addEventListener('click', function() { alternarPanel(false); });
             retiros.addEventListener('change', function() {
                 if (window.actualizarVisibilidadRetiros) window.actualizarVisibilidadRetiros(this.checked);
             });
             bordes.addEventListener('change', function() {
                 if (window.actualizarVisibilidadBordes) window.actualizarVisibilidadBordes(this.checked);
+            });
+
+            function sincronizarCheckZrePrincipal() {
+                var activas = checksZre.filter(function(check) { return check.checked; }).length;
+                zrePrincipal.checked = activas === checksZre.length;
+                zrePrincipal.indeterminate = activas > 0 && activas < checksZre.length;
+            }
+
+            function actualizarZonasZre() {
+                window.zonasZreActivas = window.zonasZreActivas || {};
+                checksZre.forEach(function(check) {
+                    window.zonasZreActivas[check.getAttribute('data-zre')] = check.checked;
+                });
+                sincronizarCheckZrePrincipal();
+                if (window.actualizarVisibilidadUsos) window.actualizarVisibilidadUsos();
+            }
+
+            function alternarListaZre(forzarAbierta) {
+                var abrir = typeof forzarAbierta === 'boolean'
+                    ? forzarAbierta
+                    : listaZre.getAttribute('aria-hidden') === 'true';
+                listaZre.setAttribute('aria-hidden', abrir ? 'false' : 'true');
+                botonZre.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+                botonZre.setAttribute('aria-label', abrir ? 'Ocultar zonas de reglamentación especial' : 'Mostrar zonas de reglamentación especial');
+            }
+
+            botonZre.addEventListener('click', function() { alternarListaZre(); });
+            zrePrincipal.addEventListener('change', function() {
+                var visible = this.checked;
+                checksZre.forEach(function(check) { check.checked = visible; });
+                actualizarZonasZre();
+                alternarListaZre(true);
+            });
+            checksZre.forEach(function(check) {
+                check.addEventListener('change', actualizarZonasZre);
             });
 
             document.addEventListener('click', function(e) {

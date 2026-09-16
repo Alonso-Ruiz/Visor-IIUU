@@ -8,24 +8,26 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20260915-mobile-scale2">
+        <link rel="stylesheet" href="css/app.css?v=20260916-ordenanza-header1">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js?v=20260915-datos-unificados1"></script>
         <script src="js/restricciones.js?v=20260824-restricciones1"></script>
         <script src="data/vias.js"></script>
     </head>
     <body>
+        <header id="encabezado-institucional" class="encabezado-institucional" aria-label="Municipalidad de San Borja — Visor de la Ordenanza número 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja">
+            <div class="encabezado-marca">
+                <img src="assets/Escudo_de_San_Borja.png" alt="Escudo de San Borja">
+                <span class="encabezado-municipalidad">Municipalidad<br>de San Borja</span>
+            </div>
+            <span class="encabezado-separador" aria-hidden="true"></span>
+            <h1>Visor de la Ordenanza Nº 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja</h1>
+            <p>San Borja mi orgullo</p>
+        </header>
+
         <div id="map"></div>
 
         <div id="bloque-superior-izquierdo">
-            <div id="tarjeta-titulo" class="mobile-tool-panel mobile-tool-panel--compact">
-                <div class="icono-mapa"><i class="fas fa-map-marked-alt"></i></div>
-                <div class="texto-titulo">
-                    <h1>Plano de Usos Compatibles</h1>
-                    <h2>Distrito de San Borja</h2>
-                </div>
-            </div>
-
             <div id="buscador-vias-container" class="buscador-cerrado">
                 <button type="button" id="boton-buscar-vias" aria-label="Abrir buscador de vías" aria-expanded="false">
                     <i class="fas fa-search"></i>
@@ -52,7 +54,7 @@
 
                 <img class="modal-logo" src="assets/Escudo_de_San_Borja.png" alt="Escudo de San Borja">
                 <h2 id="welcome-title">Municipalidad de San Borja</h2>
-                <h3>Plano de Usos Compatibles</h3>
+                <h3>Visor de la Ordenanza Nº 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja</h3>
                 <p>Este visor permite consultar de forma interactiva la compatibilidad de usos del suelo, revisar la información de cada lote y explorar las actividades permitidas o sujetas a restricciones.</p>
                 <hr class="modal-divider">
                 <p class="modal-help-title">¿Cómo usar el visor?</p>
@@ -118,10 +120,10 @@
         <script src="data/poligono_retiros_con_codigos_2.js"></script>
         <script src="data/bordes_2.js"></script>
 
-        <script src="js/app/core.js?v=20260911-compact1"></script>
-        <script src="js/app/legend-filters.js?v=20260909-planes-overlay1"></script>
-        <script src="js/app/layers.js?v=20260915-responsive-focus1"></script>
-        <script src="js/app/controls.js?v=20260915-mobile-panels1"></script>
+        <script src="js/app/core.js?v=20260916-definiciones1"></script>
+        <script src="js/app/legend-filters.js?v=20260916-zre-layers1"></script>
+        <script src="js/app/layers.js?v=20260916-zre-layers1"></script>
+        <script src="js/app/controls.js?v=20260916-desktop-header1"></script>
         <script src="js/app/panel.js?v=20260911-mobile-snap1"></script>
         <script src="js/app/welcome-modal.js"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>
