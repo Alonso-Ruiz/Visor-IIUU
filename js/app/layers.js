@@ -159,10 +159,10 @@
         }
 
         var rendererLotesCanvas = L.canvas({ pane: 'pane_usos_compatibles_0', padding: 0.35, tolerance: 6 });
-        var layer_usos_compatibles_0 = new L.geoJson(json_usos_compatibles_1, {
+        var layer_usos_compatibles_0 = new L.geoJson(json_usos_compatibles_0, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_usos_compatibles_1',
+            dataVar: 'json_usos_compatibles_0',
             layerName: 'layer_usos_compatibles_0',
             pane: 'pane_usos_compatibles_0',
             renderer: rendererLotesCanvas,
@@ -172,10 +172,10 @@
         window.layer_usos_compatibles_0 = layer_usos_compatibles_0;
         bounds_group.addLayer(layer_usos_compatibles_0); map.addLayer(layer_usos_compatibles_0);
 
-        var layer_usos_compatibles_planes = new L.geoJson(json_usos_compatibles_1, {
+        var layer_usos_compatibles_planes = new L.geoJson(json_usos_compatibles_0, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_usos_compatibles_1',
+            dataVar: 'json_usos_compatibles_0',
             layerName: 'layer_usos_compatibles_planes',
             pane: 'pane_tramado_planes_especiales',
             renderer: rendererPlanesEspecialesSvg,
@@ -186,76 +186,9 @@
         window.layer_usos_compatibles_planes = layer_usos_compatibles_planes;
         bounds_group.addLayer(layer_usos_compatibles_planes); map.addLayer(layer_usos_compatibles_planes);
 
-        function style_retiros_con_codigos_0() {
-            return {
-                pane: 'pane_retiros_con_codigos',
-                opacity: 1,
-                color: 'rgba(247,247,247,1.0)',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 0.78,
-                fillColor: 'rgba(150,150,150,1.0)',
-                interactive: true
-            };
-        }
-
-        function seleccionarRetiroConCodigo(feature, layer) {
-            var props = feature.properties || {};
-            var codigo = String(props['CÓDIGO_RE'] || props['CÃ“DIGO_RE'] || props['CODIGO_RE'] || '').trim();
-            var area = props['AREA'];
-            var areaTexto = isFinite(Number(area)) ? Number(area).toLocaleString('es-PE', { maximumFractionDigits: 2 }) + ' m²' : 'No especificada';
-            var contenidoPopup = '<strong>Retiro</strong>' +
-                (codigo ? '<br><span>Código: ' + codigo + '</span>' : '') +
-                '<br><span>Área: ' + areaTexto + '</span>';
-
-            layer.bindPopup(contenidoPopup, {
-                className: 'popup-limpio',
-                closeButton: false,
-                autoPanPaddingBottomRight: [10, window.innerWidth <= 896 ? (window.innerHeight * 0.55) : 50],
-                autoPanPaddingTopLeft: [10, 50]
-            });
-
-            layer.on('click', function(e) {
-                resaltarLote(feature);
-                if (window.actualizarDetalleRetiro) window.actualizarDetalleRetiro(feature.properties || {});
-                if (window.innerWidth > 896) layer.openPopup(e.latlng);
-                enfocarSeleccion(layer);
-                if (L.DomEvent) L.DomEvent.stop(e);
-            });
-        }
-
-        if (typeof json_Polgono_retiros_concdigos_2 !== 'undefined') {
-            map.createPane('pane_retiros_con_codigos');
-            map.getPane('pane_retiros_con_codigos').style.zIndex = 430;
-
-            var rendererRetirosSvg = L.svg({ pane: 'pane_retiros_con_codigos', padding: 0.35 });
-            var layer_retiros_con_codigos = new L.geoJson(json_Polgono_retiros_concdigos_2, {
-                pane: 'pane_retiros_con_codigos',
-                renderer: rendererRetirosSvg,
-                interactive: true,
-                onEachFeature: seleccionarRetiroConCodigo,
-                style: style_retiros_con_codigos_0
-            });
-            window.layer_retiros_con_codigos = layer_retiros_con_codigos;
-            window.actualizarVisibilidadRetiros = function(visible) {
-                if (visible) {
-                    if (!map.hasLayer(layer_retiros_con_codigos)) map.addLayer(layer_retiros_con_codigos);
-                } else {
-                    if (map.hasLayer(layer_retiros_con_codigos)) map.removeLayer(layer_retiros_con_codigos);
-                    if (window.capaLoteResaltado) {
-                        map.removeLayer(window.capaLoteResaltado);
-                        window.capaLoteResaltado = null;
-                    }
-                    map.closePopup();
-                }
-            };
-            bounds_group.addLayer(layer_retiros_con_codigos);
-            map.addLayer(layer_retiros_con_codigos);
-        }
-
         map.createPane('pane_Bordes_1'); map.getPane('pane_Bordes_1').style.zIndex = 460; map.getPane('pane_Bordes_1').style.pointerEvents = 'none';
         var rendererBordesCanvas = L.canvas({ pane: 'pane_Bordes_1', padding: 0.35 });
-        var layer_Bordes_1 = new L.geoJson(json_Bordes_2, {
+        var layer_Bordes_1 = new L.geoJson(json_Bordes_1, {
             pane: 'pane_Bordes_1',
             renderer: rendererBordesCanvas,
             interactive: false,

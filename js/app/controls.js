@@ -10,6 +10,21 @@
         norteControl.addTo(map);
 
         function cerrarPanelesMapa(excepto) {
+            if (excepto !== 'anexos') {
+                var anexos = document.getElementById('control-info-titulo');
+                var botonAnexos = document.getElementById('boton-info-titulo');
+                var panelAnexos = document.getElementById('panel-anexos');
+                if (anexos && panelAnexos) {
+                    anexos.classList.remove('anexos-abiertos');
+                    anexos.classList.add('anexos-cerrados');
+                    panelAnexos.setAttribute('aria-hidden', 'true');
+                    if (botonAnexos) {
+                        botonAnexos.setAttribute('aria-expanded', 'false');
+                        botonAnexos.setAttribute('aria-label', 'Abrir anexos');
+                    }
+                }
+            }
+
             if (excepto !== 'leyenda') {
                 var leyenda = document.querySelector('.info.legend');
                 var listaLeyenda = document.getElementById('leyenda-lista');
@@ -59,6 +74,60 @@
         }
 
         window.cerrarPanelesMapa = cerrarPanelesMapa;
+
+        // --- ANEXOS OFICIALES ---
+        var anexosControl = L.control({position: 'bottomleft'});
+        anexosControl.onAdd = function() {
+            var div = L.DomUtil.create('div', 'control-info-titulo anexos-cerrados');
+            div.id = 'control-info-titulo';
+            div.innerHTML =
+                '<button type="button" id="boton-info-titulo" class="boton-info-titulo" aria-label="Abrir anexos" aria-expanded="false">' +
+                    '<i class="fas fa-info-circle" aria-hidden="true"></i>' +
+                '</button>' +
+                '<section id="panel-anexos" class="panel-anexos mobile-tool-panel mobile-tool-panel--compact" aria-hidden="true" aria-labelledby="panel-anexos-titulo">' +
+                    '<button type="button" id="panel-anexos-titulo" class="panel-anexos-titulo" aria-label="Cerrar anexos">' +
+                        '<span><strong>Anexos</strong><small>Documentos oficiales del visor</small></span>' +
+                        '<i class="fas fa-times" aria-hidden="true"></i>' +
+                    '</button>' +
+                    '<ol class="lista-anexos">' +
+                        '<li><a href="anexos/01-Ordenanza-2851.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf" aria-hidden="true"></i><span><strong>Ordenanza Nº 2851</strong><small>Ordenanza que aprueba el Índice de Usos para el distrito de San Borja</small></span></a></li>' +
+                        '<li><a href="anexos/02-Indice-Usos-CIIU-Rev4-MSB.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf" aria-hidden="true"></i><span><strong>Propuesta de Índice de Usos</strong><small>Actividades Urbanas CIIU Rev. 4 - MSB</small></span></a></li>' +
+                        '<li><a href="anexos/03-Indice-Usos-ZRE-CIIU-Rev4-MSB.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf" aria-hidden="true"></i><span><strong>Propuesta de Índices de Usos ZRE</strong><small>Actividades Urbanas ZRE CIIU Rev. 4 - MSB</small></span></a></li>' +
+                    '</ol>' +
+                '</section>';
+            L.DomEvent.disableClickPropagation(div);
+            L.DomEvent.disableScrollPropagation(div);
+            return div;
+        };
+        anexosControl.addTo(map);
+
+        (function iniciarAnexos() {
+            var control = document.getElementById('control-info-titulo');
+            var boton = document.getElementById('boton-info-titulo');
+            var panel = document.getElementById('panel-anexos');
+            var titulo = document.getElementById('panel-anexos-titulo');
+
+            function alternarPanel(forzarAbierto) {
+                var abrir = typeof forzarAbierto === 'boolean'
+                    ? forzarAbierto
+                    : !control.classList.contains('anexos-abiertos');
+                if (abrir) cerrarPanelesMapa('anexos');
+                control.classList.toggle('anexos-abiertos', abrir);
+                control.classList.toggle('anexos-cerrados', !abrir);
+                panel.setAttribute('aria-hidden', abrir ? 'false' : 'true');
+                boton.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+                boton.setAttribute('aria-label', abrir ? 'Cerrar anexos' : 'Abrir anexos');
+            }
+
+            boton.addEventListener('click', function() { alternarPanel(); });
+            titulo.addEventListener('click', function() { alternarPanel(false); });
+            document.addEventListener('click', function(e) {
+                if (!control.contains(e.target)) alternarPanel(false);
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') alternarPanel(false);
+            });
+        })();
 
         // --- LEYENDA (INTERACTIVA) ---
         window.toggleConcepto = function(id) {
@@ -170,7 +239,7 @@
         };
         legend.addTo(map);
 
-        // --- CAPAS AUXILIARES: RETIROS Y BORDES ---
+        // --- CAPAS AUXILIARES: BORDES Y PLANES ESPECIALES ---
         var capasAuxiliaresControl = L.control({position: 'bottomleft'});
         capasAuxiliaresControl.onAdd = function() {
             var div = L.DomUtil.create('div', 'control-capas-auxiliares capas-auxiliares-cerradas');
@@ -181,12 +250,6 @@
                 '</button>' +
                 '<div id="panel-capas-auxiliares" class="panel-capas-auxiliares mobile-tool-panel mobile-tool-panel--compact" aria-hidden="true">' +
                     '<button type="button" id="panel-capas-titulo" class="panel-capas-titulo" aria-label="Cerrar capas adicionales"><i class="fas fa-clone" aria-hidden="true"></i><span>Capas adicionales</span></button>' +
-                    '<label class="capa-auxiliar-item" for="capa-retiros-visible">' +
-                        '<input type="checkbox" id="capa-retiros-visible" checked>' +
-                        '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
-                        '<i class="muestra-capa muestra-retiro" aria-hidden="true"></i>' +
-                        '<span>Retiro</span>' +
-                    '</label>' +
                     '<label class="capa-auxiliar-item" for="capa-bordes-visible">' +
                         '<input type="checkbox" id="capa-bordes-visible" checked>' +
                         '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
@@ -242,7 +305,6 @@
             var boton = document.getElementById('boton-capas-auxiliares');
             var panel = document.getElementById('panel-capas-auxiliares');
             var tituloPanel = document.getElementById('panel-capas-titulo');
-            var retiros = document.getElementById('capa-retiros-visible');
             var bordes = document.getElementById('capa-bordes-visible');
             var zrePrincipal = document.getElementById('capa-zre-visible');
             var botonZre = document.getElementById('boton-desplegar-zre');
@@ -264,9 +326,6 @@
 
             boton.addEventListener('click', function() { alternarPanel(); });
             tituloPanel.addEventListener('click', function() { alternarPanel(false); });
-            retiros.addEventListener('change', function() {
-                if (window.actualizarVisibilidadRetiros) window.actualizarVisibilidadRetiros(this.checked);
-            });
             bordes.addEventListener('change', function() {
                 if (window.actualizarVisibilidadBordes) window.actualizarVisibilidadBordes(this.checked);
             });
