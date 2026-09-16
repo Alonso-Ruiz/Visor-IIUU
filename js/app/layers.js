@@ -1,5 +1,45 @@
 ﻿// --- SISTEMA DE RESALTADO ---
         var capaBloqueSeleccionado = null;
+        var capaRetiroResaltado = null;
+
+        window.limpiarRetiroResaltado = function() {
+            if (capaRetiroResaltado) map.removeLayer(capaRetiroResaltado);
+            capaRetiroResaltado = null;
+            window.capaRetiroResaltado = null;
+        };
+
+        function resaltarRetiro(feature) {
+            window.limpiarRetiroResaltado();
+            if (!feature) return;
+            if (capaLoteResaltado) map.removeLayer(capaLoteResaltado);
+            capaLoteResaltado = null;
+            window.capaLoteResaltado = null;
+            if (window.limpiarBordeBloqueSeleccionado) window.limpiarBordeBloqueSeleccionado();
+
+            if (!map.getPane('pane_retiro_resaltado')) {
+                map.createPane('pane_retiro_resaltado');
+                map.getPane('pane_retiro_resaltado').style.zIndex = 651;
+                map.getPane('pane_retiro_resaltado').style.pointerEvents = 'none';
+            }
+
+            capaRetiroResaltado = L.geoJson(feature, {
+                pane: 'pane_retiro_resaltado',
+                style: {
+                    color: '#00D9FF',
+                    weight: 4,
+                    opacity: 1,
+                    dashArray: '9 6',
+                    lineCap: 'round',
+                    lineJoin: 'round',
+                    fill: true,
+                    fillColor: '#00D9FF',
+                    fillOpacity: 0.16,
+                    className: 'lote-resaltado-animacion'
+                },
+                interactive: false
+            }).addTo(map);
+            window.capaRetiroResaltado = capaRetiroResaltado;
+        }
 
         function puntoEnAnillo(punto, anillo) {
             var dentro = false;
@@ -79,6 +119,7 @@
         }
 
         function resaltarLote(feature, layer) {
+            window.limpiarRetiroResaltado();
             if (capaLoteResaltado) map.removeLayer(capaLoteResaltado);
             window.capaLoteResaltado = null;
             if (!map.getPane('pane_lote_resaltado')) {
@@ -180,6 +221,9 @@
         map.createPane('pane_tramado_planes_especiales');
         map.getPane('pane_tramado_planes_especiales').style.zIndex = 401;
         map.getPane('pane_tramado_planes_especiales').style['mix-blend-mode'] = 'normal';
+        map.createPane('pane_retiros');
+        map.getPane('pane_retiros').style.zIndex = 402;
+        map.getPane('pane_retiros').style.mixBlendMode = 'multiply';
 
         // El tramado vive en un SVG independiente, encima de la capa que
         // conserva el color y los bordes originales de cada poligono.
@@ -195,6 +239,9 @@
             angle: 315
         });
         pattern_usos_compatibles_0_0.addTo(map);
+
+        // Retiro normativo: oscurece con suavidad el color real del uso que queda debajo.
+        var rendererRetirosSvg = L.svg({ pane: 'pane_retiros', padding: 0.35 });
         function style_usos_compatibles_0_0(feature) {
             var categoriaEstilo = window.normalizarCategoriaUso
                 ? window.normalizarCategoriaUso(feature.properties['USOS_COMPA'])
@@ -265,3 +312,44 @@
         });
         window.layer_usos_compatibles_planes = layer_usos_compatibles_planes;
         bounds_group.addLayer(layer_usos_compatibles_planes); map.addLayer(layer_usos_compatibles_planes);
+
+        var capaRetiros = typeof json_Polgono_retiros_concdigos_2 !== 'undefined'
+            ? new L.geoJson(json_Polgono_retiros_concdigos_2, {
+                pane: 'pane_retiros',
+                renderer: rendererRetirosSvg,
+                interactive: true,
+                onEachFeature: function(feature, layer) {
+                    var area = Number(feature.properties && feature.properties.AREA);
+                    var areaTexto = Number.isFinite(area)
+                        ? area.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m²'
+                        : 'Área no disponible';
+                    layer.bindPopup(
+                        '<div class="popup-retiro-contenido">' +
+                            '<strong>Área de retiro mínimo normativo</strong>' +
+                            '<span>' + areaTexto + '</span>' +
+                        '</div>',
+                        {
+                            className: 'popup-retiro',
+                            closeButton: false,
+                            autoPanPaddingTopLeft: [14, 62],
+                            autoPanPaddingBottomRight: [14, window.innerWidth <= 896 ? Math.round(window.innerHeight * 0.55) : 24]
+                        }
+                    );
+                    layer.on('click', function() {
+                        resaltarRetiro(feature);
+                    });
+                },
+                style: function() {
+                    return {
+                        pane: 'pane_retiros',
+                        stroke: false,
+                        fill: true,
+                        fillColor: '#111111',
+                        fillOpacity: 0.28,
+                        interactive: true
+                    };
+                }
+            })
+            : null;
+        window.capaRetiros = capaRetiros;
+        if (capaRetiros) map.addLayer(capaRetiros);

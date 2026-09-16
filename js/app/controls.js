@@ -282,7 +282,7 @@
         };
         legend.addTo(map);
 
-        // --- CAPAS AUXILIARES: PLANES ESPECIALES ---
+        // --- CAPAS AUXILIARES: RETIROS Y PLANES ESPECIALES ---
         var capasAuxiliaresControl = L.control({position: 'bottomleft'});
         capasAuxiliaresControl.onAdd = function() {
             var div = L.DomUtil.create('div', 'control-capas-auxiliares capas-auxiliares-cerradas');
@@ -292,7 +292,13 @@
                     '<i class="fas fa-clone" aria-hidden="true"></i>' +
                 '</button>' +
                 '<div id="panel-capas-auxiliares" class="panel-capas-auxiliares mobile-tool-panel mobile-tool-panel--compact" aria-hidden="true">' +
-                    '<button type="button" id="panel-capas-titulo" class="panel-capas-titulo" aria-label="Cerrar capas adicionales"><i class="fas fa-clone" aria-hidden="true"></i><span>Capas adicionales</span></button>' +
+                    '<button type="button" id="panel-capas-titulo" class="panel-capas-titulo" aria-label="Cerrar capas adicionales"><i class="fas fa-clone" aria-hidden="true"></i><span>Área de retiro normativo mínimo</span></button>' +
+                    '<label class="capa-auxiliar-item" for="capa-retiro-visible">' +
+                        '<input type="checkbox" id="capa-retiro-visible" checked>' +
+                        '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                        '<i class="muestra-capa muestra-retiro" aria-hidden="true"></i>' +
+                        '<span>Retiro normativo</span>' +
+                    '</label>' +
                     '<div class="capa-zre-grupo">' +
                         '<div class="capa-zre-principal">' +
                             '<label class="capa-auxiliar-item capa-zre-item-principal" for="capa-zre-visible">' +
@@ -342,6 +348,7 @@
             var boton = document.getElementById('boton-capas-auxiliares');
             var panel = document.getElementById('panel-capas-auxiliares');
             var tituloPanel = document.getElementById('panel-capas-titulo');
+            var retiroVisible = document.getElementById('capa-retiro-visible');
             var zrePrincipal = document.getElementById('capa-zre-visible');
             var botonZre = document.getElementById('boton-desplegar-zre');
             var listaZre = document.getElementById('lista-zonas-zre');
@@ -362,6 +369,18 @@
 
             boton.addEventListener('click', function() { alternarPanel(); });
             tituloPanel.addEventListener('click', function() { alternarPanel(false); });
+            if (retiroVisible) {
+                retiroVisible.addEventListener('change', function() {
+                    if (!window.capaRetiros) return;
+                    if (this.checked) {
+                        if (!map.hasLayer(window.capaRetiros)) map.addLayer(window.capaRetiros);
+                    } else if (map.hasLayer(window.capaRetiros)) {
+                        map.removeLayer(window.capaRetiros);
+                        if (window.limpiarRetiroResaltado) window.limpiarRetiroResaltado();
+                        map.closePopup();
+                    }
+                });
+            }
             function sincronizarCheckZrePrincipal() {
                 var activas = checksZre.filter(function(check) { return check.checked; }).length;
                 zrePrincipal.checked = activas === checksZre.length;

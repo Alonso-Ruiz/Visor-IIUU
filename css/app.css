@@ -576,6 +576,11 @@
     padding-top: 4px;
 }
 
+.muestra-capa.muestra-retiro {
+    border-color: rgba(24, 24, 24, 0.65);
+    background: rgba(20, 20, 20, 0.38);
+}
+
 .capa-zre-principal {
     display: flex;
     align-items: center;
@@ -1178,6 +1183,39 @@ body {
     font-weight: bold;
     font-size: 12px;
     text-align: center;
+}
+
+.popup-retiro .leaflet-popup-content-wrapper {
+    border: 1px solid rgba(24, 24, 24, 0.32);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 4px 13px rgba(0, 0, 0, 0.2);
+}
+
+.popup-retiro .leaflet-popup-tip {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+.popup-retiro .leaflet-popup-content {
+    margin: 8px 11px;
+}
+
+.popup-retiro-contenido {
+    display: grid;
+    gap: 3px;
+    color: #26332f;
+    text-align: center;
+}
+
+.popup-retiro-contenido strong {
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.popup-retiro-contenido span {
+    color: #006c55;
+    font-size: 13px;
+    font-weight: 750;
 }
 
 /* --- LEYENDA (INTERACTIVA Y TÁCTIL) --- */
