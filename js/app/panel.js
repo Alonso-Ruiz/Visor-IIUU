@@ -69,6 +69,31 @@
             return partes.length > 1 ? partes.slice(1).join(' - ') : '';
         }
 
+        function coincideCatalogoGiros(busqueda, clase) {
+            if (!busqueda || !Array.isArray(window.datosBuscadorGiros)) return false;
+            return datosBuscadorGiros.some(function(giro) {
+                if (String(giro.clase || '').trim() !== String(clase || '').trim()) return false;
+                var terminos = [giro.giro].concat(giro.buscar || [], giro.nombres_comunes || []);
+                return terminos.some(function(termino) {
+                    return estandarizarTexto(termino).includes(busqueda);
+                });
+            });
+        }
+
+        function obtenerActividadesIndice() {
+            return Array.isArray(window.datosActividadesIndice) && datosActividadesIndice.length
+                ? datosActividadesIndice
+                : datosActividades;
+        }
+
+        function coincideActividadIndice(busqueda, giro) {
+            if (!busqueda || !giro) return false;
+            var terminos = [giro.ACTIVIDAD, giro.COD_GIRO].concat(giro.BUSQUEDA || [], giro.NOMBRES_PARA_EL_VISOR || []);
+            return terminos.some(function(termino) {
+                return estandarizarTexto(termino).includes(busqueda);
+            });
+        }
+
         function renderizarBusquedaGlobal(busqueda) {
             var contVentanas = document.getElementById('ventanas-zona');
             contVentanas.style.display = 'none';
@@ -90,11 +115,11 @@
                 var descripcion = String(item['Descripción'] || '').trim();
                 var coincideUso = estandarizarTexto(item['Uso Compatible']).includes(busqueda) ||
                     estandarizarTexto(item['Autorización']).includes(busqueda);
-                var girosClase = datosActividades.filter(function(g) {
+                var girosClase = obtenerActividadesIndice().filter(function(g) {
                     return String(g.CLASE) === clase;
                 });
                 var girosCoinciden = girosClase.filter(function(g) {
-                    return estandarizarTexto(g.ACTIVIDAD).includes(busqueda) ||
+                    return coincideActividadIndice(busqueda, g) ||
                         estandarizarTexto(g.CLASE).includes(busqueda) ||
                         estandarizarTexto(g['DESCRIPCIÓN DE LA CLASE']).includes(busqueda);
                 });
@@ -145,7 +170,8 @@
                 if (item.giros.length > 0) {
                     girosHtml = '<ul class="lista-actividades">';
                     item.giros.forEach(function(g) {
-                        girosHtml += '<li><span>' + escaparHtml(g.ACTIVIDAD) + '</span></li>';
+                        var codigoGiro = g.COD_GIRO ? '<small style="color:#666;margin-left:8px;">' + escaparHtml(g.COD_GIRO) + '</small>' : '';
+                        girosHtml += '<li><span>' + escaparHtml(g.ACTIVIDAD) + '</span>' + codigoGiro + '</li>';
                     });
                     girosHtml += '</ul>';
                 } else {
@@ -386,7 +412,8 @@
                             estandarizarTexto(c.clase).includes(busqueda);
                         if (!coincideClase) {
                             c.giros = c.giros.filter(function(giro) {
-                                return estandarizarTexto(giro.ACTIVIDAD).includes(busqueda);
+                                return estandarizarTexto(giro.ACTIVIDAD).includes(busqueda) ||
+                                    coincideCatalogoGiros(busqueda, giro.CLASE);
                             });
                         }
                         return c;
@@ -471,9 +498,9 @@
             if (zonaActual === 'Uso Residencial Exclusivo') {
                 zonaKeyAct = 'Uso Mixto Vecinal';
                 var clasesTransitorias = {};
-                datosActividades.forEach(function(g) {
-                    if (!g.ZONAS || g.ZONAS[zonaKeyAct] !== 'R') return;
-                    if (busqueda && !estandarizarTexto(g.ACTIVIDAD).includes(busqueda) &&
+                obtenerActividadesIndice().forEach(function(g) {
+                    if (!g.ZONAS || tipoAutorizacion(g.ZONAS[zonaKeyAct]) !== 'R') return;
+                    if (busqueda && !coincideActividadIndice(busqueda, g) &&
                         !estandarizarTexto(g.CLASE).includes(busqueda) &&
                         !estandarizarTexto(g['DESCRIPCIÓN DE LA CLASE']).includes(busqueda)) return;
                     if (!clasesTransitorias[g.CLASE]) {
@@ -520,10 +547,10 @@
 
             if (busqueda) {
                 resultados = resultados.filter(function(f) {
-                    var tieneGiro = datosActividades.some(function(g) {
+                    var tieneGiro = obtenerActividadesIndice().some(function(g) {
                         var auth = g.ZONAS && g.ZONAS[zonaKeyAct];
-                        return String(g.CLASE) === String(f.Clase) && (auth === 'X' || auth === 'R') &&
-                               estandarizarTexto(g.ACTIVIDAD).includes(busqueda);
+                        return String(g.CLASE) === String(f.Clase) && tipoAutorizacion(auth) &&
+                               coincideActividadIndice(busqueda, g);
                     });
                     return estandarizarTexto(f['Descripción']).includes(busqueda) ||
                            estandarizarTexto(f['Clase']).includes(busqueda) || tieneGiro;
@@ -545,27 +572,37 @@
                 var tAviso = esRestringido ? 'Condiciones detalladas' : 'Permitidas';
 
                 // Giros para esta clase CON su autorización individual en la zona
-                var girosDeEstaClase = datosActividades.filter(function(g) {
+                var girosDeEstaClase = obtenerActividadesIndice().filter(function(g) {
                     if (String(g.CLASE) !== String(item.Clase)) return false;
                     var auth = g.ZONAS && g.ZONAS[zonaKeyAct];
-                    if (auth !== 'X' && auth !== 'R') return false;
+                    if (!tipoAutorizacion(auth)) return false;
                     if (!busqueda) return true;
                     var coincideClase = estandarizarTexto(item['Descripción']).includes(busqueda) || estandarizarTexto(item['Clase']).includes(busqueda);
-                    return coincideClase || estandarizarTexto(g.ACTIVIDAD).includes(busqueda);
+                    return coincideClase || coincideActividadIndice(busqueda, g);
                 });
 
                 var girosHtml = '';
                 if (girosDeEstaClase.length > 0) {
                     girosHtml = '<ul class="lista-actividades">';
+                    var restriccionesGirosHtml = '';
                     girosDeEstaClase.forEach(function(g) {
                         var authGiro = g.ZONAS && g.ZONAS[zonaKeyAct];
                         var col = colorAuth(authGiro);
                         var badge = '<span style="background:' + col.bg + ';color:' + col.txt +
                             ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>';
+                        var codigoGiro = g.COD_GIRO ? '<small style="color:#666;margin-right:auto;">' + escaparHtml(g.COD_GIRO) + '</small>' : '';
                         girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;">' +
-                            '<span>' + g.ACTIVIDAD + '</span>' + badge + '</li>';
+                            '<span>' + escaparHtml(g.ACTIVIDAD) + '</span>' + codigoGiro + badge + '</li>';
+                        if (tipoAutorizacion(authGiro) === 'R' && window.RESTRICCIONES_IIUU && window.RESTRICCIONES_IIUU.obtenerPorCodigos) {
+                            var reglaGiro = window.RESTRICCIONES_IIUU.obtenerPorCodigos(g.ZONAS[zonaKeyAct]);
+                            restriccionesGirosHtml += renderizarCondiciones(
+                                reglaGiro,
+                                'Restricciones del giro ' + (g.COD_GIRO || ('CIIU ' + g.CLASE))
+                            );
+                        }
                     });
                     girosHtml += '</ul>';
+                    girosHtml += restriccionesGirosHtml;
                     if (girosDeEstaClase[0].OBSERVACIONES) {
                         girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#666;font-style:italic;">' + girosDeEstaClase[0].OBSERVACIONES + '</p>';
                     }

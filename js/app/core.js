@@ -51,9 +51,16 @@ let capaResaltadoVia = null;
 
 function estandarizarTexto(t) { return (t||"").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase(); }
 
+function tipoAutorizacion(valor) {
+    var texto = String(valor || '').trim().toUpperCase();
+    if (texto === 'X') return 'X';
+    if (texto === 'R' || texto.indexOf('R-') === 0) return 'R';
+    return '';
+}
+
 // Colores por tipo de autorizacion
 function colorAuth(auth) {
-    if (auth === 'X') return { bg: '#4CAF50', txt: '#fff', label: 'Permitido' };
-    if (auth === 'R') return { bg: '#ffca28', txt: '#000', label: 'Con restricción' };
+    if (tipoAutorizacion(auth) === 'X') return { bg: '#4CAF50', txt: '#fff', label: 'Permitido' };
+    if (tipoAutorizacion(auth) === 'R') return { bg: '#ffca28', txt: '#000', label: 'Con restricción' };
     return { bg: '#555', txt: '#ccc', label: 'No compatible' };
 }
