@@ -22,7 +22,7 @@
             return '';
         }
 
-        function renderizarCondiciones(regla, titulo) {
+        function renderizarRestriccionesGiro(regla, titulo) {
             if (!regla || !regla.condiciones || !regla.condiciones.length) return '';
             var items = regla.condiciones.map(function(c) {
                 var estado = '';
@@ -32,8 +32,8 @@
                 return '<li><strong>' + escaparHtml(c.etiqueta) + ':</strong> ' + escaparHtml(c.valor) +
                     (c.detalle ? '<small>' + escaparHtml(c.detalle) + '</small>' : '') + estado + '</li>';
             }).join('');
-            return '<div class="bloque-condiciones ' + (regla.sinRestriccion ? 'sin-restriccion' : '') + '">' +
-                '<div class="titulo-condiciones"><i class="fas fa-clipboard-check"></i> ' + escaparHtml(titulo || 'Condiciones aplicables') + '</div>' +
+            return '<div class="bloque-restricciones-giro">' +
+                '<div class="titulo-restricciones-giro"><i class="fas fa-clipboard-check"></i> ' + escaparHtml(titulo || 'Restricciones del giro') + '</div>' +
                 (regla.grupo ? '<div class="grupo-restriccion">Clase agrupada: ' + escaparHtml(regla.grupo) + '</div>' : '') +
                 '<ul>' + items + '</ul></div>';
         }
@@ -449,14 +449,11 @@
                         girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;flex-wrap:wrap;">' +
                             '<span>' + escaparHtml(g.ACTIVIDAD) + '</span>' +
                             '<span style="background:' + col.bg + ';color:' + col.txt + ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>' +
+                            (g.OBSERVACIONES ? '<small class="nota-actividad-zre">' + escaparHtml(g.OBSERVACIONES) + '</small>' : '') +
                             (autorizacion === 'R' ? renderizarRestriccionGiroZre(reglaGiro) : '') +
                             '</li>';
                     });
                     girosHtml += '</ul>';
-
-                    if (c.obs) {
-                        girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#666;font-style:italic;">' + escaparHtml(c.obs) + '</p>';
-                    }
 
                     htmlContenido +=
                         '<div style="background:#fff;border:1px solid #e8e8e8;border-left:5px solid ' + c_borde + ';padding:12px;margin-bottom:12px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">' +
@@ -522,10 +519,6 @@
 
                 var htmlTransitorio = '';
                 resultadosTransitorios.forEach(function(item) {
-                    var reglaUmv = window.RESTRICCIONES_IIUU ? window.RESTRICCIONES_IIUU.obtener('Uso Mixto Vecinal', item.Clase, {
-                        zonVig: zonVigActual,
-                        areaM2: obtenerAreaLote()
-                    }) : null;
                     var giros = '<ul class="lista-actividades">' + item.girosFiltrados.map(function(g) {
                         return '<li class="actividad-compatible"><span>' + escaparHtml(g.ACTIVIDAD) + '</span>' +
                             '<span class="badge-condicion">Régimen transitorio</span></li>';
@@ -533,8 +526,7 @@
                     htmlTransitorio += '<div class="tarjeta-clase tarjeta-transitoria">' +
                         '<div class="cabecera-clase"><span class="badge-ciiu">CIIU: ' + escaparHtml(item.Clase) + '</span>' +
                         '<span class="etiqueta-transitoria">Referencia: Uso Mixto Vecinal (R)</span></div>' +
-                        '<strong class="descripcion-clase">' + escaparHtml(item['Descripción']) + '</strong>' + giros +
-                        renderizarCondiciones(reglaUmv, 'Restricciones operativas aplicables') + '</div>';
+                        '<strong class="descripcion-clase">' + escaparHtml(item['Descripción']) + '</strong>' + giros + '</div>';
                 });
                 document.getElementById('lista-clases-container').innerHTML = htmlTransitorio ||
                     "<p class='mensaje-vacio'>No se encontraron giros dentro del régimen transitorio.</p>";
@@ -595,7 +587,7 @@
                             '<span>' + escaparHtml(g.ACTIVIDAD) + '</span>' + codigoGiro + badge + '</li>';
                         if (tipoAutorizacion(authGiro) === 'R' && window.RESTRICCIONES_IIUU && window.RESTRICCIONES_IIUU.obtenerPorCodigos) {
                             var reglaGiro = window.RESTRICCIONES_IIUU.obtenerPorCodigos(g.ZONAS[zonaKeyAct]);
-                            restriccionesGirosHtml += renderizarCondiciones(
+                            restriccionesGirosHtml += renderizarRestriccionesGiro(
                                 reglaGiro,
                                 'Restricciones del giro ' + (g.COD_GIRO || ('CIIU ' + g.CLASE))
                             );
@@ -610,12 +602,6 @@
                     girosHtml = "<p style='margin:8px 0 0;font-size:11px;color:#666;font-style:italic;'>* No hay giros específicos detallados.</p>";
                 }
 
-                var regla = window.RESTRICCIONES_IIUU ? window.RESTRICCIONES_IIUU.obtener(zonaActual, item.Clase, {
-                    zonVig: zonVigActual,
-                    areaM2: obtenerAreaLote()
-                }) : null;
-                var condicionesHtml = renderizarCondiciones(regla, esRestringido ? 'Restricciones específicas' : 'Condiciones aplicables');
-
                 htmlContenido +=
                     '<div style="background:#fff;border:1px solid #e8e8e8;border-left:5px solid ' + cCaja + ';padding:12px;margin-bottom:12px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">' +
                     '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">' +
@@ -624,7 +610,6 @@
                     '</div>' +
                     '<strong style="font-size:13px;color:#222;display:block;margin-bottom:5px;">' + item['Descripción'] + '</strong>' +
                     girosHtml +
-                    condicionesHtml +
                     '</div>';
             });
 

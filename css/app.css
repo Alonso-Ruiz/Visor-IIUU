@@ -1722,7 +1722,7 @@ body {
     font-size: 9px;
 }
 
-.bloque-condiciones {
+.bloque-restricciones-giro {
     margin-top: 10px;
     padding: 10px;
     border: 1px solid #f0d77c;
@@ -1730,21 +1730,12 @@ body {
     background: #fff9df;
 }
 
-.bloque-condiciones.sin-restriccion {
-    border-color: #b9ddb9;
-    background: #f1faf1;
-}
-
-.titulo-condiciones {
+.titulo-restricciones-giro {
     color: #705000;
     font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.02em;
-}
-
-.sin-restriccion .titulo-condiciones {
-    color: #2e7032;
 }
 
 .grupo-restriccion {
@@ -1753,7 +1744,7 @@ body {
     font-size: 10px;
 }
 
-.bloque-condiciones ul {
+.bloque-restricciones-giro ul {
     margin: 8px 0 0;
     padding-left: 17px;
     color: #3d392e;
@@ -1761,11 +1752,11 @@ body {
     line-height: 1.38;
 }
 
-.bloque-condiciones li {
+.bloque-restricciones-giro li {
     margin-bottom: 6px;
 }
 
-.bloque-condiciones li:last-child {
+.bloque-restricciones-giro li:last-child {
     margin-bottom: 0;
 }
 
@@ -1780,7 +1771,15 @@ body {
     line-height: 1.35;
 }
 
-.bloque-condiciones small,
+.nota-actividad-zre {
+    flex-basis: 100%;
+    margin: 2px 0 0;
+    color: #555;
+    font-size: 10px;
+    font-style: italic;
+}
+
+.bloque-restricciones-giro small,
 .estado-condicion {
     display: block;
     margin-top: 2px;

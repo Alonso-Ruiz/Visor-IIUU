@@ -162,8 +162,8 @@
 
     function zonificacionEsEquipamiento(zonVig) {
         var zona = normalizar(zonVig).replace(/\s/g, '');
-        return zona === 'e' || zona === 'h' || zona === 'ou' ||
-            zona === 'zspc(e)' || zona === 'zspc(h)' || zona === 'zspc(ou)';
+        return zona === 'e' || zona === 'h' ||
+            zona === 'zspc(e)' || zona === 'zspc(h)';
     }
 
     function restriccionesOrdinarias(zona, contexto) {
@@ -172,7 +172,8 @@
         if (zona === 'Uso Mixto Especializado') {
             if (zonificacionEsEquipamiento(contexto.zonVig)) {
                 return regla([
-                    condicion('Zonificación vigente', 'En lotes zonificados como ZSPC (E), ZSPC (H) u OU no existe restricción de área ni de nivel por compatibilidad, tanto para edificaciones existentes como para obra nueva, remodelación o ampliación.')
+                    condicion('R-13 · Equipamiento y actividad complementaria', 'En lotes ZSPC (E) y ZSPC (H), el uso principal corresponde, respectivamente, a equipamiento urbano educativo o de salud. Bajo la modalidad de concesión se permiten actividades del Índice que apoyen el funcionamiento del equipamiento, sin sustituir el uso principal ni alterar su finalidad.'),
+                    condicion('Obra nueva, remodelación o ampliación', 'No aplica como uso autónomo; debe conservar el carácter complementario al equipamiento principal.')
                 ], true);
             }
             condiciones = [
@@ -224,15 +225,15 @@
 
         if (zona === 'Uso de Recreación Pública') {
             return regla([
-                condicion('R-13 · Edificación existente', 'Las actividades se permiten exclusivamente en áreas calificadas como ZRP y mediante mecanismos de gestión y aprovechamiento del espacio público conforme a la normativa vigente.'),
+                condicion('R-13 · Edificación existente', 'Las actividades se permiten exclusivamente en las áreas calificadas como ZRP y pueden desarrollarse mediante mecanismos de participación de la inversión privada, vinculadas a la gestión, uso y aprovechamiento del espacio público, de conformidad con la Ley de Promoción de la Inversión Privada y la normativa vigente sobre gestión de espacios públicos.'),
                 condicion('R-13 · Obra nueva, remodelación o ampliación', 'No aplica: no se genera edificación nueva en ZRP.')
             ]);
         }
 
         if (String(zona || '').indexOf('Usos Específicos') === 0) {
             return regla([
-                condicion('R-13 · Edificación existente', 'En lotes ZSPC (E), ZSPC (H) u OU, el uso principal debe corresponder al equipamiento educativo, de salud u otros usos. Las actividades complementarias no deben sustituir ni alterar la finalidad del equipamiento.'),
-                condicion('R-13 · Obra nueva, remodelación o ampliación', 'No aplica como ampliación autónoma: la actividad debe mantener su carácter complementario al equipamiento principal.')
+                condicion('R-13 · Edificación existente', 'En lotes ZSPC (E) y ZSPC (H), el uso principal corresponde, respectivamente, a equipamiento urbano educativo o de salud. Bajo la modalidad de concesión se permiten actividades descritas en el Índice que apoyen su funcionamiento, sin sustituir el uso principal ni alterar su finalidad.'),
+                condicion('R-13 · Obra nueva, remodelación o ampliación', 'No aplica.')
             ]);
         }
 
