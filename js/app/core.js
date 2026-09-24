@@ -49,7 +49,24 @@ let loteActual = {};
 let panel = document.getElementById('panel-usos');
 let capaResaltadoVia = null;
 
-function estandarizarTexto(t) { return (t||"").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase(); }
+function estandarizarTexto(t) {
+    return String(t === null || t === undefined ? '' : t)
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLocaleLowerCase('es')
+        .replace(/&/g, ' y ')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim()
+        .replace(/\s+/g, ' ');
+}
+
+function coincideBusquedaTexto(busqueda, texto) {
+    var terminos = estandarizarTexto(busqueda).split(' ').filter(Boolean);
+    var contenido = estandarizarTexto(texto);
+    return terminos.length > 0 && terminos.every(function(termino) {
+        return contenido.includes(termino);
+    });
+}
 
 function tipoAutorizacion(valor) {
     var texto = String(valor || '').trim().toUpperCase();

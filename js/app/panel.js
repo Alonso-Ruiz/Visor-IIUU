@@ -75,7 +75,7 @@
                 if (String(giro.clase || '').trim() !== String(clase || '').trim()) return false;
                 var terminos = [giro.giro].concat(giro.buscar || [], giro.nombres_comunes || []);
                 return terminos.some(function(termino) {
-                    return estandarizarTexto(termino).includes(busqueda);
+                    return coincideBusquedaTexto(busqueda, termino);
                 });
             });
         }
@@ -90,7 +90,7 @@
             if (!busqueda || !giro) return false;
             var terminos = [giro.ACTIVIDAD, giro.COD_GIRO].concat(giro.BUSQUEDA || [], giro.NOMBRES_PARA_EL_VISOR || []);
             return terminos.some(function(termino) {
-                return estandarizarTexto(termino).includes(busqueda);
+                return coincideBusquedaTexto(busqueda, termino);
             });
         }
 
@@ -113,18 +113,18 @@
             datosUsos.forEach(function(item) {
                 var clase = String(item.Clase || '').trim();
                 var descripcion = String(item['Descripción'] || '').trim();
-                var coincideUso = estandarizarTexto(item['Uso Compatible']).includes(busqueda) ||
-                    estandarizarTexto(item['Autorización']).includes(busqueda);
+                var coincideUso = coincideBusquedaTexto(busqueda, item['Uso Compatible']) ||
+                    coincideBusquedaTexto(busqueda, item['Autorización']);
                 var girosClase = obtenerActividadesIndice().filter(function(g) {
                     return String(g.CLASE) === clase;
                 });
                 var girosCoinciden = girosClase.filter(function(g) {
                     return coincideActividadIndice(busqueda, g) ||
-                        estandarizarTexto(g.CLASE).includes(busqueda) ||
-                        estandarizarTexto(g['DESCRIPCIÓN DE LA CLASE']).includes(busqueda);
+                        coincideBusquedaTexto(busqueda, g.CLASE) ||
+                        coincideBusquedaTexto(busqueda, g['DESCRIPCIÓN DE LA CLASE']);
                 });
-                var coincideClase = estandarizarTexto(clase).includes(busqueda) ||
-                    estandarizarTexto(descripcion).includes(busqueda) ||
+                var coincideClase = coincideBusquedaTexto(busqueda, clase) ||
+                    coincideBusquedaTexto(busqueda, descripcion) ||
                     coincideUso;
                 if (!coincideClase && !girosCoinciden.length) return;
 
@@ -408,11 +408,11 @@
                 var clases = Object.values(clasesVistas);
                 if (busqueda) {
                     clases = clases.map(function(c) {
-                        var coincideClase = estandarizarTexto(c.desc).includes(busqueda) ||
-                            estandarizarTexto(c.clase).includes(busqueda);
+                        var coincideClase = coincideBusquedaTexto(busqueda, c.desc) ||
+                            coincideBusquedaTexto(busqueda, c.clase);
                         if (!coincideClase) {
                             c.giros = c.giros.filter(function(giro) {
-                                return estandarizarTexto(giro.ACTIVIDAD).includes(busqueda) ||
+                                return coincideBusquedaTexto(busqueda, giro.ACTIVIDAD) ||
                                     coincideCatalogoGiros(busqueda, giro.CLASE);
                             });
                         }
@@ -498,8 +498,8 @@
                 obtenerActividadesIndice().forEach(function(g) {
                     if (!g.ZONAS || tipoAutorizacion(g.ZONAS[zonaKeyAct]) !== 'R') return;
                     if (busqueda && !coincideActividadIndice(busqueda, g) &&
-                        !estandarizarTexto(g.CLASE).includes(busqueda) &&
-                        !estandarizarTexto(g['DESCRIPCIÓN DE LA CLASE']).includes(busqueda)) return;
+                        !coincideBusquedaTexto(busqueda, g.CLASE) &&
+                        !coincideBusquedaTexto(busqueda, g['DESCRIPCIÓN DE LA CLASE'])) return;
                     if (!clasesTransitorias[g.CLASE]) {
                         clasesTransitorias[g.CLASE] = {
                             Clase: g.CLASE,
@@ -544,8 +544,8 @@
                         return String(g.CLASE) === String(f.Clase) && tipoAutorizacion(auth) &&
                                coincideActividadIndice(busqueda, g);
                     });
-                    return estandarizarTexto(f['Descripción']).includes(busqueda) ||
-                           estandarizarTexto(f['Clase']).includes(busqueda) || tieneGiro;
+                    return coincideBusquedaTexto(busqueda, f['Descripción']) ||
+                           coincideBusquedaTexto(busqueda, f['Clase']) || tieneGiro;
                 });
             }
 
@@ -569,7 +569,7 @@
                     var auth = g.ZONAS && g.ZONAS[zonaKeyAct];
                     if (!tipoAutorizacion(auth)) return false;
                     if (!busqueda) return true;
-                    var coincideClase = estandarizarTexto(item['Descripción']).includes(busqueda) || estandarizarTexto(item['Clase']).includes(busqueda);
+                    var coincideClase = coincideBusquedaTexto(busqueda, item['Descripción']) || coincideBusquedaTexto(busqueda, item['Clase']);
                     return coincideClase || coincideActividadIndice(busqueda, g);
                 });
 

@@ -122,6 +122,25 @@
         }
     };
 
+    var REGLAS_ZRE = {
+        'R-01': {
+            existente: 'mín. 50, hasta 100',
+            obraNueva: 'Sin límite de área por compatibilidad, hasta el primer nivel'
+        },
+        'R-02': {
+            existente: 'mín. 50, hasta 100',
+            obraNueva: 'Sin límite de área por compatibilidad, hasta el tercer nivel'
+        },
+        'R-03': {
+            existente: 'min 100 hasta todo el área del lote',
+            obraNueva: 'Sin límite de área por compatibilidad, hasta el primer nivel'
+        },
+        'R-04': {
+            existente: 'min 100 hasta todo el área del lote',
+            obraNueva: 'Sin límite de área por compatibilidad, hasta el tercer nivel'
+        }
+    };
+
     function restriccionesPorCodigos(codigos) {
         var condiciones = [];
         var referencias = String(codigos || '').split('/').map(function (codigo) { return codigo.trim(); }).filter(Boolean);
@@ -270,7 +289,7 @@
     function autorizacionZRE(giro, zreId, ubicacion) {
         if (!giro || !ubicacion || !giro.ZRE || !giro.ZRE[zreId]) return null;
         var valor = giro.ZRE[zreId][ubicacion];
-        return valor === 'X' || valor === 'R' ? valor : null;
+        return valor === 'X' ? 'X' : (typeof valor === 'string' && /^R-\d{2}$/.test(valor) ? 'R' : null);
     }
 
     function restriccionGiroZRE(giro, zreId, ubicacion) {
@@ -280,16 +299,17 @@
             return regla([condicion('Compatibilidad', 'Permitido sin restricción adicional por compatibilidad de uso.')], true);
         }
 
-        var datos = giro.RESTRICCIONES && giro.RESTRICCIONES[zreId] && giro.RESTRICCIONES[zreId][ubicacion];
+        var codigo = giro.ZRE[zreId][ubicacion];
+        var datos = REGLAS_ZRE[codigo];
         if (!datos) {
             return regla([condicion(
                 'Validación requerida',
-                'La matriz principal marca este giro con R, pero la hoja auxiliar no consigna un parámetro específico. Requiere validación técnica antes de autorizar.'
+                'La matriz marca este giro con una restricción sin parámetros definidos. Requiere validación técnica antes de autorizar.'
             )]);
         }
         var condiciones = [];
-        if (datos.existente) condiciones.push(condicion('Edificación existente (m² de área útil)', datos.existente));
-        if (datos.obraNueva) condiciones.push(condicion('Obra nueva, remodelación o ampliación', datos.obraNueva));
+        if (datos.existente) condiciones.push(condicion(codigo + ' · Edificación existente (m² de área útil)', datos.existente));
+        if (datos.obraNueva) condiciones.push(condicion(codigo + ' · Obra nueva, remodelación o ampliación', datos.obraNueva));
         return regla(condiciones);
     }
 
