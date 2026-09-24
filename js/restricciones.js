@@ -43,7 +43,7 @@
         return { condiciones: condiciones || [], sinRestriccion: Boolean(sinRestriccion) };
     }
 
-    function restriccionesOrdinarias(zona) {
+    function restriccionesOrdinarias(zona, clase, contexto) {
         var clave = zona === 'Usos Específicos - Hospital' || zona === 'Usos Específicos - Educación'
             ? 'Usos Específicos' : zona;
         var notas = window.datosNotasRestricciones && window.datosNotasRestricciones.distrital;
@@ -55,8 +55,12 @@
             )]);
         }
         var condiciones = [];
-        if (datos.existente) condiciones.push(condicion('Edificación existente', datos.existente));
-        if (datos.obraNueva) condiciones.push(condicion('Obra nueva, remodelación o ampliación', datos.obraNueva));
+        var soloObraNueva = contexto && String(contexto.restriccionPoligono || '').trim().toUpperCase() === 'O.N';
+        if (datos.existente && !soloObraNueva) condiciones.push(condicion('Edificación existente', datos.existente));
+        if (datos.obraNueva) condiciones.push(condicion(
+            soloObraNueva ? 'Solo por obra nueva, remodelación o ampliación' : 'Obra nueva, remodelación o ampliación',
+            datos.obraNueva
+        ));
         return regla(condiciones);
     }
 

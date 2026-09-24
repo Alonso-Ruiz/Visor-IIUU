@@ -22,7 +22,12 @@
             return '';
         }
 
-        function renderizarRestriccionesGiro(regla, titulo, detalleZre) {
+        function obtenerRestriccionPoligono() {
+            return obtenerPropiedad(loteActual,
+                ['RESTRICCIÓN', 'RESTRICCIÓ', 'RESTRICCI�', 'RESTRICCION']);
+        }
+
+        function renderizarRestriccionesGiro(regla, titulo) {
             if (!regla || !regla.condiciones || !regla.condiciones.length) return '';
             var items = regla.condiciones.map(function(c) {
                 var estado = '';
@@ -35,33 +40,7 @@
             return '<div class="bloque-restricciones-giro">' +
                 '<div class="titulo-restricciones-giro"><i class="fas fa-clipboard-check"></i> ' + escaparHtml(titulo || 'Restricciones del giro') + '</div>' +
                 (regla.grupo ? '<div class="grupo-restriccion">Clase agrupada: ' + escaparHtml(regla.grupo) + '</div>' : '') +
-                '<ul>' + items + '</ul>' + (detalleZre || '') + '</div>';
-        }
-
-        function renderizarZreDelGiro(giro) {
-            if (!Array.isArray(window.datosActividadesZRE)) return '';
-            var filaZre = window.datosActividadesZRE.find(function(fila) {
-                return String(fila.CLASE) === String(giro.CLASE) && String(fila['N°']) === String(giro['N°']);
-            });
-            if (!filaZre || !filaZre.ZRE) return '';
-
-            var notas = window.datosNotasRestricciones && window.datosNotasRestricciones.zre || {};
-            var codigos = {};
-            Object.keys(filaZre.ZRE).forEach(function(zre) {
-                Object.keys(filaZre.ZRE[zre]).forEach(function(nombre) {
-                    var codigo = filaZre.ZRE[zre][nombre];
-                    if (notas[codigo]) codigos[codigo] = true;
-                });
-            });
-            var listaCodigos = Object.keys(codigos).sort();
-            if (!listaCodigos.length) return '';
-            var restricciones = listaCodigos.map(function(codigo) {
-                var nota = notas[codigo];
-                return '<li><strong class="codigo-restriccion-zre">' + escaparHtml(codigo) + '</strong>' +
-                    '<div>Edificación existente: ' + escaparHtml(nota.existente) + '</div>' +
-                    '<div>Obra nueva, remodelación o ampliación: ' + escaparHtml(nota.obraNueva) + '</div></li>';
-            }).join('');
-            return '<div class="detalle-zre-giro"><ul>' + restricciones + '</ul></div>';
+                '<ul>' + items + '</ul></div>';
         }
 
         function renderizarRestriccionGiroZre(regla) {
@@ -615,12 +594,12 @@
                         if (tipoAutorizacion(authGiro) === 'R' && window.RESTRICCIONES_IIUU && window.RESTRICCIONES_IIUU.obtener) {
                             var reglaGiro = window.RESTRICCIONES_IIUU.obtener(zonaActual, g.CLASE, {
                                 zonVig: zonVigActual,
-                                areaM2: obtenerAreaLote()
+                                areaM2: obtenerAreaLote(),
+                                restriccionPoligono: obtenerRestriccionPoligono()
                             });
                             restriccionesGirosHtml += renderizarRestriccionesGiro(
                                 reglaGiro,
-                                'Restricciones del giro ' + (g.COD_GIRO || ('CIIU ' + g.CLASE)),
-                                renderizarZreDelGiro(g)
+                                'Restricciones del giro ' + (g.COD_GIRO || ('CIIU ' + g.CLASE))
                             );
                         }
                     });
