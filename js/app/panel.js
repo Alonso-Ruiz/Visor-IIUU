@@ -22,7 +22,7 @@
             return '';
         }
 
-        function renderizarRestriccionesGiro(regla, titulo) {
+        function renderizarRestriccionesGiro(regla, titulo, detalleZre) {
             if (!regla || !regla.condiciones || !regla.condiciones.length) return '';
             var items = regla.condiciones.map(function(c) {
                 var estado = '';
@@ -35,7 +35,33 @@
             return '<div class="bloque-restricciones-giro">' +
                 '<div class="titulo-restricciones-giro"><i class="fas fa-clipboard-check"></i> ' + escaparHtml(titulo || 'Restricciones del giro') + '</div>' +
                 (regla.grupo ? '<div class="grupo-restriccion">Clase agrupada: ' + escaparHtml(regla.grupo) + '</div>' : '') +
-                '<ul>' + items + '</ul></div>';
+                '<ul>' + items + '</ul>' + (detalleZre || '') + '</div>';
+        }
+
+        function renderizarZreDelGiro(giro) {
+            if (!Array.isArray(window.datosActividadesZRE)) return '';
+            var filaZre = window.datosActividadesZRE.find(function(fila) {
+                return String(fila.CLASE) === String(giro.CLASE) && String(fila['N°']) === String(giro['N°']);
+            });
+            if (!filaZre || !filaZre.ZRE) return '';
+
+            var notas = window.datosNotasRestricciones && window.datosNotasRestricciones.zre || {};
+            var codigos = {};
+            Object.keys(filaZre.ZRE).forEach(function(zre) {
+                Object.keys(filaZre.ZRE[zre]).forEach(function(nombre) {
+                    var codigo = filaZre.ZRE[zre][nombre];
+                    if (notas[codigo]) codigos[codigo] = true;
+                });
+            });
+            var listaCodigos = Object.keys(codigos).sort();
+            if (!listaCodigos.length) return '';
+            var restricciones = listaCodigos.map(function(codigo) {
+                var nota = notas[codigo];
+                return '<li><strong class="codigo-restriccion-zre">' + escaparHtml(codigo) + '</strong>' +
+                    '<div>Edificación existente: ' + escaparHtml(nota.existente) + '</div>' +
+                    '<div>Obra nueva, remodelación o ampliación: ' + escaparHtml(nota.obraNueva) + '</div></li>';
+            }).join('');
+            return '<div class="detalle-zre-giro"><ul>' + restricciones + '</ul></div>';
         }
 
         function renderizarRestriccionGiroZre(regla) {
@@ -70,8 +96,9 @@
         }
 
         function coincideCatalogoGiros(busqueda, clase) {
-            if (!busqueda || !Array.isArray(window.datosBuscadorGiros)) return false;
-            return datosBuscadorGiros.some(function(giro) {
+            var catalogo = window.datosBuscadorGiros && window.datosBuscadorGiros.giros;
+            if (!busqueda || !Array.isArray(catalogo)) return false;
+            return catalogo.some(function(giro) {
                 if (String(giro.clase || '').trim() !== String(clase || '').trim()) return false;
                 var terminos = [giro.giro].concat(giro.buscar || [], giro.nombres_comunes || []);
                 return terminos.some(function(termino) {
@@ -585,11 +612,15 @@
                         var codigoGiro = g.COD_GIRO ? '<small style="color:#666;margin-right:auto;">' + escaparHtml(g.COD_GIRO) + '</small>' : '';
                         girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;">' +
                             '<span>' + escaparHtml(g.ACTIVIDAD) + '</span>' + codigoGiro + badge + '</li>';
-                        if (tipoAutorizacion(authGiro) === 'R' && window.RESTRICCIONES_IIUU && window.RESTRICCIONES_IIUU.obtenerPorCodigos) {
-                            var reglaGiro = window.RESTRICCIONES_IIUU.obtenerPorCodigos(g.ZONAS[zonaKeyAct]);
+                        if (tipoAutorizacion(authGiro) === 'R' && window.RESTRICCIONES_IIUU && window.RESTRICCIONES_IIUU.obtener) {
+                            var reglaGiro = window.RESTRICCIONES_IIUU.obtener(zonaActual, g.CLASE, {
+                                zonVig: zonVigActual,
+                                areaM2: obtenerAreaLote()
+                            });
                             restriccionesGirosHtml += renderizarRestriccionesGiro(
                                 reglaGiro,
-                                'Restricciones del giro ' + (g.COD_GIRO || ('CIIU ' + g.CLASE))
+                                'Restricciones del giro ' + (g.COD_GIRO || ('CIIU ' + g.CLASE)),
+                                renderizarZreDelGiro(g)
                             );
                         }
                     });

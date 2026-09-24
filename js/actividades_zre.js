@@ -1,4 +1,4 @@
-// Fuente: Índice ZRE, Matriz transformación giros (gid=401257593).
+// Fuente: Índice ZRE, Matriz transformación giros.
 var datosActividadesZRE = [
   {
     "SECCIÓN": "C",
@@ -1211,34 +1211,6 @@ var datosActividadesZRE = [
     "CLASE": "5610",
     "DESCRIPCIÓN DE LA CLASE": "Actividades de restaurantes y de servicio móvil de comidas",
     "N°": "02",
-    "ACTIVIDAD": "Preparación y expendio de comidas y bebidas con servicio a la mesa y consumo en el establecimiento",
-    "OBSERVACIONES": "min 100 hasta todo el área del lote",
-    "ZRE": {
-      "ZRE-1": {
-        "San Juan Masías - Calle El Comercio, Jr. De la Historia y Av. De la Arqueología": null,
-        "San Juan Masías - Av. Aviación y Av. Canadá": "R-04",
-        "El Bosque y El Bosque de San Borja": null,
-        "Pequeños Agricultores Todos los Santos": "R-04"
-      },
-      "ZRE-2": {
-        "Papa Juan XXIII - Calle Géminis, Calle Gamma, Calle Joaquín Madrid y Calle Alfa": null,
-        "Papa Juan XXIII - Av. Aviación y Av. Angamos Este": "R-04"
-      },
-      "ZRE-3": {
-        "Área rústica del Subsector 12-A": "R-04"
-      },
-      "ZRE-4": {
-        "Centro Cultural de la Nación": "X"
-      }
-    }
-  },
-  {
-    "SECCIÓN": "I",
-    "DIVISIÓN": "56",
-    "GRUPO": "561",
-    "CLASE": "5610",
-    "DESCRIPCIÓN DE LA CLASE": "Actividades de restaurantes y de servicio móvil de comidas",
-    "N°": "03",
     "ACTIVIDAD": "Preparación y expendio de comidas de servicio rápido para consumo, recojo o reparto de productos propios, con o sin atención al público",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
@@ -1254,6 +1226,34 @@ var datosActividadesZRE = [
       },
       "ZRE-3": {
         "Área rústica del Subsector 12-A": "R-02"
+      },
+      "ZRE-4": {
+        "Centro Cultural de la Nación": "X"
+      }
+    }
+  },
+  {
+    "SECCIÓN": "I",
+    "DIVISIÓN": "56",
+    "GRUPO": "561",
+    "CLASE": "5610",
+    "DESCRIPCIÓN DE LA CLASE": "Actividades de restaurantes y de servicio móvil de comidas",
+    "N°": "03",
+    "ACTIVIDAD": "Preparación y expendio de comidas y bebidas con servicio a la mesa y consumo en el establecimiento",
+    "OBSERVACIONES": "min 100 hasta todo el área del lote",
+    "ZRE": {
+      "ZRE-1": {
+        "San Juan Masías - Calle El Comercio, Jr. De la Historia y Av. De la Arqueología": null,
+        "San Juan Masías - Av. Aviación y Av. Canadá": "R-04",
+        "El Bosque y El Bosque de San Borja": null,
+        "Pequeños Agricultores Todos los Santos": "R-04"
+      },
+      "ZRE-2": {
+        "Papa Juan XXIII - Calle Géminis, Calle Gamma, Calle Joaquín Madrid y Calle Alfa": null,
+        "Papa Juan XXIII - Av. Aviación y Av. Angamos Este": "R-04"
+      },
+      "ZRE-3": {
+        "Área rústica del Subsector 12-A": "R-04"
       },
       "ZRE-4": {
         "Centro Cultural de la Nación": "X"
@@ -2695,7 +2695,7 @@ var datosActividadesZRE = [
     "CLASE": "9311",
     "DESCRIPCIÓN DE LA CLASE": "Gestión de instalaciones deportivas",
     "N°": "01",
-    "ACTIVIDAD": "Operación de instalaciones deportivas cerradas para acondicionamiento físico, práctica o simulación deportiva, sin cancha, campo o piscina",
+    "ACTIVIDAD": "Operación de instalaciones cerradas para acondicionamiento físico, sin cancha, campo o piscina",
     "OBSERVACIONES": "",
     "ZRE": {
       "ZRE-1": {
@@ -2835,7 +2835,7 @@ var datosActividadesZRE = [
     "CLASE": "9329",
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de esparcimiento y recreativas n.c.p.",
     "N°": "01",
-    "ACTIVIDAD": "Operación de espacios cerrados de recreación y entretenimiento familiar, digital, interactivo, inmersivo o temático, sin atracciones mecánicas o acuáticas propias de un parque de atracciones",
+    "ACTIVIDAD": "Operación de espacios cerrados de recreación y entretenimiento infantil, familiar o temático, sin atracciones mecánicas o acuáticas propias de un parque de atracciones",
     "OBSERVACIONES": "",
     "ZRE": {
       "ZRE-1": {

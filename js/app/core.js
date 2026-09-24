@@ -71,7 +71,7 @@ function coincideBusquedaTexto(busqueda, texto) {
 function tipoAutorizacion(valor) {
     var texto = String(valor || '').trim().toUpperCase();
     if (texto === 'X') return 'X';
-    if (texto === 'R' || texto.indexOf('R-') === 0) return 'R';
+    if (texto === 'R') return 'R';
     return '';
 }
 

@@ -1,6 +1,4 @@
-// Reglas de restricción del Índice de Usos de San Borja.
-// Las restricciones ordinarias provienen de IIUU.docx y las restricciones
-// de ZRE se leen por giro y ubicación desde datosActividadesZRE.
+// Restricciones vigentes del Índice distrital y del Índice ZRE.
 (function () {
     'use strict';
 
@@ -37,226 +35,29 @@
         return '';
     }
 
-    function condicion(etiqueta, valor, estado) {
-        return { etiqueta: etiqueta, valor: valor, estado: estado || '' };
+    function condicion(etiqueta, valor) {
+        return { etiqueta: etiqueta, valor: valor };
     }
 
     function regla(condiciones, sinRestriccion) {
         return { condiciones: condiciones || [], sinRestriccion: Boolean(sinRestriccion) };
     }
 
-    // Reglas de la hoja "Notas - Restricciones". Se muestran por giro cuando
-    // la matriz de compatibilidad devuelve una combinación como R-01/R-05.
-    var REGLAS_NOTAS = {
-        'R-01': {
-            dimension: 'Intensidad / área',
-            referencia: 'Área máxima de proximidad',
-            existente: 'El área techada del establecimiento no supera 60 m².',
-            obraNueva: 'El área techada del establecimiento no supera 100 m².'
-        },
-        'R-02': {
-            dimension: 'Intensidad / área',
-            referencia: 'Área máxima de pequeña escala',
-            existente: 'El área techada del establecimiento no supera 150 m².',
-            obraNueva: 'El área techada del establecimiento no supera 250 m².'
-        },
-        'R-03': {
-            dimension: 'Localización / nivel y acceso',
-            referencia: 'Primer nivel con acceso independiente',
-            existente: 'Solo en primer nivel, con acceso directo e independiente desde la vía pública. El público no accede por halls, escaleras ni áreas comunes de uso residencial.',
-            obraNueva: 'Igual que en edificación existente. El proyecto puede habilitar el acceso independiente.'
-        },
-        'R-04': {
-            dimension: 'Intensidad / capacidad',
-            referencia: 'Capacidad máxima de usuarios',
-            existente: 'El aforo del establecimiento no supera 50 personas.',
-            obraNueva: 'El aforo del establecimiento no supera 100 personas.'
-        },
-        'R-05': {
-            dimension: 'Intensidad / almacenamiento',
-            referencia: 'Almacenamiento complementario',
-            existente: 'El almacén no supera el 30 % del área del establecimiento. No se almacena mercadería para abastecer a otros establecimientos.',
-            obraNueva: 'El almacén no supera el 40 % del área del establecimiento, con la misma condición.'
-        },
-        'R-06': {
-            dimension: 'Intensidad / carga y descarga',
-            referencia: 'Abastecimiento con vehículo liviano',
-            existente: 'La carga y descarga se realiza solo con vehículos de categoría N1 (hasta 3,5 t de peso bruto). El horario se rige por el Reglamento de Niveles Operacionales y Estándares de Calidad.',
-            obraNueva: 'Si el proyecto incorpora un patio de maniobras dentro del predio, se admiten vehículos de categoría N2.'
-        },
-        'R-07': {
-            dimension: 'Intensidad / operación vehicular',
-            referencia: 'Frente, acceso y operación vehicular por la vía de la categoría',
-            existente: 'El lote tiene frente a la vía o tramo que le asigna la categoría y los accesos se dan por esa vía. La espera, el embarque y la maniobra se realizan dentro del predio o en una bahía autorizada.',
-            obraNueva: 'Igual que en edificación existente. El proyecto resuelve los accesos y la maniobra dentro del predio.'
-        },
-        'R-08': {
-            dimension: 'Localización / lote',
-            referencia: 'Área mínima de lote',
-            existente: 'El lote tiene como mínimo 500 m².',
-            obraNueva: 'El lote tiene como mínimo 500 m². Se puede alcanzar por acumulación de lotes en el proyecto de edificación.'
-        },
-        'R-09': {
-            dimension: 'Localización / edificación',
-            referencia: 'Edificación sin unidades de vivienda',
-            existente: 'El establecimiento se ubica en una edificación que no tiene unidades de vivienda.',
-            obraNueva: 'Se admite en edificación mixta si el proyecto separa los accesos y las circulaciones verticales del establecimiento respecto de las del uso residencial.'
-        },
-        'R-10': {
-            dimension: 'Localización / distancia',
-            referencia: 'Distancia mínima a usos sensibles',
-            existente: 'El lote está a no menos de 100 m de lotes con educación básica o establecimientos de salud con internamiento, medidos en línea recta entre los linderos más próximos.',
-            obraNueva: 'Igual que en edificación existente.'
-        },
-        'R-11': {
-            dimension: 'Localización / uso complementario',
-            referencia: 'Complementario al equipamiento principal',
-            existente: 'La actividad es complementaria al uso principal del lote, ocupa como máximo el 20 % del área techada y no sustituye ni altera la finalidad del equipamiento.',
-            obraNueva: 'Igual que en edificación existente.'
-        },
-        'R-12': {
-            dimension: 'Localización / espacio público',
-            referencia: 'Vinculado a la gestión del espacio público',
-            existente: 'Solo mediante los mecanismos de gestión y aprovechamiento del espacio público conforme a la Ley N.º 31199 y su reglamento.',
-            obraNueva: 'No aplica: no se genera edificación nueva en ZRP.'
+    function restriccionesOrdinarias(zona) {
+        var clave = zona === 'Usos Específicos - Hospital' || zona === 'Usos Específicos - Educación'
+            ? 'Usos Específicos' : zona;
+        var notas = window.datosNotasRestricciones && window.datosNotasRestricciones.distrital;
+        var datos = notas && notas[clave];
+        if (!datos) {
+            return regla([condicion(
+                'Restricción del giro',
+                'El Índice distrital marca esta actividad con R, pero la hoja Notas - Restricciones no detalla una condición para esta categoría.'
+            )]);
         }
-    };
-
-    var REGLAS_ZRE = {
-        'R-01': {
-            existente: 'mín. 50, hasta 100',
-            obraNueva: 'Sin límite de área por compatibilidad, hasta el primer nivel'
-        },
-        'R-02': {
-            existente: 'mín. 50, hasta 100',
-            obraNueva: 'Sin límite de área por compatibilidad, hasta el tercer nivel'
-        },
-        'R-03': {
-            existente: 'min 100 hasta todo el área del lote',
-            obraNueva: 'Sin límite de área por compatibilidad, hasta el primer nivel'
-        },
-        'R-04': {
-            existente: 'min 100 hasta todo el área del lote',
-            obraNueva: 'Sin límite de área por compatibilidad, hasta el tercer nivel'
-        }
-    };
-
-    function restriccionesPorCodigos(codigos) {
         var condiciones = [];
-        var referencias = String(codigos || '').split('/').map(function (codigo) { return codigo.trim(); }).filter(Boolean);
-        referencias.forEach(function (codigo) {
-            var datos = REGLAS_NOTAS[codigo];
-            if (!datos) return;
-            condiciones.push(condicion(codigo + ' · ' + datos.referencia + ' · Edificación existente', datos.existente));
-            condiciones.push(condicion(codigo + ' · ' + datos.referencia + ' · Obra nueva, remodelación o ampliación', datos.obraNueva));
-        });
-        if (referencias.length > 1) {
-            condiciones.push(condicion('Aplicación conjunta', 'Las referencias se cumplen de forma acumulativa. Si una categoría fija un área menor, prevalece el límite menor.'));
-        }
+        if (datos.existente) condiciones.push(condicion('Edificación existente', datos.existente));
+        if (datos.obraNueva) condiciones.push(condicion('Obra nueva, remodelación o ampliación', datos.obraNueva));
         return regla(condiciones);
-    }
-
-    function conExcepcionPorConformidad(condiciones) {
-        condiciones.push(condicion(
-            'Edificación existente con conformidad de obra',
-            'La limitación de nivel no se aplica cuando la edificación cuenta con conformidad de obra para ese uso.'
-        ));
-        return condiciones;
-    }
-
-    function evaluarAreaLote(resultado, areaM2) {
-        var area = Number(areaM2);
-        if (!Number.isFinite(area)) return resultado;
-        resultado.condiciones.forEach(function (item) {
-            if (item.estado !== 'area-minima' && item.estado !== 'area-maxima') return;
-            var limite = Number(String(item.valor).replace(/[^\d.]/g, ''));
-            if (!Number.isFinite(limite)) return;
-            item.estado = item.estado === 'area-minima'
-                ? (area >= limite ? 'cumple' : 'no-cumple')
-                : (area <= limite ? 'cumple' : 'no-cumple');
-            item.detalle = 'Área del lote seleccionado: ' + area.toLocaleString('es-PE', { maximumFractionDigits: 2 }) + ' m²';
-        });
-        return resultado;
-    }
-
-    function zonificacionEsEquipamiento(zonVig) {
-        var zona = normalizar(zonVig).replace(/\s/g, '');
-        return zona === 'e' || zona === 'h' ||
-            zona === 'zspc(e)' || zona === 'zspc(h)';
-    }
-
-    function restriccionesOrdinarias(zona, contexto) {
-        contexto = contexto || {};
-        var condiciones;
-        if (zona === 'Uso Mixto Especializado') {
-            if (zonificacionEsEquipamiento(contexto.zonVig)) {
-                return regla([
-                    condicion('R-13 · Equipamiento y actividad complementaria', 'En lotes ZSPC (E) y ZSPC (H), el uso principal corresponde, respectivamente, a equipamiento urbano educativo o de salud. Bajo la modalidad de concesión se permiten actividades del Índice que apoyen el funcionamiento del equipamiento, sin sustituir el uso principal ni alterar su finalidad.'),
-                    condicion('Obra nueva, remodelación o ampliación', 'No aplica como uso autónomo; debe conservar el carácter complementario al equipamiento principal.')
-                ], true);
-            }
-            condiciones = [
-                condicion('Superficie mínima del lote', '500 m²', 'area-minima'),
-                condicion('Edificación existente', 'Hasta el tercer nivel.'),
-                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área ni de nivel por compatibilidad.')
-            ];
-            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
-        }
-
-        if (zona === 'Uso Mixto Intensivo') {
-            return regla([
-                condicion('Edificación existente', 'Sin límite de área ni de nivel por compatibilidad.'),
-                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área ni de nivel por compatibilidad.')
-            ], true);
-        }
-
-        if (zona === 'Uso Mixto Metropolitano') {
-            condiciones = [
-                condicion('Edificación existente', 'Área útil máxima de 1 000 m² y hasta el tercer nivel.', 'area-maxima'),
-                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área ni de nivel por compatibilidad.')
-            ];
-            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
-        }
-
-        if (zona === 'Uso Mixto Zonal') {
-            condiciones = [
-                condicion('Edificación existente', 'Área útil máxima de 750 m² y hasta el tercer nivel.', 'area-maxima'),
-                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área por compatibilidad y hasta el tercer nivel.')
-            ];
-            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
-        }
-
-        if (zona === 'Uso Mixto Vecinal') {
-            condiciones = [
-                condicion('Edificación existente', 'Área útil máxima de 500 m² y hasta el primer nivel.', 'area-maxima'),
-                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área por compatibilidad y hasta el segundo nivel.')
-            ];
-            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
-        }
-
-        if (zona === 'Uso Residencial Preferente') {
-            condiciones = [
-                condicion('Edificación existente', 'Área máxima de 300 m² del establecimiento, hasta el primer nivel y únicamente en predios en esquina.', 'area-maxima'),
-                condicion('Obra nueva, remodelación o ampliación', 'Sin límite de área por compatibilidad y hasta el primer nivel.')
-            ];
-            return evaluarAreaLote(regla(conExcepcionPorConformidad(condiciones)), contexto.areaM2);
-        }
-
-        if (zona === 'Uso de Recreación Pública') {
-            return regla([
-                condicion('R-13 · Edificación existente', 'Las actividades se permiten exclusivamente en las áreas calificadas como ZRP y pueden desarrollarse mediante mecanismos de participación de la inversión privada, vinculadas a la gestión, uso y aprovechamiento del espacio público, de conformidad con la Ley de Promoción de la Inversión Privada y la normativa vigente sobre gestión de espacios públicos.'),
-                condicion('R-13 · Obra nueva, remodelación o ampliación', 'No aplica: no se genera edificación nueva en ZRP.')
-            ]);
-        }
-
-        if (String(zona || '').indexOf('Usos Específicos') === 0) {
-            return regla([
-                condicion('R-13 · Edificación existente', 'En lotes ZSPC (E) y ZSPC (H), el uso principal corresponde, respectivamente, a equipamiento urbano educativo o de salud. Bajo la modalidad de concesión se permiten actividades descritas en el Índice que apoyen su funcionamiento, sin sustituir el uso principal ni alterar su finalidad.'),
-                condicion('R-13 · Obra nueva, remodelación o ampliación', 'No aplica.')
-            ]);
-        }
-
-        return regla([]);
     }
 
     function resolverUbicacionZRE(zreId, propiedadesLote) {
@@ -289,24 +90,18 @@
     function autorizacionZRE(giro, zreId, ubicacion) {
         if (!giro || !ubicacion || !giro.ZRE || !giro.ZRE[zreId]) return null;
         var valor = giro.ZRE[zreId][ubicacion];
-        return valor === 'X' ? 'X' : (typeof valor === 'string' && /^R-\d{2}$/.test(valor) ? 'R' : null);
+        var notas = window.datosNotasRestricciones && window.datosNotasRestricciones.zre;
+        if (valor === 'X') return 'X';
+        return notas && Object.prototype.hasOwnProperty.call(notas, valor) ? 'R' : null;
     }
 
     function restriccionGiroZRE(giro, zreId, ubicacion) {
         var autorizacion = autorizacionZRE(giro, zreId, ubicacion);
         if (!autorizacion) return regla([]);
-        if (autorizacion === 'X') {
-            return regla([condicion('Compatibilidad', 'Permitido sin restricción adicional por compatibilidad de uso.')], true);
-        }
+        if (autorizacion === 'X') return regla([], true);
 
         var codigo = giro.ZRE[zreId][ubicacion];
-        var datos = REGLAS_ZRE[codigo];
-        if (!datos) {
-            return regla([condicion(
-                'Validación requerida',
-                'La matriz marca este giro con una restricción sin parámetros definidos. Requiere validación técnica antes de autorizar.'
-            )]);
-        }
+        var datos = window.datosNotasRestricciones.zre[codigo];
         var condiciones = [];
         if (datos.existente) condiciones.push(condicion(codigo + ' · Edificación existente (m² de área útil)', datos.existente));
         if (datos.obraNueva) condiciones.push(condicion(codigo + ' · Obra nueva, remodelación o ampliación', datos.obraNueva));
@@ -317,10 +112,7 @@
         ubicacionesZRE: UBICACIONES_ZRE,
         resolverUbicacionZRE: resolverUbicacionZRE,
         autorizacionZRE: autorizacionZRE,
-        obtenerPorCodigos: restriccionesPorCodigos,
-        obtener: function (zona, clase, contexto) {
-            return restriccionesOrdinarias(zona, contexto || {});
-        },
+        obtener: restriccionesOrdinarias,
         obtenerZRE: restriccionGiroZRE,
         regimenResidencialExclusivo: {
             titulo: 'Condición de compatibilidad',

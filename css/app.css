@@ -1760,6 +1760,23 @@ body {
     margin-bottom: 0;
 }
 
+.detalle-zre-giro {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #e7d79b;
+    color: #3d392e;
+    font-size: 11px;
+}
+
+.detalle-zre-giro ul {
+    margin-top: 5px;
+}
+
+.codigo-restriccion-zre {
+    color: #705000;
+    font-size: 12px;
+}
+
 .restriccion-giro-zre {
     width: 100%;
     margin-top: 5px;
