@@ -242,7 +242,7 @@
 
         // Retiro normativo: oscurece con suavidad el color real del uso que queda debajo.
         var rendererRetirosSvg = L.svg({ pane: 'pane_retiros', padding: 0.35 });
-        function style_usos_compatibles_0_0(feature) {
+        function styleBaseUsosCompatibles(feature) {
             var categoriaEstilo = window.normalizarCategoriaUso
                 ? window.normalizarCategoriaUso(feature.properties['USOS_COMPA'])
                 : String(feature.properties['USOS_COMPA']);
@@ -265,6 +265,12 @@
                 case 'Uso de Recreación Pública': return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(164,205,163,1.0)', interactive: true, }
                 default: return { pane: 'pane_usos_compatibles_0', opacity: 1, color: 'rgba(35,35,35,0.81)', weight: 1.0, fill: true, fillOpacity: 1, fillColor: 'rgba(129,129,129,1.0)', interactive: true, }
             }
+        }
+
+        function style_usos_compatibles_0_0(feature) {
+            var estilo = styleBaseUsosCompatibles(feature);
+            if (esRestriccionON(feature)) estilo.fillOpacity = 0.55;
+            return estilo;
         }
 
         function esPlanEspecialRayado(feature) {
