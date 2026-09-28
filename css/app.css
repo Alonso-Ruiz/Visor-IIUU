@@ -941,6 +941,12 @@ body {
     font-weight: bold;
 }
 
+.sugerencia-item.sugerencia-activa {
+    background-color: #e0f7fa;
+    color: #00838f;
+    font-weight: bold;
+}
+
 /* --- CONTROL DE TRANSPARENCIA DEL MAPA --- */
 .control-transparencia-mapa {
     position: relative;

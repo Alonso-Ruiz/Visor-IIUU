@@ -8,7 +8,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Elaboración de productos de panadería",
     "N°": "01",
     "COD_GIRO": "1071-01",
-    "ACTIVIDAD": "Elaboración de productos de harina y derivados por pedido, sin atención ni consumo en el establecimiento, con reparto de productos propios",
+    "ACTIVIDAD": "Elaboración artesanal de masas panificadas u horneadas propias, sin atención, sin consumo en el establecimiento, con reparto de productos propios",
     "NOMBRES_PARA_EL_VISOR": [
       "panadería por pedido",
       "pastelería por delivery",
@@ -38,7 +38,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Elaboración de productos de panadería",
     "N°": "02",
     "COD_GIRO": "1071-02",
-    "ACTIVIDAD": "Elaboración de productos de harina y derivados por pedido, con atención al público, recojo o reparto de productos propios",
+    "ACTIVIDAD": "Elaboración artesanal de masas panificadas u horneadas propias, con atención, sin consumo en el establecimiento, con reparto de productos propios",
     "NOMBRES_PARA_EL_VISOR": [
       "panadería con reparto",
       "pastelería con delivery",
@@ -69,7 +69,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Elaboración de productos de panadería",
     "N°": "03",
     "COD_GIRO": "1071-03",
-    "ACTIVIDAD": "Elaboración artesanal de productos de harina y derivados en el establecimiento, con venta directa y con o sin consumo en el local",
+    "ACTIVIDAD": "Elaboración artesanal de masas panificadas u horneadas propias, con atención, con consumo y reparto de productos propios",
     "NOMBRES_PARA_EL_VISOR": [
       "panadería",
       "pastelería",
@@ -105,7 +105,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Fabricación de prendas de vestir, excepto prendas de piel",
     "N°": "01",
     "COD_GIRO": "1410-01",
-    "ACTIVIDAD": "Confección, ajuste y reparación de prendas de vestir a medida, con atención al público",
+    "ACTIVIDAD": "Confección a medida de prendas de vestir, con atención al público y pruebas de entalle vinculadas a la confección",
     "NOMBRES_PARA_EL_VISOR": [
       "sastrería",
       "costurera",
@@ -140,7 +140,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Fabricación de prendas de vestir, excepto prendas de piel",
     "N°": "02",
     "COD_GIRO": "1410-02",
-    "ACTIVIDAD": "Confección de prendas de vestir por encargo, sin atención al público, con entrega de productos propios; sin producción en serie para terceros",
+    "ACTIVIDAD": "Confección de prendas de vestir por encargo y en lotes limitados, con atención y entrega directa al cliente; sin producción continua",
     "NOMBRES_PARA_EL_VISOR": [
       "confección por pedido",
       "costura a puerta cerrada",
@@ -168,7 +168,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Fabricación de prendas de vestir, excepto prendas de piel",
     "N°": "03",
     "COD_GIRO": "1410-03",
-    "ACTIVIDAD": "Confección de prendas de vestir por encargo y en lotes limitados, con atención y entrega directa al cliente",
+    "ACTIVIDAD": "Confección de prendas de vestir por encargo en lotes discontinuos, sin atención al público, con entrega programada de productos propios; sin línea continua, almacén autónomo, centro de distribución ni venta mayorista",
     "NOMBRES_PARA_EL_VISOR": [
       "taller de confección",
       "confección de uniformes",
@@ -195,7 +195,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Impresión",
     "N°": "01",
     "COD_GIRO": "1811-01",
-    "ACTIVIDAD": "Impresión digital, fotocopiado, ploteo y acabados gráficos, con atención al público",
+    "ACTIVIDAD": "Impresión digital rápida de documentos y material gráfico, con atención al público; sin fotocopiado como actividad principal ni servicios autónomos de acabado",
     "NOMBRES_PARA_EL_VISOR": [
       "imprenta",
       "fotocopiadora",
@@ -234,7 +234,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Impresión",
     "N°": "02",
     "COD_GIRO": "1811-02",
-    "ACTIVIDAD": "Impresión y producción gráfica por encargo, sin atención al público, con entrega de productos propios; sin producción industrial ni distribución mayorista",
+    "ACTIVIDAD": "Impresión por encargo en lotes discontinuos, sin atención al público, con entrega programada de impresos propios; sin línea continua, almacén autónomo, centro de distribución ni venta mayorista",
     "NOMBRES_PARA_EL_VISOR": [
       "impresión por encargo",
       "imprenta sin atención al público",
@@ -262,7 +262,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Impresión",
     "N°": "03",
     "COD_GIRO": "1811-03",
-    "ACTIVIDAD": "Impresión offset, serigrafía, sublimación o gran formato por encargo, con atención y entrega directa al cliente",
+    "ACTIVIDAD": "Impresión offset, flexográfica, digital o de gran formato por encargo, con atención y entrega directa al cliente; sin estampado serigráfico de textiles o prendas",
     "NOMBRES_PARA_EL_VISOR": [
       "imprenta offset",
       "serigrafía",
@@ -641,7 +641,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor en comercios no especializados con predominio de la venta de alimentos, bebidas o tabaco",
     "N°": "04",
     "COD_GIRO": "4711-04",
-    "ACTIVIDAD": "Venta temporal al por menor de alimentos y productos diversos mediante módulos desmontables en espacio público",
+    "ACTIVIDAD": "Venta al por menor de gran variedad de productos con predominio de alimentos y bebidas mediante autoservicio, preparación de pedidos y recojo en el establecimiento; sin almacén autónomo ni centro de distribución",
     "NOMBRES_PARA_EL_VISOR": [
       "feria",
       "feria temporal",
@@ -672,7 +672,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor en comercios no especializados con predominio de la venta de alimentos, bebidas o tabaco",
     "N°": "05",
     "COD_GIRO": "4711-05",
-    "ACTIVIDAD": "Venta al por menor de alimentos mediante agrupación de puestos independientes dentro de un establecimiento común",
+    "ACTIVIDAD": "Venta al por menor de gran variedad de productos con predominio de alimentos y bebidas, organizada en secciones bajo un único operador y una sola gestión comercial",
     "NOMBRES_PARA_EL_VISOR": [
       "mercado",
       "mercado de abastos",
@@ -760,7 +760,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de venta al por menor en comercios no especializados",
     "N°": "03",
     "COD_GIRO": "4719-03",
-    "ACTIVIDAD": "Venta al por menor de productos diversos mediante exhibición organizada por marcas o departamentos en un solo establecimiento",
+    "ACTIVIDAD": "Venta al por menor de productos diversos mediante módulos o secciones integrados bajo un único operador y una sola gestión comercial",
     "NOMBRES_PARA_EL_VISOR": [
       "tienda por departamentos",
       "multimarca",
@@ -786,7 +786,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de venta al por menor en comercios no especializados",
     "N°": "04",
     "COD_GIRO": "4719-04",
-    "ACTIVIDAD": "Conjunto integrado de establecimientos comerciales con unidades principales, locales menores, circulación común y área común de alimentos",
+    "ACTIVIDAD": "Venta al por menor de productos diversos en establecimiento de gran formato, con almacenamiento complementario y despacho de productos propios; sin venta mayorista ni centro de distribución",
     "NOMBRES_PARA_EL_VISOR": [
       "centro comercial",
       "mall",
@@ -849,7 +849,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de alimentos en comercios especializados",
     "N°": "02",
     "COD_GIRO": "4721-02",
-    "ACTIVIDAD": "Venta al por menor de frutas, verduras, lácteos y huevos, sin preparación ni consumo en el establecimiento",
+    "ACTIVIDAD": "Venta al por menor de alimentos en comercio especializado, incluidos frutas, verduras, lácteos, huevos, alimentos envasados y productos orgánicos, sin preparación ni consumo en el establecimiento",
     "NOMBRES_PARA_EL_VISOR": [
       "frutería",
       "verdulería",
@@ -1448,7 +1448,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de productos farmacéuticos y médicos, cosméticos y artículos de tocador en comercios especializados",
     "N°": "01",
     "COD_GIRO": "4772-01",
-    "ACTIVIDAD": "Venta al por menor de productos naturales y suplementos, sin preparación ni consumo en el establecimiento",
+    "ACTIVIDAD": "Venta al por menor de productos medicinales, suplementos de uso terapéutico y productos naturales medicinales, sin preparación ni consumo en el establecimiento",
     "NOMBRES_PARA_EL_VISOR": [
       "tienda naturista",
       "casa naturista",
@@ -1579,7 +1579,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de otros productos nuevos en comercios especializados",
     "N°": "01",
     "COD_GIRO": "4773-01",
-    "ACTIVIDAD": "Venta al por menor de flores, plantas y arreglos florales",
+    "ACTIVIDAD": "Venta al por menor de productos nuevos no alimenticios especializados para celebraciones, decoración, recuerdos, artesanía, flores y plantas",
     "NOMBRES_PARA_EL_VISOR": [
       "florería",
       "vivero",
@@ -1710,7 +1710,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de artículos de segunda mano",
     "N°": "01",
     "COD_GIRO": "4774-01",
-    "ACTIVIDAD": "Venta al por menor de artículos de segunda mano y antigüedades",
+    "ACTIVIDAD": "Venta al por menor de artículos de segunda mano y antigüedades en comercio especializado",
     "NOMBRES_PARA_EL_VISOR": [
       "tienda de segunda mano",
       "antigüedades",
@@ -2059,7 +2059,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Actividades de restaurantes y de servicio móvil de comidas",
     "N°": "02",
     "COD_GIRO": "5610-02",
-    "ACTIVIDAD": "Preparación y expendio de comidas de servicio rápido para consumo, recojo o reparto de productos propios, con o sin atención al público",
+    "ACTIVIDAD": "Preparación y expendio de comidas de servicio rápido en establecimiento, módulo o vehículo gastronómico autorizado, para consumo, recojo o reparto de productos propios, con o sin atención al público",
     "NOMBRES_PARA_EL_VISOR": [
       "cafetería",
       "coffee shop",
@@ -2377,7 +2377,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de telecomunicaciones",
     "N°": "02",
     "COD_GIRO": "6190-02",
-    "ACTIVIDAD": "Operación técnica de telecomunicaciones, nodos y centros de datos, sin atención al público ni almacenamiento logístico",
+    "ACTIVIDAD": "Operación técnica de telecomunicaciones, estaciones terminales satelitales, nodos de transmisión o reventa de servicios de telecomunicaciones, sin atención al público ni almacenamiento logístico",
     "NOMBRES_PARA_EL_VISOR": [
       "centro de datos",
       "data center",
@@ -2404,7 +2404,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de tecnología de la información y de servicios informáticos",
     "N°": "01",
     "COD_GIRO": "6209-01",
-    "ACTIVIDAD": "Servicios de tecnología de la información y soporte informático en oficina",
+    "ACTIVIDAD": "Recuperación ante desastres informáticos, configuración de computadoras personales e instalación de programas informáticos, con atención en oficina",
     "NOMBRES_PARA_EL_VISOR": [
       "soporte técnico",
       "empresa de software",
@@ -2527,7 +2527,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Seguros de vida",
     "N°": "01",
     "COD_GIRO": "6511-01",
-    "ACTIVIDAD": "Seguros de vida en oficina",
+    "ACTIVIDAD": "Concertación y gestión de contratos de anualidades, seguros de vida, invalidez o doble indemnización, en oficina",
     "NOMBRES_PARA_EL_VISOR": [
       "aseguradora",
       "seguros",
@@ -2556,7 +2556,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Fondos de pensiones",
     "N°": "01",
     "COD_GIRO": "6530-01",
-    "ACTIVIDAD": "Administración de fondos de pensiones en oficina",
+    "ACTIVIDAD": "Operación de fondos, planes o programas de pensiones y jubilación, en oficina",
     "NOMBRES_PARA_EL_VISOR": [
       "AFP",
       "oficina de AFP",
@@ -2666,7 +2666,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Actividades inmobiliarias realizadas con bienes propios o arrendados",
     "N°": "01",
     "COD_GIRO": "6810-01",
-    "ACTIVIDAD": "Compra, venta y arrendamiento de bienes inmuebles propios, en oficina o sala de ventas",
+    "ACTIVIDAD": "Operación, arrendamiento o cesión de uso de bienes inmuebles propios o arrendados, incluidos espacios de trabajo equipados, oficinas flexibles, coworking y business center, cuando la prestación principal sea el uso del inmueble y los servicios administrativos sean accesorios",
     "NOMBRES_PARA_EL_VISOR": [
       "inmobiliaria de bienes propios",
       "sala de ventas",
@@ -2811,7 +2811,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Actividades de Oficinas principales",
     "N°": "01",
     "COD_GIRO": "7010-01",
-    "ACTIVIDAD": "Oficinas administrativas o corporativas de empresas",
+    "ACTIVIDAD": "Oficinas principales, sedes u oficinas administrativas centralizadas que supervisan y gestionan otras unidades de la misma empresa",
     "NOMBRES_PARA_EL_VISOR": [
       "oficina",
       "oficinas administrativas",
@@ -2844,7 +2844,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Actividades de Oficinas principales",
     "N°": "02",
     "COD_GIRO": "7010-02",
-    "ACTIVIDAD": "Oficinas compartidas o espacios de coworking",
+    "ACTIVIDAD": "Oficinas regionales, distritales o subsidiarias de gestión que supervisan operaciones de otras unidades de la misma empresa",
     "NOMBRES_PARA_EL_VISOR": [
       "coworking",
       "cowork",
@@ -3002,7 +3002,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Actividades veterinarias",
     "N°": "02",
     "COD_GIRO": "7500-02",
-    "ACTIVIDAD": "Clínica veterinaria con cirugía, hospitalización o alojamiento de animales",
+    "ACTIVIDAD": "Clínica u hospital veterinario con cirugía, diagnóstico u hospitalización de animales vinculada al tratamiento y bajo atención veterinaria",
     "NOMBRES_PARA_EL_VISOR": [
       "clínica veterinaria",
       "hospital veterinario",
@@ -3639,7 +3639,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Actividades de hospitales",
     "N°": "01",
     "COD_GIRO": "8610-01",
-    "ACTIVIDAD": "Centro médico o policlínico de atención ambulatoria",
+    "ACTIVIDAD": "Establecimiento hospitalario especializado de menor complejidad, destinado principalmente a pacientes internos y con atención médica, diagnóstico y tratamiento",
     "NOMBRES_PARA_EL_VISOR": [
       "policlínico",
       "centro médico",
@@ -3673,7 +3673,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Actividades de hospitales",
     "N°": "02",
     "COD_GIRO": "8610-02",
-    "ACTIVIDAD": "Clínica con internamiento",
+    "ACTIVIDAD": "Clínica con internamiento, servicios médicos y paramédicos, diagnóstico y tratamiento hospitalario",
     "NOMBRES_PARA_EL_VISOR": [
       "clínica",
       "clínica con hospitalización",
@@ -3702,7 +3702,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Actividades de hospitales",
     "N°": "03",
     "COD_GIRO": "8610-03",
-    "ACTIVIDAD": "Hospital",
+    "ACTIVIDAD": "Hospital general o especializado con atención de pacientes internos, servicios de diagnóstico, tratamiento, urgencias y servicios hospitalarios complementarios",
     "NOMBRES_PARA_EL_VISOR": [
       "hospital"
     ],
@@ -3802,7 +3802,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de atención de la salud humana",
     "N°": "01",
     "COD_GIRO": "8690-01",
-    "ACTIVIDAD": "Atención psicológica y de bienestar emocional en consultorio",
+    "ACTIVIDAD": "Atención psicológica y de bienestar emocional en consultorio, prestada por profesionales de la salud y sin internamiento",
     "NOMBRES_PARA_EL_VISOR": [
       "psicólogo",
       "consultorio psicológico",
@@ -3837,7 +3837,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de atención de la salud humana",
     "N°": "02",
     "COD_GIRO": "8690-02",
-    "ACTIVIDAD": "Servicios ambulatorios de enfermería, fisioterapia, podología, rehabilitación, nutrición, dietética, acupuntura y otras atenciones de salud humana sin internamiento",
+    "ACTIVIDAD": "Servicios ambulatorios de enfermería, fisioterapia, podología, rehabilitación, nutrición, dietética, acupuntura y otras atenciones de salud humana sin internamiento, prestados por personal de salud o paramédico habilitado",
     "NOMBRES_PARA_EL_VISOR": [
       "fisioterapia",
       "terapia física",
@@ -4311,7 +4311,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Gestión de instalaciones deportivas",
     "N°": "01",
     "COD_GIRO": "9311-01",
-    "ACTIVIDAD": "Operación de instalaciones cerradas para acondicionamiento físico, sin cancha, campo o piscina",
+    "ACTIVIDAD": "Operación de centros deportivos cerrados para acondicionamiento físico, entrenamiento funcional, práctica individual, simulación deportiva, boleras o escalada indoor, sin cancha, campo o piscina",
     "NOMBRES_PARA_EL_VISOR": [
       "gimnasio",
       "gym",
@@ -4348,7 +4348,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Gestión de instalaciones deportivas",
     "N°": "02",
     "COD_GIRO": "9311-02",
-    "ACTIVIDAD": "Operación y alquiler de instalaciones deportivas con cancha, campo o piscina",
+    "ACTIVIDAD": "Operación, reserva y alquiler de centros o instalaciones deportivas con cancha, campo o piscina, para práctica deportiva por turnos o membresía",
     "NOMBRES_PARA_EL_VISOR": [
       "alquiler de canchas",
       "cancha de fútbol",
@@ -4538,7 +4538,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Actividades de asociaciones profesionales",
     "N°": "01",
     "COD_GIRO": "9412-01",
-    "ACTIVIDAD": "Asociaciones, colegios y gremios profesionales",
+    "ACTIVIDAD": "Actividades de colegios y asociaciones profesionales, técnicas, científicas, académicas o culturales vinculadas a una disciplina, profesión o campo de conocimiento",
     "NOMBRES_PARA_EL_VISOR": [
       "colegio profesional",
       "asociación",
@@ -4625,7 +4625,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Reparación de otros efectos personales y enseres domésticos",
     "N°": "01",
     "COD_GIRO": "9529-01",
-    "ACTIVIDAD": "Reparación de bicicletas, relojes, electrodomésticos menores y otros efectos personales",
+    "ACTIVIDAD": "Reparación de bicicletas, prendas de vestir, joyas, relojes, artículos deportivos, libros, instrumentos musicales, juguetes y otros efectos personales comprendidos en la clase; incluye copia de llaves",
     "NOMBRES_PARA_EL_VISOR": [
       "reparación de celulares",
       "relojero",
@@ -4687,7 +4687,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "textilería",
     "N°": "02",
     "COD_GIRO": "9601-02",
-    "ACTIVIDAD": "Lavandería de autoservicio o con equipos de lavado, secado o limpieza en seco en el establecimiento",
+    "ACTIVIDAD": "Lavandería de autoservicio o con equipos de lavado, secado o limpieza en seco en el establecimiento, sin planta industrial autónoma",
     "NOMBRES_PARA_EL_VISOR": [
       "lavandería de autoservicio",
       "tintorería",
@@ -4717,7 +4717,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "perfumería, cosméticos, tienda de belleza, maquillaje, productos de belleza",
     "N°": "01",
     "COD_GIRO": "9602-01",
-    "ACTIVIDAD": "Servicios de cuidado capilar, barbería, manicure y tratamientos estéticos no médicos, con atención al público",
+    "ACTIVIDAD": "Servicios de cuidado capilar, peluquería y barbería, con atención al público y sin procedimientos médicos",
     "NOMBRES_PARA_EL_VISOR": [
       "peluquería",
       "barbería",
@@ -4762,7 +4762,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "perfumería, cosméticos, tienda de belleza, maquillaje, productos de belleza",
     "N°": "02",
     "COD_GIRO": "9602-02",
-    "ACTIVIDAD": "Servicios de relajación, masaje no terapéutico y spa, sin procedimientos médicos",
+    "ACTIVIDAD": "Tratamientos de belleza no médicos, incluidos masajes faciales, manicure, pedicure, maquillaje, depilación y cuidado estético no invasivo",
     "NOMBRES_PARA_EL_VISOR": [
       "spa",
       "masajes",
@@ -4793,7 +4793,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de servicios personales n.c.p.",
     "N°": "01",
     "COD_GIRO": "9609-01",
-    "ACTIVIDAD": "Servicios personales no clasificados en otra parte, con atención directa y sin procedimientos médicos",
+    "ACTIVIDAD": "Servicios personales no médicos de bienestar o modificación corporal, incluidos sauna, baños de vapor, solario, salón de adelgazamiento, masaje no terapéutico, tatuaje y perforación corporal",
     "NOMBRES_PARA_EL_VISOR": [
       "tatuajes",
       "piercing",
@@ -4823,7 +4823,7 @@ var datosActividadesIndice = [
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de servicios personales n.c.p.",
     "N°": "02",
     "COD_GIRO": "9609-02",
-    "ACTIVIDAD": "Servicios de higiene, cuidado estético y acondicionamiento de animales de compañía",
+    "ACTIVIDAD": "Servicios no veterinarios de guarda, alojamiento, paseo, higiene, peluquería y cuidado de animales de compañía",
     "NOMBRES_PARA_EL_VISOR": [
       "peluquería canina",
       "grooming",

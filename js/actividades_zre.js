@@ -7,7 +7,7 @@ var datosActividadesZRE = [
     "CLASE": "1071",
     "DESCRIPCIÓN DE LA CLASE": "Elaboración de productos de panadería",
     "N°": "01",
-    "ACTIVIDAD": "Elaboración de productos de harina y derivados por pedido, con atención al público, recojo o reparto de productos propios",
+    "ACTIVIDAD": "Elaboración artesanal de masas panificadas u horneadas propias, sin atención, sin consumo en el establecimiento, con reparto",
     "OBSERVACIONES": "min 100 hasta todo el área del lote",
     "ZRE": {
       "ZRE-1": {
@@ -35,7 +35,7 @@ var datosActividadesZRE = [
     "CLASE": "1410",
     "DESCRIPCIÓN DE LA CLASE": "Fabricación de prendas de vestir, excepto prendas de piel",
     "N°": "01",
-    "ACTIVIDAD": "Confección, ajuste y reparación de prendas de vestir a medida, con atención al público",
+    "ACTIVIDAD": "Confección a medida de prendas de vestir, con atención al público y pruebas de entalle vinculadas a la confección",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -63,7 +63,7 @@ var datosActividadesZRE = [
     "CLASE": "1811",
     "DESCRIPCIÓN DE LA CLASE": "Impresión",
     "N°": "01",
-    "ACTIVIDAD": "Impresión digital, fotocopiado, ploteo y acabados gráficos, con atención al público",
+    "ACTIVIDAD": "Impresión digital rápida de documentos y material gráfico, con atención al público; sin fotocopiado como actividad principal ni servicios autónomos de acabado",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -203,7 +203,7 @@ var datosActividadesZRE = [
     "CLASE": "4721",
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de alimentos en comercios especializados",
     "N°": "02",
-    "ACTIVIDAD": "Venta al por menor de frutas, verduras, lácteos y huevos, sin preparación ni consumo en el establecimiento",
+    "ACTIVIDAD": "Venta al por menor de alimentos en comercio especializado, incluidos frutas, verduras, lácteos, huevos, alimentos envasados y productos orgánicos, sin preparación ni consumo en el establecimiento",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -679,7 +679,7 @@ var datosActividadesZRE = [
     "CLASE": "4772",
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de productos farmacéuticos y médicos, cosméticos y artículos de tocador en comercios especializados",
     "N°": "01",
-    "ACTIVIDAD": "Venta al por menor de medicamentos y productos farmacéuticos, con atención al público",
+    "ACTIVIDAD": "Venta al por menor de productos medicinales, suplementos de uso terapéutico y productos naturales medicinales, sin preparación ni consumo en el establecimiento",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -707,7 +707,7 @@ var datosActividadesZRE = [
     "CLASE": "4772",
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de productos farmacéuticos y médicos, cosméticos y artículos de tocador en comercios especializados",
     "N°": "02",
-    "ACTIVIDAD": "Venta al por menor de productos ortopédicos, material e instrumental médico",
+    "ACTIVIDAD": "Venta al por menor de medicamentos y productos farmacéuticos, con atención al público",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -735,7 +735,7 @@ var datosActividadesZRE = [
     "CLASE": "4772",
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de productos farmacéuticos y médicos, cosméticos y artículos de tocador en comercios especializados",
     "N°": "03",
-    "ACTIVIDAD": "Venta al por menor de productos naturales y suplementos, sin preparación ni consumo en el establecimiento",
+    "ACTIVIDAD": "Venta al por menor de productos ortopédicos, material e instrumental médico",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -791,7 +791,7 @@ var datosActividadesZRE = [
     "CLASE": "4773",
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de otros productos nuevos en comercios especializados",
     "N°": "01",
-    "ACTIVIDAD": "Venta al por menor de flores, plantas y arreglos florales",
+    "ACTIVIDAD": "Venta al por menor de productos nuevos no alimenticios especializados para celebraciones, decoración, recuerdos, artesanía, flores y plantas",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -903,7 +903,7 @@ var datosActividadesZRE = [
     "CLASE": "4774",
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de artículos de segunda mano",
     "N°": "01",
-    "ACTIVIDAD": "Venta al por menor de artículos de segunda mano y antigüedades",
+    "ACTIVIDAD": "Venta al por menor de artículos de segunda mano y antigüedades en comercio especializado",
     "OBSERVACIONES": "",
     "ZRE": {
       "ZRE-1": {
@@ -1211,7 +1211,7 @@ var datosActividadesZRE = [
     "CLASE": "5610",
     "DESCRIPCIÓN DE LA CLASE": "Actividades de restaurantes y de servicio móvil de comidas",
     "N°": "02",
-    "ACTIVIDAD": "Preparación y expendio de comidas de servicio rápido para consumo, recojo o reparto de productos propios, con o sin atención al público",
+    "ACTIVIDAD": "Preparación y expendio de comidas de servicio rápido en establecimiento, módulo o vehículo gastronómico autorizado, para consumo, recojo o reparto de productos propios, con o sin atención al público",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -1491,7 +1491,7 @@ var datosActividadesZRE = [
     "CLASE": "6190",
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de telecomunicaciones",
     "N°": "02",
-    "ACTIVIDAD": "Operación técnica de telecomunicaciones, nodos y centros de datos, sin atención al público ni almacenamiento logístico",
+    "ACTIVIDAD": "Operación técnica de telecomunicaciones, estaciones terminales satelitales, nodos de transmisión o reventa de servicios de telecomunicaciones, sin atención al público ni almacenamiento logístico",
     "OBSERVACIONES": "",
     "ZRE": {
       "ZRE-1": {
@@ -1519,7 +1519,7 @@ var datosActividadesZRE = [
     "CLASE": "6209",
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de tecnología de la información y de servicios informáticos",
     "N°": "01",
-    "ACTIVIDAD": "Servicios de tecnología de la información y soporte informático en oficina",
+    "ACTIVIDAD": "Recuperación ante desastres informáticos, configuración de computadoras personales e instalación de programas informáticos, con atención en oficina",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -1631,7 +1631,7 @@ var datosActividadesZRE = [
     "CLASE": "6511",
     "DESCRIPCIÓN DE LA CLASE": "Seguros de vida",
     "N°": "01",
-    "ACTIVIDAD": "Seguros de vida en oficina",
+    "ACTIVIDAD": "Concertación y gestión de contratos de anualidades, seguros de vida, invalidez o doble indemnización, en oficina",
     "OBSERVACIONES": "min 100 hasta todo el área del lote",
     "ZRE": {
       "ZRE-1": {
@@ -1659,7 +1659,7 @@ var datosActividadesZRE = [
     "CLASE": "6530",
     "DESCRIPCIÓN DE LA CLASE": "Fondos de pensiones",
     "N°": "01",
-    "ACTIVIDAD": "Administración de fondos de pensiones en oficina",
+    "ACTIVIDAD": "Operación de fondos, planes o programas de pensiones y jubilación, en oficina",
     "OBSERVACIONES": "min 100 hasta todo el área del lote",
     "ZRE": {
       "ZRE-1": {
@@ -1771,7 +1771,7 @@ var datosActividadesZRE = [
     "CLASE": "6810",
     "DESCRIPCIÓN DE LA CLASE": "Actividades inmobiliarias realizadas con bienes propios o arrendados",
     "N°": "01",
-    "ACTIVIDAD": "Compra, venta y arrendamiento de bienes inmuebles propios, en oficina o sala de ventas",
+    "ACTIVIDAD": "Operación, arrendamiento o cesión de uso de bienes inmuebles propios o arrendados, incluidos espacios de trabajo equipados, oficinas flexibles, coworking y business center, cuando la prestación principal sea el uso del inmueble y los servicios administrativos sean accesorios",
     "OBSERVACIONES": "min 100 hasta todo el área del lote",
     "ZRE": {
       "ZRE-1": {
@@ -1911,7 +1911,7 @@ var datosActividadesZRE = [
     "CLASE": "7010",
     "DESCRIPCIÓN DE LA CLASE": "Actividades de Oficinas principales",
     "N°": "01",
-    "ACTIVIDAD": "Oficinas administrativas o corporativas de empresas",
+    "ACTIVIDAD": "Oficinas principales, sedes u oficinas administrativas centralizadas que supervisan y gestionan otras unidades de la misma empresa",
     "OBSERVACIONES": "min 100 hasta todo el área del lote",
     "ZRE": {
       "ZRE-1": {
@@ -1939,7 +1939,7 @@ var datosActividadesZRE = [
     "CLASE": "7010",
     "DESCRIPCIÓN DE LA CLASE": "Actividades de Oficinas principales",
     "N°": "02",
-    "ACTIVIDAD": "Oficinas compartidas o espacios de coworking",
+    "ACTIVIDAD": "Oficinas regionales, distritales o subsidiarias de gestión que supervisan operaciones de otras unidades de la misma empresa",
     "OBSERVACIONES": "min 100 hasta todo el área del lote",
     "ZRE": {
       "ZRE-1": {
@@ -2079,7 +2079,7 @@ var datosActividadesZRE = [
     "CLASE": "7500",
     "DESCRIPCIÓN DE LA CLASE": "Actividades veterinarias",
     "N°": "02",
-    "ACTIVIDAD": "Clínica veterinaria con cirugía, hospitalización o alojamiento de animales",
+    "ACTIVIDAD": "Clínica u hospital veterinario con cirugía, diagnóstico u hospitalización de animales vinculada al tratamiento y bajo atención veterinaria",
     "OBSERVACIONES": "min 100 hasta todo el área del lote",
     "ZRE": {
       "ZRE-1": {
@@ -2359,7 +2359,7 @@ var datosActividadesZRE = [
     "CLASE": "8690",
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de atención de la salud humana",
     "N°": "01",
-    "ACTIVIDAD": "Servicios ambulatorios de enfermería, fisioterapia, podología, rehabilitación, nutrición, dietética, acupuntura y otras atenciones de salud humana sin internamiento",
+    "ACTIVIDAD": "Atención psicológica y de bienestar emocional en consultorio, prestada por profesionales de la salud y sin internamiento",
     "OBSERVACIONES": "",
     "ZRE": {
       "ZRE-1": {
@@ -2387,7 +2387,7 @@ var datosActividadesZRE = [
     "CLASE": "8690",
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de atención de la salud humana",
     "N°": "02",
-    "ACTIVIDAD": "Servicios ambulatorios de enfermería, fisioterapia, podología, rehabilitación, nutrición, dietética, acupuntura y otras atenciones de salud humana sin internamiento",
+    "ACTIVIDAD": "Servicios ambulatorios de enfermería, fisioterapia, podología, rehabilitación, nutrición, dietética, acupuntura y otras atenciones de salud humana sin internamiento, prestados por personal de salud o paramédico habilitado",
     "OBSERVACIONES": "",
     "ZRE": {
       "ZRE-1": {
@@ -2695,7 +2695,7 @@ var datosActividadesZRE = [
     "CLASE": "9311",
     "DESCRIPCIÓN DE LA CLASE": "Gestión de instalaciones deportivas",
     "N°": "01",
-    "ACTIVIDAD": "Operación de instalaciones cerradas para acondicionamiento físico, sin cancha, campo o piscina",
+    "ACTIVIDAD": "Operación de centros deportivos cerrados para acondicionamiento físico, entrenamiento funcional, práctica individual, simulación deportiva, boleras o escalada indoor, sin cancha, campo o piscina",
     "OBSERVACIONES": "",
     "ZRE": {
       "ZRE-1": {
@@ -2723,7 +2723,7 @@ var datosActividadesZRE = [
     "CLASE": "9311",
     "DESCRIPCIÓN DE LA CLASE": "Gestión de instalaciones deportivas",
     "N°": "02",
-    "ACTIVIDAD": "Operación y alquiler de instalaciones deportivas con cancha, campo o piscina",
+    "ACTIVIDAD": "Operación, reserva y alquiler de centros o instalaciones deportivas con cancha, campo o piscina, para práctica deportiva por turnos o membresía",
     "OBSERVACIONES": "",
     "ZRE": {
       "ZRE-1": {
@@ -2863,7 +2863,7 @@ var datosActividadesZRE = [
     "CLASE": "9412",
     "DESCRIPCIÓN DE LA CLASE": "Actividades de asociaciones profesionales",
     "N°": "01",
-    "ACTIVIDAD": "Asociaciones, colegios y gremios profesionales",
+    "ACTIVIDAD": "Actividades de colegios y asociaciones profesionales, técnicas, científicas, académicas o culturales vinculadas a una disciplina, profesión o campo de conocimiento",
     "OBSERVACIONES": "min 100 hasta todo el área del lote",
     "ZRE": {
       "ZRE-1": {
@@ -2947,7 +2947,7 @@ var datosActividadesZRE = [
     "CLASE": "9529",
     "DESCRIPCIÓN DE LA CLASE": "Reparación de otros efectos personales y enseres domésticos",
     "N°": "01",
-    "ACTIVIDAD": "Reparación de bicicletas, relojes, electrodomésticos menores y otros efectos personales",
+    "ACTIVIDAD": "Reparación de bicicletas, prendas de vestir, joyas, relojes, artículos deportivos, libros, instrumentos musicales, juguetes y otros efectos personales comprendidos en la clase; incluye copia de llaves",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -3003,7 +3003,7 @@ var datosActividadesZRE = [
     "CLASE": "9601",
     "DESCRIPCIÓN DE LA CLASE": "Lavado y limpieza, incluida la limpieza en seco, de productos textiles y de piel",
     "N°": "02",
-    "ACTIVIDAD": "Lavandería de autoservicio o con equipos de lavado, secado o limpieza en seco en el establecimiento",
+    "ACTIVIDAD": "Lavandería de autoservicio o con equipos de lavado, secado o limpieza en seco en el establecimiento, sin planta industrial autónoma",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -3031,7 +3031,7 @@ var datosActividadesZRE = [
     "CLASE": "9602",
     "DESCRIPCIÓN DE LA CLASE": "Peluquería y otros tratamientos de belleza",
     "N°": "01",
-    "ACTIVIDAD": "Servicios de cuidado capilar, barbería, manicure y tratamientos estéticos no médicos, con atención al público",
+    "ACTIVIDAD": "Servicios de cuidado capilar, peluquería y barbería, con atención al público y sin procedimientos médicos",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -3059,7 +3059,7 @@ var datosActividadesZRE = [
     "CLASE": "9602",
     "DESCRIPCIÓN DE LA CLASE": "Peluquería y otros tratamientos de belleza",
     "N°": "02",
-    "ACTIVIDAD": "Servicios de relajación, masaje no terapéutico y spa, sin procedimientos médicos",
+    "ACTIVIDAD": "Tratamientos de belleza no médicos, incluidos masajes faciales, manicure, pedicure, maquillaje, depilación y cuidado estético no invasivo",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -3087,7 +3087,7 @@ var datosActividadesZRE = [
     "CLASE": "9609",
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de servicios personales n.c.p.",
     "N°": "01",
-    "ACTIVIDAD": "Servicios personales no clasificados en otra parte, con atención directa y sin procedimientos médicos",
+    "ACTIVIDAD": "Servicios personales no médicos de bienestar o modificación corporal, incluidos sauna, baños de vapor, solario, salón de adelgazamiento, masaje no terapéutico, tatuaje y perforación corporal",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {
@@ -3115,7 +3115,7 @@ var datosActividadesZRE = [
     "CLASE": "9609",
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades de servicios personales n.c.p.",
     "N°": "02",
-    "ACTIVIDAD": "Servicios de higiene, cuidado estético y acondicionamiento de animales de compañía",
+    "ACTIVIDAD": "Servicios no veterinarios de guarda, alojamiento, paseo, higiene, peluquería y cuidado de animales de compañía",
     "OBSERVACIONES": "mín. 50, hasta 100",
     "ZRE": {
       "ZRE-1": {

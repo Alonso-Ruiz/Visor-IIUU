@@ -113,6 +113,38 @@
         const inputBuscadorVias = document.getElementById('buscador-vias'), sugerenciasVias = document.getElementById('sugerencias-vias');
         const botonLimpiarVias = document.getElementById('boton-limpiar-vias');
         let ultimoResultadoVias = {};
+        let indiceSugerenciaViaActiva = -1;
+
+        inputBuscadorVias.setAttribute('role', 'combobox');
+        inputBuscadorVias.setAttribute('aria-autocomplete', 'list');
+        inputBuscadorVias.setAttribute('aria-controls', 'sugerencias-vias');
+        inputBuscadorVias.setAttribute('aria-expanded', 'false');
+        sugerenciasVias.setAttribute('role', 'listbox');
+
+        function actualizarSugerenciaViaActiva(indice) {
+            const sugerencias = sugerenciasVias.querySelectorAll('.sugerencia-item');
+            if (!sugerencias.length) {
+                indiceSugerenciaViaActiva = -1;
+                inputBuscadorVias.removeAttribute('aria-activedescendant');
+                return;
+            }
+
+            indiceSugerenciaViaActiva = (indice + sugerencias.length) % sugerencias.length;
+            sugerencias.forEach(function(item, i) {
+                const activa = i === indiceSugerenciaViaActiva;
+                item.classList.toggle('sugerencia-activa', activa);
+                item.setAttribute('aria-selected', activa ? 'true' : 'false');
+            });
+            inputBuscadorVias.setAttribute('aria-activedescendant', sugerencias[indiceSugerenciaViaActiva].id);
+            sugerencias[indiceSugerenciaViaActiva].scrollIntoView({ block: 'nearest' });
+        }
+
+        function cerrarSugerenciasVias() {
+            sugerenciasVias.style.display = 'none';
+            inputBuscadorVias.setAttribute('aria-expanded', 'false');
+            inputBuscadorVias.removeAttribute('aria-activedescendant');
+            indiceSugerenciaViaActiva = -1;
+        }
 
         function actualizarBotonLimpiarVias() {
             if (botonLimpiarVias) botonLimpiarVias.hidden = !inputBuscadorVias.value.trim();
@@ -122,7 +154,7 @@
             inputBuscadorVias.value = '';
             ultimoResultadoVias = {};
             sugerenciasVias.innerHTML = '';
-            sugerenciasVias.style.display = 'none';
+            cerrarSugerenciasVias();
             if (capaResaltadoVia) {
                 map.removeLayer(capaResaltadoVia);
                 capaResaltadoVia = null;
@@ -141,7 +173,7 @@
             if (inputBuscadorVias.value.trim()) return;
             contenedorBuscadorVias.classList.add('buscador-cerrado');
             contenedorBuscadorVias.classList.remove('buscador-abierto');
-            sugerenciasVias.style.display = 'none';
+            cerrarSugerenciasVias();
             if (botonBuscadorVias) botonBuscadorVias.setAttribute('aria-expanded', 'false');
         }
 
@@ -171,14 +203,12 @@
         }
 
         function seleccionarVia(nombre, segmentos) {
-            enfocarVia(segmentos);
             inputBuscadorVias.value = nombre;
             actualizarBotonLimpiarVias();
-            sugerenciasVias.style.display = 'none';
+            cerrarSugerenciasVias();
 
-            panel.classList.add('minimizado');
-            document.body.classList.remove('panel-abierto');
-            if (window.sincronizarBotonDetalleMovil) window.sincronizarBotonDetalleMovil();
+            if (window.mostrarRestriccionesPorVia) window.mostrarRestriccionesPorVia(nombre, segmentos);
+            enfocarVia(segmentos);
         }
 
         function ejecutarBusquedaActual() {
@@ -191,16 +221,19 @@
             if (nombres.length === 0) return;
 
             const nombreExacto = nombres.find(n => estandarizarTexto(n) === texto);
-            const nombreElegido = nombreExacto || nombres[0];
+            const sugerencias = sugerenciasVias.querySelectorAll('.sugerencia-item');
+            const nombreSeleccionado = sugerencias[indiceSugerenciaViaActiva] && sugerencias[indiceSugerenciaViaActiva].dataset.nombre;
+            const nombreElegido = nombreSeleccionado || nombreExacto || nombres[0];
             seleccionarVia(nombreElegido, resultados[nombreElegido]);
         }
 
         inputBuscadorVias.addEventListener('input', function() {
             const txt = estandarizarTexto(this.value); sugerenciasVias.innerHTML = '';
+            cerrarSugerenciasVias();
             ultimoResultadoVias = {};
             actualizarBotonLimpiarVias();
             if (txt.length < 2) {
-                sugerenciasVias.style.display = 'none';
+                cerrarSugerenciasVias();
                 if (!txt && capaResaltadoVia) {
                     map.removeLayer(capaResaltadoVia);
                     capaResaltadoVia = null;
@@ -212,17 +245,43 @@
             const res = Object.keys(agrup).slice(0, 5);
             if (res.length > 0) {
                 sugerenciasVias.style.display = 'block';
+                inputBuscadorVias.setAttribute('aria-expanded', 'true');
                 res.forEach(n => {
-                    let div = document.createElement('div'); div.className = 'sugerencia-item'; div.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00bcd4; margin-right:8px;"></i> ${n}`;
+                    let div = document.createElement('div');
+                    div.className = 'sugerencia-item';
+                    div.id = 'sugerencia-via-' + sugerenciasVias.children.length;
+                    div.dataset.nombre = n;
+                    div.setAttribute('role', 'option');
+                    div.setAttribute('aria-selected', 'false');
+                    let icono = document.createElement('i');
+                    icono.className = 'fas fa-map-marker-alt';
+                    icono.style.cssText = 'color:#00bcd4; margin-right:8px;';
+                    icono.setAttribute('aria-hidden', 'true');
+                    div.appendChild(icono);
+                    div.appendChild(document.createTextNode(' ' + n));
+                    div.addEventListener('mouseenter', function() {
+                        actualizarSugerenciaViaActiva(Array.prototype.indexOf.call(sugerenciasVias.children, div));
+                    });
                     div.onclick = () => {
                         seleccionarVia(n, agrup[n]);
                     };
                     sugerenciasVias.appendChild(div);
                 });
-            } else { sugerenciasVias.style.display = 'none'; }
+            } else { cerrarSugerenciasVias(); }
         });
 
         inputBuscadorVias.addEventListener('keydown', function(e) {
+            const sugerenciasVisibles = sugerenciasVias.style.display !== 'none' && sugerenciasVias.children.length > 0;
+            if (e.key === 'ArrowDown' && sugerenciasVisibles) {
+                e.preventDefault();
+                actualizarSugerenciaViaActiva(indiceSugerenciaViaActiva + 1);
+                return;
+            }
+            if (e.key === 'ArrowUp' && sugerenciasVisibles) {
+                e.preventDefault();
+                actualizarSugerenciaViaActiva(indiceSugerenciaViaActiva < 0 ? sugerenciasVias.children.length - 1 : indiceSugerenciaViaActiva - 1);
+                return;
+            }
             if (e.key === 'Enter') {
                 e.preventDefault();
                 ejecutarBusquedaActual();
@@ -241,7 +300,7 @@
 
         document.addEventListener('click', e => {
             if (!contenedorBuscadorVias.contains(e.target)) {
-                sugerenciasVias.style.display = 'none';
+                cerrarSugerenciasVias();
                 cerrarBuscadorViasSiVacio();
             }
         });
@@ -249,8 +308,15 @@
         function enfocarVia(segmentos) {
             if (capaResaltadoVia) map.removeLayer(capaResaltadoVia);
             capaResaltadoVia = L.geoJson({ type: "FeatureCollection", features: segmentos }, { style: { className: 'via-resaltada-animacion' } }).addTo(map);
+            var panelDetalle = document.getElementById('panel-usos');
+            var movil = window.innerWidth <= 896;
+            var espacioPanel = panelDetalle && !panelDetalle.classList.contains('minimizado')
+                ? Math.round(panelDetalle.getBoundingClientRect().width) : 0;
             map.flyToBounds(capaResaltadoVia.getBounds(), {
-                padding: [50, 50],
+                paddingTopLeft: [50, 50],
+                paddingBottomRight: movil
+                    ? [20, Math.round(window.innerHeight * 0.58)]
+                    : [espacioPanel + 50, 50],
                 maxZoom: 18,
                 duration: 1.6,
                 easeLinearity: 0.2

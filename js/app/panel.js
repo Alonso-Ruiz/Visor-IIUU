@@ -2,6 +2,7 @@
         // --- LÓGICA DEL PANEL ---
         const botonArrastre = document.getElementById('boton-arrastre');
         const botonAlturaPanel = document.getElementById('boton-altura-panel');
+        var resumenRestriccionesViaActual = null;
 
         function obtenerAreaLote() {
             return loteActual && (loteActual.AREA_M2 || loteActual['ÁREA_M2'] || loteActual['�REA_M2'] || loteActual.Area_ha || loteActual.AREA);
@@ -49,6 +50,240 @@
                 return '<div><strong>' + escaparHtml(c.etiqueta) + ':</strong> ' + escaparHtml(c.valor) + '</div>';
             }).join('') + '</div>';
         }
+
+        function tokensNombreVia(nombre) {
+            return String(nombre || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/\uFFFD/g, '').toLowerCase()
+                .replace(/\b(tnte|tnt)\b/g, 'teniente')
+                .replace(/\b(av|avenida|jr|jiron|calle|cl|pje|pasaje)\b/g, ' ')
+                .replace(/[^a-z0-9]+/g, ' ').trim().split(/\s+/)
+                .filter(function(t) { return t && !['de', 'del', 'la', 'las', 'el', 'los'].includes(t); });
+        }
+
+        function distanciaEdicionUnitaria(a, b) {
+            if (a === b) return 0;
+            if (Math.abs(a.length - b.length) > 1) return 2;
+            var i = 0, j = 0, cambios = 0;
+            while (i < a.length && j < b.length) {
+                if (a[i] === b[j]) { i++; j++; continue; }
+                if (++cambios > 1) return cambios;
+                if (a.length > b.length) i++;
+                else if (b.length > a.length) j++;
+                else { i++; j++; }
+            }
+            if (i < a.length || j < b.length) cambios++;
+            return cambios;
+        }
+
+        function coincideNombreVia(nombreBuscado, nombreColindante) {
+            var buscado = tokensNombreVia(nombreBuscado);
+            var colindante = tokensNombreVia(nombreColindante);
+            if (!buscado.length || !colindante.length) return false;
+
+            var direcciones = ['norte', 'sur', 'este', 'oeste'];
+            var direccionBuscada = buscado.find(function(t) { return direcciones.includes(t); });
+            var direccionColindante = colindante.find(function(t) { return direcciones.includes(t); });
+            if (direccionBuscada && direccionColindante && direccionBuscada !== direccionColindante) return false;
+            if (direccionBuscada && !direccionColindante) buscado = buscado.filter(function(t) { return t !== direccionBuscada; });
+            if (direccionColindante && !direccionBuscada) colindante = colindante.filter(function(t) { return t !== direccionColindante; });
+
+            var coincidencias = buscado.filter(function(token) {
+                return colindante.some(function(otro) {
+                    return token === otro || (Math.min(token.length, otro.length) >= 5 && distanciaEdicionUnitaria(token, otro) <= 1);
+                });
+            }).length;
+            return coincidencias >= Math.ceil(Math.max(buscado.length, colindante.length) * 0.67);
+        }
+
+        function claveZonaActividad(nombreZona) {
+            var mapa = {
+                'Uso Residencial Exclusivo': 'Uso Mixto Vecinal',
+                'Uso Residencial Preferente': 'Uso Residencial Preferente',
+                'Uso Residencial Especial': 'Uso Residencial Especial',
+                'Uso Mixto Vecinal': 'Uso Mixto Vecinal',
+                'Uso Mixto Zonal': 'Uso Mixto Zonal',
+                'Uso Mixto Metropolitano': 'Uso Mixto Metropolitano',
+                'Uso Mixto Intensivo': 'Uso Mixto Intensivo',
+                'Uso Mixto Especializado': 'Uso Mixto Especializado',
+                'Uso de Recreación Pública': 'Uso de Recreación Pública',
+                'Usos Específicos - Otros Usos': 'Otros Usos',
+                'Usos Específicos - Educación': 'Educación',
+                'Usos Específicos - Hospital': 'Hospitales'
+            };
+            return mapa[nombreZona] || nombreZona;
+        }
+
+        function cajasCercanasDeVia(segmentos) {
+            var margen = 0.00018;
+            var cajas = [];
+            function agregarLineas(coordenadas) {
+                if (!coordenadas || !coordenadas.length) return;
+                if (Array.isArray(coordenadas[0]) && typeof coordenadas[0][0] === 'number') {
+                    for (var i = 1; i < coordenadas.length; i++) {
+                        var a = coordenadas[i - 1], b = coordenadas[i];
+                        cajas.push({
+                            minX: Math.min(a[0], b[0]) - margen,
+                            maxX: Math.max(a[0], b[0]) + margen,
+                            minY: Math.min(a[1], b[1]) - margen,
+                            maxY: Math.max(a[1], b[1]) + margen
+                        });
+                    }
+                    return;
+                }
+                coordenadas.forEach(agregarLineas);
+            }
+            (segmentos || []).forEach(function(feature) {
+                if (feature.geometry) agregarLineas(feature.geometry.coordinates);
+            });
+            return cajas;
+        }
+
+        function cajaGeometria(geometria) {
+            if (!geometria || !geometria.coordinates) return null;
+            var caja = { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity };
+            function revisar(coordenadas) {
+                if (typeof coordenadas[0] === 'number') {
+                    caja.minX = Math.min(caja.minX, coordenadas[0]);
+                    caja.maxX = Math.max(caja.maxX, coordenadas[0]);
+                    caja.minY = Math.min(caja.minY, coordenadas[1]);
+                    caja.maxY = Math.max(caja.maxY, coordenadas[1]);
+                    return;
+                }
+                coordenadas.forEach(revisar);
+            }
+            revisar(geometria.coordinates);
+            return Number.isFinite(caja.minX) ? caja : null;
+        }
+
+        function cajasSeCruzan(a, b) {
+            return a && b && a.minX <= b.maxX && a.maxX >= b.minX && a.minY <= b.maxY && a.maxY >= b.minY;
+        }
+
+        function construirResumenRestriccionesVia(nombreVia, segmentos) {
+            var coleccion = window.json_usos_compatibles_0;
+            var motor = window.RESTRICCIONES_IIUU;
+            var features = coleccion && coleccion.features || [];
+            var lotes = new Map();
+            var restricciones = new Map();
+            var cajasVia = cajasCercanasDeVia(segmentos);
+
+            features.forEach(function(feature, indiceFeature) {
+                var propiedades = feature.properties || {};
+                var viaColindante = obtenerPropiedad(propiedades, ['VIA COLIND', 'VIA_COLIND', 'VÍA COLINDANTE', 'VIA COLINDANTE']);
+                var coincideAtributo = coincideNombreVia(nombreVia, viaColindante);
+                if (!coincideAtributo && cajasVia.length) {
+                    var cajaLote = cajaGeometria(feature.geometry);
+                    coincideAtributo = cajasVia.some(function(cajaVia) { return cajasSeCruzan(cajaLote, cajaVia); });
+                }
+                if (!coincideAtributo) return;
+
+                var zona = String(propiedades.USOS_COMPA || '').trim();
+                if (window.normalizarCategoriaUso) zona = window.normalizarCategoriaUso(zona);
+                if (zona === 'Usos Específicos') zona = 'Usos Específicos - Otros Usos';
+                if (!zona) return;
+                var zonVig = String(propiedades.ZON_VIG || '').trim();
+                var idBase = obtenerPropiedad(propiedades, ['CUC', 'COD_LOTE', 'CÓDIGO', 'C�DIGO', 'CODIGO']) || ('poligono-' + indiceFeature);
+                var etiquetaLote = obtenerPropiedad(propiedades, ['CÓDIGO', 'C�DIGO', 'CODIGO', 'COD_LOTE', 'CUC']) || ('Polígono ' + (indiceFeature + 1));
+                var tramo = obtenerPropiedad(propiedades, ['TRAMO']);
+                var idLote = String(idBase) + '|' + zona + '|' + zonVig;
+                if (lotes.has(idLote)) return;
+                lotes.set(idLote, { etiqueta: String(etiquetaLote), tramo: String(tramo || ''), zona: zona });
+
+                function agregarRestriccion(giro, clase, autorizacion, regla) {
+                    if (autorizacion !== 'R') return;
+                    if (!regla || !regla.condiciones || !regla.condiciones.length) {
+                        regla = { condiciones: [{ etiqueta: 'Régimen de restricción', valor: 'Esta actividad está marcada con R en el índice.' }] };
+                    }
+                    var codigoGiro = giro.COD_GIRO || ('CIIU ' + clase);
+                    var actividad = giro.ACTIVIDAD || giro['DESCRIPCIÓN DE LA CLASE'] || '';
+                    var clave = [zona, zonVig, clase, codigoGiro, actividad, JSON.stringify(regla.condiciones)].join('|');
+                    if (!restricciones.has(clave)) {
+                        restricciones.set(clave, {
+                            zona: zona,
+                            zonVig: zonVig,
+                            clase: String(clase || ''),
+                            codigo: String(codigoGiro),
+                            actividad: String(actividad),
+                            regla: regla,
+                            lotes: new Set()
+                        });
+                    }
+                    restricciones.get(clave).lotes.add(idLote);
+                }
+
+                if (esZonaReglamentacionEspecial(zona, zonVig)) {
+                    var ubicacion = motor && motor.resolverUbicacionZRE ? motor.resolverUbicacionZRE(zonVig, propiedades) : '';
+                    if (!ubicacion || !motor) return;
+                    (window.datosActividadesZRE || []).forEach(function(giro) {
+                        var auth = motor.autorizacionZRE ? motor.autorizacionZRE(giro, zonVig, ubicacion) : null;
+                        if (auth !== 'R') return;
+                        agregarRestriccion(giro, giro.CLASE, auth, motor.obtenerZRE ? motor.obtenerZRE(giro, zonVig, ubicacion) : null);
+                    });
+                    return;
+                }
+
+                var zonaKey = claveZonaActividad(zona);
+                (obtenerActividadesIndice() || []).forEach(function(giro) {
+                    var auth = giro.ZONAS && giro.ZONAS[zonaKey];
+                    if (tipoAutorizacion(auth) !== 'R') return;
+                    var regla = motor && motor.obtener ? motor.obtener(zona, giro.CLASE, {
+                        zonVig: zonVig,
+                        areaM2: propiedades['ÁREA_M2'] || propiedades.AREA_M2 || propiedades.AREA,
+                        restriccionPoligono: obtenerPropiedad(propiedades, ['RESTRICCIÓN', 'RESTRICCIÓ', 'RESTRICCI�', 'RESTRICCION'])
+                    }) : null;
+                    agregarRestriccion(giro, giro.CLASE, 'R', regla);
+                });
+            });
+
+            return {
+                nombre: nombreVia,
+                lotes: Array.from(lotes.values()),
+                lotesPorId: lotes,
+                restricciones: Array.from(restricciones.values())
+            };
+        }
+
+        function renderizarRestriccionesDeVia(busqueda) {
+            var resumen = resumenRestriccionesViaActual;
+            var restricciones = resumen ? resumen.restricciones : [];
+            if (busqueda) {
+                restricciones = restricciones.filter(function(item) {
+                    return coincideBusquedaTexto(busqueda, [item.zona, item.codigo, item.actividad, item.clase].join(' '));
+                });
+            }
+            document.getElementById('ventanas-zona').style.display = 'none';
+            document.getElementById('ayuda-panel').style.display = 'none';
+            document.getElementById('nombre-uso-titulo').textContent = 'Restricciones del giro · ' + (resumen ? resumen.nombre : 'vía');
+            document.getElementById('conteo-resumen').innerHTML =
+                '<strong>' + (resumen ? resumen.lotes.length : 0) + '</strong> polígonos del frente · ' +
+                '<strong>' + restricciones.length + '</strong> entradas de giros restringidos' +
+                (busqueda ? ' (filtradas por la búsqueda).' : '.');
+
+            var contenido = restricciones.map(function(item) {
+                var titulo = item.zona + (item.zonVig ? ' · ' + item.zonVig : '') + ' · ' + item.codigo;
+                return '<article class="bloque-restricciones-giro" style="margin-bottom:12px;">' +
+                    '<div class="titulo-restricciones-giro">' + escaparHtml(titulo) + '</div>' +
+                    '<div style="font-size:12px;margin:5px 0;">' + escaparHtml(item.actividad) + '</div>' +
+                    renderizarRestriccionesGiro(item.regla, 'Restricciones del giro') + '</article>';
+            }).join('');
+            document.getElementById('lista-clases-container').innerHTML = contenido ||
+                "<p class='mensaje-vacio'>No se encontraron giros restringidos registrados para esta vía.</p>";
+        }
+
+        window.mostrarRestriccionesPorVia = function(nombreVia, segmentos) {
+            resumenRestriccionesViaActual = construirResumenRestriccionesVia(nombreVia, segmentos);
+            zonaActual = '';
+            zonVigActual = '';
+            zreUsocomActual = '';
+            loteActual = {};
+            panel.classList.remove('panel-expandido', 'minimizado');
+            document.body.classList.add('panel-abierto');
+            sincronizarAlturaPanel();
+            if (window.sincronizarBotonDetalleMovil) window.sincronizarBotonDetalleMovil();
+            document.getElementById('buscador-actividad').value = '';
+            document.getElementById('contenido-scrollable').scrollTop = 0;
+            renderizarRestriccionesDeVia('');
+        };
 
         function renderizarRegimenTransitorio() {
             var regimen = window.RESTRICCIONES_IIUU && window.RESTRICCIONES_IIUU.regimenResidencialExclusivo;
@@ -288,6 +523,7 @@
 
         window.actualizarLista = function(nombreZona, zonVig, zreUsocom, propiedadesLote) {
             if(!nombreZona) return;
+            resumenRestriccionesViaActual = null;
             zonaActual      = String(nombreZona).trim();
             zonVigActual    = String(zonVig  || '').trim();
             zreUsocomActual = String(zreUsocom || '').trim();
@@ -371,6 +607,10 @@
 
         function renderizarResultados() {
             var busqueda = estandarizarTexto(document.getElementById('buscador-actividad').value);
+            if (resumenRestriccionesViaActual) {
+                renderizarRestriccionesDeVia(busqueda);
+                return;
+            }
             if (!zonaActual) {
                 renderizarBusquedaGlobal(busqueda);
                 return;
