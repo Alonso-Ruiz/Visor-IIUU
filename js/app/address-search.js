@@ -11,6 +11,7 @@
     var ultimaConsulta = '';
     var ultimoResultados = [];
     var lotesCercanos = [];
+    var promesaCargaCatastro = null;
 
     function pareceDireccionConNumero(texto) {
         var limpio = String(texto || '').trim();
@@ -44,6 +45,28 @@
         };
     }
 
+    function cargarLotesCatastro() {
+        if (window.json_lotes_catastrales && Array.isArray(window.json_lotes_catastrales.features)) {
+            return Promise.resolve(window.json_lotes_catastrales);
+        }
+        if (promesaCargaCatastro) return promesaCargaCatastro;
+        promesaCargaCatastro = new Promise(function(resolve, reject) {
+            var script = document.createElement('script');
+            script.src = 'data/lotes_catastrales_20260928.js?v=20260928-catastral-lotes1';
+            script.onload = function() {
+                if (window.json_lotes_catastrales && Array.isArray(window.json_lotes_catastrales.features)) {
+                    resolve(window.json_lotes_catastrales);
+                } else reject(new Error('La capa catastral no contiene polígonos'));
+            };
+            script.onerror = function() { reject(new Error('No se pudo cargar la capa catastral')); };
+            document.head.appendChild(script);
+        }).catch(function(error) {
+            promesaCargaCatastro = null;
+            throw error;
+        });
+        return promesaCargaCatastro;
+    }
+
     function consultarGeoapify(texto) {
         var clave = obtenerClave();
         if (!clave) {
@@ -51,6 +74,7 @@
             console.error('Configura GEOAPIFY_API_KEY en js/app/geoapify-config.js.');
             return;
         }
+        cargarLotesCatastro().catch(function(error) { console.warn('La búsqueda continuará sin la capa catastral:', error.message); });
         consultaActiva = texto;
         indiceActivo = -1;
         resultadosDireccion = [];
@@ -207,10 +231,71 @@
         return terminos.length > 0 && terminos.every(function(termino) { return normalizado.indexOf(termino) !== -1; });
     }
 
+    function obtenerLotesPorCatastro(punto, featuresUso) {
+        var catastro = window.json_lotes_catastrales;
+        var featuresCatastro = catastro && Array.isArray(catastro.features) ? catastro.features : [];
+        if (!featuresCatastro.length) return [];
+
+        var porCUC = new Map();
+        featuresUso.forEach(function(feature) {
+            var cuc = String((feature.properties || {}).CUC || '').trim();
+            if (!cuc || cuc === '0') return;
+            if (!porCUC.has(cuc)) porCUC.set(cuc, []);
+            porCUC.get(cuc).push(feature);
+        });
+
+        var candidatos = [];
+        var vistos = new Set();
+        featuresCatastro.forEach(function(loteCatastro) {
+            if (!puntoEnGeometria(punto, loteCatastro.geometry)) return;
+            var datosCatastro = loteCatastro.properties || {};
+            var cuc = String(datosCatastro.CUC || '').trim();
+            var codigoLote = String(datosCatastro.COD_LOTE || '').trim();
+            if (!cuc || cuc === '0') return;
+            var compatibles = porCUC.get(cuc) || [];
+            var porCodigo = compatibles.filter(function(feature) {
+                return String((feature.properties || {}).COD_LOTE || '').trim() === codigoLote;
+            });
+            if (codigoLote && codigoLote !== '0' && porCodigo.length) compatibles = porCodigo;
+            compatibles.forEach(function(feature) {
+                if (vistos.has(feature)) return;
+                vistos.add(feature);
+                candidatos.push({ feature: feature, loteCatastro: loteCatastro, distancia: 0, coincideVia: true, puntaje: 0 });
+            });
+        });
+        return candidatos;
+    }
+
     function seleccionarDireccion(resultado) {
         var lngLat = [Number(resultado.lon), Number(resultado.lat)];
+        cargarLotesCatastro().then(function() {
+            resolverDireccion(resultado, lngLat);
+        }).catch(function(error) {
+            console.warn('Se usará la geometría urbanística para ubicar el lote:', error.message);
+            resolverDireccion(resultado, lngLat);
+        });
+    }
+
+    function resolverDireccion(resultado, lngLat) {
         var coleccion = window.json_usos_compatibles_0;
         var features = coleccion && coleccion.features ? coleccion.features : [];
+        var candidatosCatastro = obtenerLotesPorCatastro(lngLat, features);
+        if (candidatosCatastro.length === 1) {
+            abrirLote(candidatosCatastro[0].feature);
+            return;
+        }
+        if (candidatosCatastro.length > 1) {
+            var queContienenPunto = candidatosCatastro.filter(function(candidato) {
+                return puntoEnGeometria(lngLat, candidato.feature.geometry);
+            });
+            if (queContienenPunto.length === 1) {
+                abrirLote(queContienenPunto[0].feature);
+                return;
+            }
+            pintarOpcionesLote(candidatosCatastro, 'El punto coincide con más de un lote catastral. Selecciona el código del lote:');
+            map.flyTo([lngLat[1], lngLat[0]], 19, { duration: 1.2 });
+            return;
+        }
         var coincidentes = features.filter(function(feature) {
             return puntoEnGeometria(lngLat, feature.geometry);
         });
@@ -226,7 +311,7 @@
                     abrirLote(cercanos[0].feature);
                     return;
                 }
-                pintarLotesCercanos(cercanos, lngLat);
+                pintarLotesCercanos(cercanos);
                 map.flyTo([lngLat[1], lngLat[0]], 19, { duration: 1.2 });
                 return;
             }
@@ -256,6 +341,10 @@
     }
 
     function pintarLotesCercanos(candidatos) {
+        pintarOpcionesLote(candidatos, 'La dirección cayó fuera de los lotes. Selecciona el polígono cercano:');
+    }
+
+    function pintarOpcionesLote(candidatos, encabezadoTexto) {
         lotesCercanos = candidatos;
         indiceActivo = -1;
         lista.innerHTML = '';
@@ -263,11 +352,13 @@
         encabezado.className = 'sugerencia-item';
         encabezado.setAttribute('role', 'note');
         encabezado.style.cssText = 'font-size:11px;color:#666;cursor:default';
-        encabezado.textContent = 'La dirección quedó fuera de los lotes. Elige el polígono cercano:';
+        encabezado.textContent = encabezadoTexto;
         lista.appendChild(encabezado);
         candidatos.forEach(function(candidato, indice) {
-            var props = candidato.feature.properties || {};
-            var identificador = props['CÓDIGO'] || props['COD_LOTE'] || props['CUC'] || 'Lote del mapa';
+            var props = (candidato.loteCatastro && candidato.loteCatastro.properties) || candidato.feature.properties || {};
+            var identificador = 'Lote ' + String(props.COD_LOTE || props['CÓDIGO'] || 'sin código') +
+                (props.CUC ? ' · CUC ' + props.CUC : '') +
+                (candidato.distancia > 0 ? ' · aprox. ' + Math.round(candidato.distancia) + ' m' : '');
             var fila = document.createElement('div');
             fila.className = 'sugerencia-item';
             fila.id = 'sugerencia-lote-cercano-' + indice;

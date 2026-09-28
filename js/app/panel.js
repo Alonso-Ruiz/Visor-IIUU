@@ -751,7 +751,7 @@
                             Clase: g.CLASE,
                             'Descripción': g['DESCRIPCIÓN DE LA CLASE'],
                             'Uso Compatible': 'Uso Residencial Exclusivo',
-                            'Autorización': 'Régimen transitorio',
+                            'Autorización': 'Régimen exclusivo',
                             girosFiltrados: []
                         };
                     }
@@ -759,7 +759,7 @@
                 });
                 var resultadosTransitorios = Object.values(clasesTransitorias);
                 document.getElementById('conteo-resumen').innerHTML =
-                    'Régimen transitorio: <strong>' + resultadosTransitorios.length + '</strong> clases CIIU y <strong>' +
+                    'Régimen exclusivo: <strong>' + resultadosTransitorios.length + '</strong> clases CIIU y <strong>' +
                     resultadosTransitorios.reduce(function(total, c) { return total + c.girosFiltrados.length; }, 0) +
                     '</strong> giros sujetos al cumplimiento conjunto de todas las condiciones.';
 
@@ -767,7 +767,7 @@
                 resultadosTransitorios.forEach(function(item) {
                     var giros = '<ul class="lista-actividades">' + item.girosFiltrados.map(function(g) {
                         return '<li class="actividad-compatible"><span>' + escaparHtml(g.ACTIVIDAD) + '</span>' +
-                            '<span class="badge-condicion">Régimen transitorio</span></li>';
+                            '<span class="badge-condicion">Régimen exclusivo</span></li>';
                     }).join('') + '</ul>';
                     htmlTransitorio += '<div class="tarjeta-clase tarjeta-transitoria">' +
                         '<div class="cabecera-clase"><span class="badge-ciiu">CIIU: ' + escaparHtml(item.Clase) + '</span>' +
@@ -775,7 +775,7 @@
                         '<strong class="descripcion-clase">' + escaparHtml(item['Descripción']) + '</strong>' + giros + '</div>';
                 });
                 document.getElementById('lista-clases-container').innerHTML = htmlTransitorio ||
-                    "<p class='mensaje-vacio'>No se encontraron giros dentro del régimen transitorio.</p>";
+                    "<p class='mensaje-vacio'>No se encontraron giros dentro del régimen exclusivo.</p>";
                 return;
             }
 
