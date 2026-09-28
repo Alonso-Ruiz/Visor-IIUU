@@ -507,6 +507,33 @@
     background: #f1f8f5;
 }
 
+.capa-opacidad-grupo {
+    margin-bottom: 4px;
+}
+
+.capa-opacidad-control {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 12px 8px 32px;
+}
+
+.capa-opacidad-control label {
+    flex: 0 0 auto;
+}
+
+.capa-opacidad-zre-global {
+    padding-left: 37px;
+}
+
+.capa-opacidad-zre-subgrupo {
+    margin: 0 0 3px;
+}
+
+.capa-opacidad-zre-subgrupo .capa-opacidad-control {
+    padding-left: 38px;
+}
+
 .capa-auxiliar-item input {
     position: absolute;
     width: 18px;
@@ -1360,6 +1387,51 @@ body {
     background: #f1fbfc;
     border-color: rgba(0, 151, 93, 0.16);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.leyenda-categoria-item {
+    padding-bottom: 3px;
+}
+
+.leyenda-opacidad-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: -1px 12px 6px 39px;
+}
+
+.leyenda-opacidad-control label,
+.capa-opacidad-control label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    color: #65716c;
+    font-size: 9px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.leyenda-opacidad-control label {
+    flex: 0 0 auto;
+}
+
+.leyenda-opacidad-control output,
+.capa-opacidad-control output {
+    min-width: 30px;
+    color: #3d5149;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+.leyenda-opacidad-control input[type="range"],
+.capa-opacidad-control input[type="range"] {
+    width: 100%;
+    min-width: 50px;
+    height: 4px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #00975D;
 }
 
 .leyenda-check-label {

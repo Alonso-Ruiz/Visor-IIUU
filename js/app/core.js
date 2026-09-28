@@ -78,6 +78,6 @@ function tipoAutorizacion(valor) {
 // Colores por tipo de autorizacion
 function colorAuth(auth) {
     if (tipoAutorizacion(auth) === 'X') return { bg: '#4CAF50', txt: '#fff', label: 'Permitido' };
-    if (tipoAutorizacion(auth) === 'R') return { bg: '#ffca28', txt: '#000', label: 'Régimen de restricción' };
+    if (tipoAutorizacion(auth) === 'R') return { bg: '#ffca28', txt: '#000', label: 'Permitido con restricción' };
     return { bg: '#555', txt: '#ccc', label: 'Uso No Permitido' };
 }

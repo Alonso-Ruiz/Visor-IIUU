@@ -1,5 +1,9 @@
 (function() {
     window.categoriasUsoActivas = window.categoriasUsoActivas || {};
+    window.opacidadesCategoriasUso = window.opacidadesCategoriasUso || {};
+    window.opacidadPlanesEspeciales = window.opacidadPlanesEspeciales === undefined ? 1 : window.opacidadPlanesEspeciales;
+    window.opacidadesZre = window.opacidadesZre || { 'ZRE-1': 1, 'ZRE-2': 1, 'ZRE-3': 1, 'ZRE-4': 1 };
+    window.opacidadCapaRetiros = window.opacidadCapaRetiros === undefined ? 1 : window.opacidadCapaRetiros;
     window.zonasZreActivas = window.zonasZreActivas || {
         'ZRE-1': true,
         'ZRE-2': true,
@@ -34,7 +38,21 @@
     };
 
     window.aplicarVisibilidadCategoria = function(estilo, feature) {
-        if (window.categoriaUsoVisible(feature.properties['USOS_COMPA']) && window.zonaZreVisible(feature)) return estilo;
+        if (window.categoriaUsoVisible(feature.properties['USOS_COMPA']) && window.zonaZreVisible(feature)) {
+            var propiedades = feature.properties || {};
+            var categoria = window.normalizarCategoriaUso(propiedades['USOS_COMPA']);
+            var opacidad = window.opacidadesCategoriasUso[categoria];
+            if (opacidad === undefined) opacidad = 1;
+            if (String(categoria).indexOf('Planes Especiales') === 0) {
+                opacidad *= window.opacidadPlanesEspeciales;
+                var zre = String(propiedades['ZON_VIG'] || '').trim().toUpperCase();
+                if (window.opacidadesZre[zre] !== undefined) opacidad *= window.opacidadesZre[zre];
+            }
+            var visible = Object.assign({}, estilo);
+            visible.opacity = (visible.opacity === undefined ? 1 : visible.opacity) * opacidad;
+            visible.fillOpacity = (visible.fillOpacity === undefined ? 1 : visible.fillOpacity) * opacidad;
+            return visible;
+        }
 
         var oculto = Object.assign({}, estilo);
         oculto.opacity = 0;
@@ -52,7 +70,31 @@
         });
     }
 
-    window.actualizarVisibilidadUsos = function() {
+    window.establecerOpacidadCategoriaUso = function(categoria, opacidad) {
+        window.opacidadesCategoriasUso[categoria] = Math.max(0, Math.min(1, Number(opacidad)));
+        window.actualizarVisibilidadUsos(false);
+    };
+
+    window.establecerOpacidadPlanesEspeciales = function(opacidad) {
+        window.opacidadPlanesEspeciales = Math.max(0, Math.min(1, Number(opacidad)));
+        window.actualizarVisibilidadUsos(false);
+    };
+
+    window.establecerOpacidadZre = function(zre, opacidad) {
+        window.opacidadesZre[zre] = Math.max(0, Math.min(1, Number(opacidad)));
+        window.actualizarVisibilidadUsos(false);
+    };
+
+    window.establecerOpacidadRetiros = function(opacidad) {
+        window.opacidadCapaRetiros = Math.max(0, Math.min(1, Number(opacidad)));
+        if (window.capaRetiros && window.capaRetiros.eachLayer) {
+            window.capaRetiros.eachLayer(function(layer) {
+                if (layer.setStyle) layer.setStyle({ fillOpacity: 0.28 * window.opacidadCapaRetiros });
+            });
+        }
+    };
+
+    window.actualizarVisibilidadUsos = function(limpiarSeleccion) {
         if (window.layer_usos_compatibles_0) {
             actualizarCapa(window.layer_usos_compatibles_0, style_usos_compatibles_0_0);
         }
@@ -65,11 +107,11 @@
             actualizarCapa(window.layer_usos_compatibles_on, style_tramado_planes_especiales);
         }
 
-        if (window.capaLoteResaltado) {
+        if (limpiarSeleccion !== false && window.capaLoteResaltado) {
             map.removeLayer(window.capaLoteResaltado);
             window.capaLoteResaltado = null;
         }
 
-        if (window.limpiarBordeBloqueSeleccionado) window.limpiarBordeBloqueSeleccionado();
+        if (limpiarSeleccion !== false && window.limpiarBordeBloqueSeleccionado) window.limpiarBordeBloqueSeleccionado();
     };
 })();

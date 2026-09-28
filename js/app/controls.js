@@ -208,8 +208,8 @@
                 var txt = definicionesZonas[i.id];
                 if (window.categoriasUsoActivas && !i.tipo) window.categoriasUsoActivas[i.id] = true;
                 listaHtml += `
-                <div>
-                    <div class="leyenda-item-titulo">
+                    <div class="leyenda-categoria-item">
+                        <div class="leyenda-item-titulo">
                         <label class="leyenda-check-label" title="Mostrar u ocultar ${i.n}">
                             <input type="checkbox" class="leyenda-checkbox" data-uso="${i.id}" data-tipo="${i.tipo || 'uso'}" checked>
                             <span class="leyenda-check-custom" aria-hidden="true"></span>
@@ -217,6 +217,10 @@
                         <button type="button" class="leyenda-concepto-toggle" data-concepto="concepto-${idx}">
                             <i style="background: ${i.c};"></i> <span>${i.n}</span>
                         </button>
+                    </div>
+                    <div class="leyenda-opacidad-control">
+                        <label for="opacidad-leyenda-${idx}"><span>Transparencia</span><output>0%</output></label>
+                        <input type="range" id="opacidad-leyenda-${idx}" class="leyenda-opacidad" data-uso="${i.id}" min="0" max="100" step="5" value="0" aria-label="Transparencia de ${i.n}">
                     </div>
                     <div id="concepto-${idx}" class="leyenda-concepto">${txt}</div>
                 </div>`;
@@ -277,6 +281,16 @@
                         }
                     });
                 });
+
+                document.querySelectorAll('.leyenda-opacidad').forEach(function(controlOpacidad) {
+                    controlOpacidad.addEventListener('input', function() {
+                        var valor = Number(this.value);
+                        this.parentElement.querySelector('output').textContent = valor + '%';
+                        if (window.establecerOpacidadCategoriaUso) {
+                            window.establecerOpacidadCategoriaUso(this.getAttribute('data-uso'), 1 - valor / 100);
+                        }
+                    });
+                });
             }, 100);
             return div;
         };
@@ -293,12 +307,18 @@
                 '</button>' +
                 '<div id="panel-capas-auxiliares" class="panel-capas-auxiliares mobile-tool-panel mobile-tool-panel--compact" aria-hidden="true">' +
                     '<button type="button" id="panel-capas-titulo" class="panel-capas-titulo" aria-label="Cerrar capas adicionales"><i class="fas fa-clone" aria-hidden="true"></i><span>Área de retiro normativo mínimo</span></button>' +
-                    '<label class="capa-auxiliar-item" for="capa-retiro-visible">' +
-                        '<input type="checkbox" id="capa-retiro-visible" checked>' +
-                        '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
-                        '<i class="muestra-capa muestra-retiro" aria-hidden="true"></i>' +
-                        '<span>Retiro normativo</span>' +
-                    '</label>' +
+                    '<div class="capa-opacidad-grupo">' +
+                        '<label class="capa-auxiliar-item" for="capa-retiro-visible">' +
+                            '<input type="checkbox" id="capa-retiro-visible" checked>' +
+                            '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                            '<i class="muestra-capa muestra-retiro" aria-hidden="true"></i>' +
+                            '<span>Retiro normativo</span>' +
+                        '</label>' +
+                        '<div class="capa-opacidad-control">' +
+                            '<label for="opacidad-capa-retiro"><span>Transparencia</span><output>0%</output></label>' +
+                            '<input type="range" class="opacidad-capa-range" id="opacidad-capa-retiro" data-capa-opacidad="retiros" min="0" max="100" step="5" value="0" aria-label="Transparencia del retiro normativo">' +
+                        '</div>' +
+                    '</div>' +
                     '<div class="capa-zre-grupo">' +
                         '<div class="capa-zre-principal">' +
                             '<label class="capa-auxiliar-item capa-zre-item-principal" for="capa-zre-visible">' +
@@ -311,28 +331,44 @@
                                 '<i class="fas fa-chevron-down" aria-hidden="true"></i>' +
                             '</button>' +
                         '</div>' +
+                        '<div class="capa-opacidad-control capa-opacidad-zre-global">' +
+                            '<label for="opacidad-capa-zre"><span>Transparencia general</span><output>0%</output></label>' +
+                            '<input type="range" class="opacidad-capa-range" id="opacidad-capa-zre" data-capa-opacidad="zre-global" min="0" max="100" step="5" value="0" aria-label="Transparencia general de Planes Especiales">' +
+                        '</div>' +
                         '<div id="lista-zonas-zre" class="lista-zonas-zre" aria-hidden="true">' +
                             '<p class="capa-zre-descripcion">' + definicionesZonas['Planes Especiales'] + '</p>' +
-                            '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-1-visible">' +
-                                '<input type="checkbox" id="capa-zre-1-visible" data-zre="ZRE-1" checked>' +
-                                '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
-                                '<span><strong>ZRE-1</strong><small>San Juan Masías, El Bosque y Pequeños Agricultores</small></span>' +
-                            '</label>' +
-                            '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-2-visible">' +
-                                '<input type="checkbox" id="capa-zre-2-visible" data-zre="ZRE-2" checked>' +
-                                '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
-                                '<span><strong>ZRE-2</strong><small>Papa Juan XXIII</small></span>' +
-                            '</label>' +
-                            '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-3-visible">' +
-                                '<input type="checkbox" id="capa-zre-3-visible" data-zre="ZRE-3" checked>' +
-                                '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
-                                '<span><strong>ZRE-3</strong><small>Área rústica del Subsector 12-A</small></span>' +
-                            '</label>' +
-                            '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-4-visible">' +
-                                '<input type="checkbox" id="capa-zre-4-visible" data-zre="ZRE-4" checked>' +
-                                '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
-                                '<span><strong>ZRE-4</strong><small>Centro Cultural de la Nación</small></span>' +
-                            '</label>' +
+                            '<div class="capa-opacidad-grupo capa-opacidad-zre-subgrupo">' +
+                                '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-1-visible">' +
+                                    '<input type="checkbox" id="capa-zre-1-visible" data-zre="ZRE-1" checked>' +
+                                    '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                                    '<span><strong>ZRE-1</strong><small>San Juan Masías, El Bosque y Pequeños Agricultores</small></span>' +
+                                '</label>' +
+                                '<div class="capa-opacidad-control"><label for="opacidad-capa-zre-1"><span>Transparencia</span><output>0%</output></label><input type="range" class="opacidad-capa-range" id="opacidad-capa-zre-1" data-capa-opacidad="ZRE-1" min="0" max="100" step="5" value="0" aria-label="Transparencia ZRE-1"></div>' +
+                            '</div>' +
+                            '<div class="capa-opacidad-grupo capa-opacidad-zre-subgrupo">' +
+                                '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-2-visible">' +
+                                    '<input type="checkbox" id="capa-zre-2-visible" data-zre="ZRE-2" checked>' +
+                                    '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                                    '<span><strong>ZRE-2</strong><small>Papa Juan XXIII</small></span>' +
+                                '</label>' +
+                                '<div class="capa-opacidad-control"><label for="opacidad-capa-zre-2"><span>Transparencia</span><output>0%</output></label><input type="range" class="opacidad-capa-range" id="opacidad-capa-zre-2" data-capa-opacidad="ZRE-2" min="0" max="100" step="5" value="0" aria-label="Transparencia ZRE-2"></div>' +
+                            '</div>' +
+                            '<div class="capa-opacidad-grupo capa-opacidad-zre-subgrupo">' +
+                                '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-3-visible">' +
+                                    '<input type="checkbox" id="capa-zre-3-visible" data-zre="ZRE-3" checked>' +
+                                    '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                                    '<span><strong>ZRE-3</strong><small>Área rústica del Subsector 12-A</small></span>' +
+                                '</label>' +
+                                '<div class="capa-opacidad-control"><label for="opacidad-capa-zre-3"><span>Transparencia</span><output>0%</output></label><input type="range" class="opacidad-capa-range" id="opacidad-capa-zre-3" data-capa-opacidad="ZRE-3" min="0" max="100" step="5" value="0" aria-label="Transparencia ZRE-3"></div>' +
+                            '</div>' +
+                            '<div class="capa-opacidad-grupo capa-opacidad-zre-subgrupo">' +
+                                '<label class="capa-auxiliar-item capa-zre-subitem" for="capa-zre-4-visible">' +
+                                    '<input type="checkbox" id="capa-zre-4-visible" data-zre="ZRE-4" checked>' +
+                                    '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                                    '<span><strong>ZRE-4</strong><small>Centro Cultural de la Nación</small></span>' +
+                                '</label>' +
+                                '<div class="capa-opacidad-control"><label for="opacidad-capa-zre-4"><span>Transparencia</span><output>0%</output></label><input type="range" class="opacidad-capa-range" id="opacidad-capa-zre-4" data-capa-opacidad="ZRE-4" min="0" max="100" step="5" value="0" aria-label="Transparencia ZRE-4"></div>' +
+                            '</div>' +
                         '</div>' +
                     '</div>' +
                 '</div>';
@@ -353,6 +389,20 @@
             var botonZre = document.getElementById('boton-desplegar-zre');
             var listaZre = document.getElementById('lista-zonas-zre');
             var checksZre = Array.prototype.slice.call(document.querySelectorAll('.capa-zre-subitem input[data-zre]'));
+            Array.prototype.forEach.call(document.querySelectorAll('.opacidad-capa-range'), function(controlOpacidad) {
+                controlOpacidad.addEventListener('input', function() {
+                    var valor = Number(this.value);
+                    this.parentElement.querySelector('output').textContent = valor + '%';
+                    var tipo = this.getAttribute('data-capa-opacidad');
+                    if (tipo === 'retiros' && window.establecerOpacidadRetiros) {
+                        window.establecerOpacidadRetiros(1 - valor / 100);
+                    } else if (tipo === 'zre-global' && window.establecerOpacidadPlanesEspeciales) {
+                        window.establecerOpacidadPlanesEspeciales(1 - valor / 100);
+                    } else if (/^ZRE-[1-4]$/.test(tipo) && window.establecerOpacidadZre) {
+                        window.establecerOpacidadZre(tipo, 1 - valor / 100);
+                    }
+                });
+            });
 
             function alternarPanel(forzarAbierto) {
                 var abrir = typeof forzarAbierto === 'boolean'
