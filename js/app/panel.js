@@ -3,6 +3,17 @@
         const botonArrastre = document.getElementById('boton-arrastre');
         const botonAlturaPanel = document.getElementById('boton-altura-panel');
         var resumenRestriccionesViaActual = null;
+        var zonificacionReglasActual = '';
+
+        function contextoRestricciones(propiedades, vigente, autorizacion) {
+            return {
+                zonificacionVigente: vigente,
+                autorizacion: tipoAutorizacion(autorizacion),
+                via: obtenerPropiedad(propiedades, ['VIA COLIND', 'VIA_COLIND', 'VÍA COLINDANTE', 'VIA COLINDANTE']),
+                areaM2: obtenerPropiedad(propiedades, ['ÁREA_M2', 'AREA_M2', 'Area_m2', 'AREA']),
+                restriccionPoligono: obtenerPropiedad(propiedades, ['RESTRICCIÓN', 'RESTRICCIÓ', 'RESTRICCI�', 'RESTRICCION'])
+            };
+        }
 
         function obtenerAreaLote() {
             return loteActual && (loteActual.AREA_M2 || loteActual['ÁREA_M2'] || loteActual['�REA_M2'] || loteActual.Area_ha || loteActual.AREA);
@@ -225,12 +236,11 @@
                 var zonaKey = claveZonaActividad(zona);
                 (obtenerActividadesIndice() || []).forEach(function(giro) {
                     var auth = giro.ZONAS && giro.ZONAS[zonaKey];
-                    if (tipoAutorizacion(auth) !== 'R') return;
-                    var regla = motor && motor.obtener ? motor.obtener(zona, giro.CLASE, {
-                        zonVig: zonVig,
-                        areaM2: propiedades['ÁREA_M2'] || propiedades.AREA_M2 || propiedades.AREA,
-                        restriccionPoligono: obtenerPropiedad(propiedades, ['RESTRICCIÓN', 'RESTRICCIÓ', 'RESTRICCI�', 'RESTRICCION'])
-                    }) : null;
+                    if (!tipoAutorizacion(auth)) return;
+                    var vigente = window.ZONIFICACION_IIUU ? window.ZONIFICACION_IIUU.obtener(propiedades) : '';
+                    var regla = motor && motor.obtener ? motor.obtener(zona, giro.CLASE,
+                        contextoRestricciones(propiedades, vigente, auth)) : null;
+                    if (tipoAutorizacion(auth) !== 'R' && (!regla || !regla.condiciones.length)) return;
                     agregarRestriccion(giro, giro.CLASE, 'R', regla);
                 });
             });
@@ -260,7 +270,7 @@
                 (busqueda ? ' (filtradas por la búsqueda).' : '.');
 
             var contenido = restricciones.map(function(item) {
-                var titulo = item.zona + (item.zonVig ? ' · ' + item.zonVig : '') + ' · ' + item.codigo;
+                var titulo = item.zona + ' · ' + item.codigo;
                 return '<article class="bloque-restricciones-giro" style="margin-bottom:12px;">' +
                     '<div class="titulo-restricciones-giro">' + escaparHtml(titulo) + '</div>' +
                     '<div style="font-size:12px;margin:5px 0;">' + escaparHtml(item.actividad) + '</div>' +
@@ -521,13 +531,14 @@
             }, {passive: true});
         })();
 
-        window.actualizarLista = function(nombreZona, zonVig, zreUsocom, propiedadesLote) {
+        window.actualizarLista = function(nombreZona, zonVig, zreUsocom, propiedadesLote, puntoConsulta) {
             if(!nombreZona) return;
             resumenRestriccionesViaActual = null;
             zonaActual      = String(nombreZona).trim();
             zonVigActual    = String(zonVig  || '').trim();
             zreUsocomActual = String(zreUsocom || '').trim();
             loteActual      = propiedadesLote || {};
+            zonificacionReglasActual = window.ZONIFICACION_IIUU ? window.ZONIFICACION_IIUU.obtener(loteActual, puntoConsulta) : '';
 
             panel.classList.remove('panel-expandido');
             panel.classList.remove('minimizado');
@@ -549,6 +560,10 @@
             var contVentanas = document.getElementById('ventanas-zona');
             var divObs  = document.getElementById('ventana-observaciones');
             var divRest = document.getElementById('ventana-restricciones');
+            divRest.style.display = 'none';
+            divObs.style.display = 'none';
+            document.getElementById('texto-restricciones').innerHTML = '';
+            document.getElementById('texto-observaciones').innerHTML = '';
 
             if (zonaActual === 'Uso Residencial Exclusivo') {
                 contVentanas.style.display = 'flex';
@@ -599,6 +614,15 @@
                     detalleZre;
             }
 
+            if (!esZRE && window.RESTRICCIONES_IIUU) {
+                var generales = window.RESTRICCIONES_IIUU.disposicionesGenerales || [];
+                var textoGeneral = '<details class="disposiciones-generales"><summary>Disposiciones generales y licencias existentes</summary>' +
+                    generales.map(function (texto) { return '<p>' + escaparHtml(texto) + '</p>'; }).join('') + '</details>';
+                var textoRest = document.getElementById('texto-restricciones');
+                textoRest.innerHTML = (divRest.style.display === 'none' ? '' : textoRest.innerHTML) + textoGeneral;
+                divRest.style.display = 'block';
+                contVentanas.style.display = 'flex';
+            }
             document.getElementById('contenido-scrollable').scrollTop = 0;
             renderizarResultados();
         }
@@ -795,6 +819,20 @@
                 });
             }
 
+            var reglasActuales = new Map();
+            obtenerActividadesIndice().forEach(function (g) {
+                var auth = g.ZONAS && g.ZONAS[zonaKeyAct];
+                if (!tipoAutorizacion(auth) || !window.RESTRICCIONES_IIUU) return;
+                reglasActuales.set(g, window.RESTRICCIONES_IIUU.obtener(zonaActual, g.CLASE,
+                    contextoRestricciones(loteActual, zonificacionReglasActual, auth)));
+            });
+            resultados = resultados.map(function (item) {
+                var tieneCondicion = obtenerActividadesIndice().some(function (g) {
+                    var regla = reglasActuales.get(g);
+                    return String(g.CLASE) === String(item.Clase) && regla && regla.condiciones.length;
+                });
+                return tieneCondicion ? Object.assign({}, item, { 'Autorización': 'Permitidas con restricción' }) : item;
+            });
             var permitidos    = resultados.filter(r => String(r['Autorización']).includes('Permitidas') && !String(r['Autorización']).includes('restricción')).length;
             var restringidos  = resultados.filter(r => String(r['Autorización']).includes('restricción')).length;
             document.getElementById('conteo-resumen').innerHTML =
@@ -825,18 +863,15 @@
                     var restriccionesGirosHtml = '';
                     girosDeEstaClase.forEach(function(g) {
                         var authGiro = g.ZONAS && g.ZONAS[zonaKeyAct];
+                        var reglaGiro = reglasActuales.get(g);
+                        if (reglaGiro && reglaGiro.condiciones.length) authGiro = 'R';
                         var col = colorAuth(authGiro);
                         var badge = '<span style="background:' + col.bg + ';color:' + col.txt +
                             ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>';
                         var codigoGiro = g.COD_GIRO ? '<small style="color:#666;margin-right:auto;">' + escaparHtml(g.COD_GIRO) + '</small>' : '';
                         girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;">' +
                             '<span>' + escaparHtml(g.ACTIVIDAD) + '</span>' + codigoGiro + badge + '</li>';
-                        if (tipoAutorizacion(authGiro) === 'R' && window.RESTRICCIONES_IIUU && window.RESTRICCIONES_IIUU.obtener) {
-                            var reglaGiro = window.RESTRICCIONES_IIUU.obtener(zonaActual, g.CLASE, {
-                                zonVig: zonVigActual,
-                                areaM2: obtenerAreaLote(),
-                                restriccionPoligono: obtenerRestriccionPoligono()
-                            });
+                        if (reglaGiro && reglaGiro.condiciones.length) {
                             restriccionesGirosHtml += renderizarRestriccionesGiro(
                                 reglaGiro,
                                 'Restricciones del giro ' + (g.COD_GIRO || ('CIIU ' + g.CLASE))

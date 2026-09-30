@@ -210,7 +210,7 @@
                     return;
                 }
                 resaltarLote(feature, layer);
-                if(window.actualizarLista) window.actualizarLista(miZona, zonVig, zreUsocom, feature.properties || {});
+                if(window.actualizarLista) window.actualizarLista(miZona, zonVig, zreUsocom, feature.properties || {}, e.latlng);
                 enfocarSeleccion(layer);
             });
         }
