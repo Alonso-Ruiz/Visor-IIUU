@@ -49,6 +49,9 @@
         var notas = window.datosNotasRestricciones && window.datosNotasRestricciones.distrital;
         var datos = notas && notas[clave];
         if (!datos) {
+            if (contexto && contexto.restriccionAnterior) {
+                return regla([condicion('Restricción', contexto.restriccionAnterior)]);
+            }
             return regla([condicion(
                 'Restricción del giro',
                 'El Índice distrital marca esta actividad con R, pero la hoja Notas - Restricciones no detalla una condición para esta categoría.'
@@ -152,6 +155,19 @@
         if (clase === '4711' && comercial && ['Uso Mixto Vecinal', 'Uso Mixto Zonal'].indexOf(zona) !== -1) {
             resultado.condiciones.push(condicion('Excepción específica de nivel',
                 'Se permite el desarrollo en todos los niveles cuando el establecimiento se ubique al interior de mercados, galerías comerciales o centros comerciales formalmente existentes o autorizados como tales y el giro sea compatible con esta categoría. Esta excepción sustituye el límite general de nivel únicamente cuando se cumple esa ubicación.'));
+        }
+        // Las reglas nuevas complementan el texto que ya mostraba el visor.
+        // Al aplicar una excepción o condición especial, volver a añadirlo si
+        // el bloque general fue sustituido por la regla específica.
+        if (contexto.restriccionAnterior && !resultado.condiciones.some(function (c) {
+            return c.etiqueta === 'Restricción';
+        })) {
+            resultado.condiciones.unshift(condicion('Restricción', contexto.restriccionAnterior));
+        }
+        if (contexto.restriccionAnterior) {
+            resultado.condiciones = resultado.condiciones.filter(function (c) {
+            return c.etiqueta !== 'Restricción del giro';
+            });
         }
         return resultado;
     }

@@ -5,13 +5,32 @@
         var resumenRestriccionesViaActual = null;
         var zonificacionReglasActual = '';
 
-        function contextoRestricciones(propiedades, vigente, autorizacion) {
+        function restriccionAnterior(zona, clase) {
+            var normalizar = function (valor) {
+                return String(valor || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                    .toLowerCase().replace(/\s+/g, ' ').trim();
+            };
+            var categoria = normalizar(zona);
+            var coincidencias = (window.datosUsosLegacy || []).filter(function (item) {
+                return String(item.Clase) === String(clase) && normalizar(item['Uso Compatible']) === categoria &&
+                    String(item.Restricciones || '').trim();
+            });
+            var textos = [];
+            coincidencias.forEach(function (item) {
+                var texto = String(item.Restricciones || '').trim();
+                if (textos.indexOf(texto) === -1) textos.push(texto);
+            });
+            return textos.join(' ');
+        }
+
+        function contextoRestricciones(propiedades, vigente, autorizacion, zona, clase) {
             return {
                 zonificacionVigente: vigente,
                 autorizacion: tipoAutorizacion(autorizacion),
                 via: obtenerPropiedad(propiedades, ['VIA COLIND', 'VIA_COLIND', 'VÍA COLINDANTE', 'VIA COLINDANTE']),
                 areaM2: obtenerPropiedad(propiedades, ['ÁREA_M2', 'AREA_M2', 'Area_m2', 'AREA']),
-                restriccionPoligono: obtenerPropiedad(propiedades, ['RESTRICCIÓN', 'RESTRICCIÓ', 'RESTRICCI�', 'RESTRICCION'])
+                restriccionPoligono: obtenerPropiedad(propiedades, ['RESTRICCIÓN', 'RESTRICCIÓ', 'RESTRICCI�', 'RESTRICCION']),
+                restriccionAnterior: restriccionAnterior(zona, clase)
             };
         }
 
@@ -239,7 +258,7 @@
                     if (!tipoAutorizacion(auth)) return;
                     var vigente = window.ZONIFICACION_IIUU ? window.ZONIFICACION_IIUU.obtener(propiedades) : '';
                     var regla = motor && motor.obtener ? motor.obtener(zona, giro.CLASE,
-                        contextoRestricciones(propiedades, vigente, auth)) : null;
+                        contextoRestricciones(propiedades, vigente, auth, zona, giro.CLASE)) : null;
                     if (tipoAutorizacion(auth) !== 'R' && (!regla || !regla.condiciones.length)) return;
                     agregarRestriccion(giro, giro.CLASE, 'R', regla);
                 });
@@ -824,7 +843,7 @@
                 var auth = g.ZONAS && g.ZONAS[zonaKeyAct];
                 if (!tipoAutorizacion(auth) || !window.RESTRICCIONES_IIUU) return;
                 reglasActuales.set(g, window.RESTRICCIONES_IIUU.obtener(zonaActual, g.CLASE,
-                    contextoRestricciones(loteActual, zonificacionReglasActual, auth)));
+                    contextoRestricciones(loteActual, zonificacionReglasActual, auth, zonaActual, g.CLASE)));
             });
             resultados = resultados.map(function (item) {
                 var tieneCondicion = obtenerActividadesIndice().some(function (g) {
