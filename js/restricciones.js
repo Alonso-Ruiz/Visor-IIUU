@@ -1,4 +1,5 @@
-// Restricciones vigentes del Índice distrital y del Índice ZRE.
+// Restricciones del Índice distrital y del Índice ZRE, contrastadas con la
+// propuesta de reglamento proporcionada el 01/10/2026 (arts. 16-27 y 34-42).
 (function () {
     'use strict';
 
@@ -116,10 +117,10 @@
                     existente = 'Predio en esquina, establecimiento en el primer nivel y área destinada al establecimiento de 15 m² a 300 m².';
                     nueva = 'Uso comercial compatible solo en el primer nivel y/o subsuelo, según las condiciones de seguridad y funcionamiento.';
                 } else if (zona === 'Uso Mixto Vecinal') {
-                    existente = 'Establecimiento en el primer nivel, con área máxima de ' + (vigente === 'RDB' ? '300' : '500') + ' m² por establecimiento.';
+                    existente = 'Establecimiento en el primer nivel, con área de 50 m² como mínimo y máxima de ' + (vigente === 'RDB' ? '300' : '500') + ' m² por establecimiento.';
                     nueva = 'Uso comercial compatible desde el subsuelo hasta el segundo nivel.';
                 } else {
-                    existente = 'Establecimiento hasta el tercer nivel, con área máxima de ' + (vigente === 'RDB' ? '300' : '750') + ' m² por establecimiento.';
+                    existente = 'Establecimiento hasta el tercer nivel, con área de 50 m² como mínimo y máxima de ' + (vigente === 'RDB' ? '300' : '750') + ' m² por establecimiento.';
                     nueva = 'Uso comercial compatible desde el subsuelo hasta el tercer nivel.';
                 }
                 if (!soloObra) condiciones.push(condicion('Edificación existente, con o sin acondicionamiento o refacción', existente));
@@ -229,9 +230,10 @@
         obtenerZRE: restriccionGiroZRE,
         regimenResidencialExclusivo: {
             titulo: 'Condición de compatibilidad',
-            resumen: 'El Uso Residencial Exclusivo mantiene su carácter residencial.',
+            resumen: 'El Uso Residencial Exclusivo mantiene su carácter residencial. El artículo 20 prevé una evaluación excepcional para giros preexistentes.',
             condiciones: [
-                'Se consideran compatibles las unidades inmobiliarias que cuenten con declaratoria de fábrica inscrita, con uso de tienda, local comercial o uso equivalente, conforme a la normativa vigente.'
+                'Debe existir una licencia de funcionamiento municipal anterior a la publicación de la ordenanza y una declaratoria de edificación o fábrica inscrita que identifique el mismo ambiente como tienda, local comercial o equivalente.',
+                'La clase CIIU debe estar marcada R en Uso Mixto Vecinal y el giro específico debe estar aprobado. Ubicación, delimitación, área y niveles deben coincidir con la licencia y la declaratoria inscrita. Consulte todas las condiciones del artículo 20 del reglamento propuesto.'
             ]
         }
     };
