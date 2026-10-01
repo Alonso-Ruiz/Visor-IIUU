@@ -99,6 +99,10 @@
             actualizarCapa(window.layer_usos_compatibles_0, style_usos_compatibles_0_0);
         }
 
+        if (window.layer_parques_alineados) {
+            actualizarCapa(window.layer_parques_alineados, style_parques_alineados);
+        }
+
         if (window.layer_usos_compatibles_planes) {
             actualizarCapa(window.layer_usos_compatibles_planes, style_tramado_planes_especiales);
         }

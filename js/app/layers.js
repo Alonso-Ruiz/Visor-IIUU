@@ -218,6 +218,9 @@
         map.createPane('pane_usos_compatibles_0');
         map.getPane('pane_usos_compatibles_0').style.zIndex = 400;
         map.getPane('pane_usos_compatibles_0').style['mix-blend-mode'] = 'normal';
+        map.createPane('pane_parques_alineados');
+        map.getPane('pane_parques_alineados').style.zIndex = 401;
+        map.getPane('pane_parques_alineados').style.pointerEvents = 'none';
         map.createPane('pane_tramado_planes_especiales');
         map.getPane('pane_tramado_planes_especiales').style.zIndex = 401;
         map.getPane('pane_tramado_planes_especiales').style['mix-blend-mode'] = 'normal';
@@ -310,6 +313,25 @@
         });
         window.layer_usos_compatibles_0 = layer_usos_compatibles_0;
         bounds_group.addLayer(layer_usos_compatibles_0); map.addLayer(layer_usos_compatibles_0);
+
+        // Trazado visual de parques del export de QGIS. La capa de usos
+        // conserva las consultas y esta superposición no captura clics.
+        function style_parques_alineados() {
+            return {
+                pane: 'pane_parques_alineados',
+                color: 'rgba(35,35,35,0.81)', weight: 1,
+                opacity: 1, fill: true, fillColor: 'rgba(164,205,163,1.0)',
+                fillOpacity: 1, interactive: false
+            };
+        }
+        var layer_parques_alineados = typeof json_parques_alineados_20261001 !== 'undefined'
+            ? L.geoJson(json_parques_alineados_20261001, {
+                pane: 'pane_parques_alineados', interactive: false,
+                style: function(feature) {
+                    return window.aplicarVisibilidadCategoria(style_parques_alineados(feature), feature);
+                }
+            }).addTo(map) : null;
+        window.layer_parques_alineados = layer_parques_alineados;
 
         var layer_usos_compatibles_planes = new L.geoJson(json_usos_compatibles_0, {
             attribution: '',
