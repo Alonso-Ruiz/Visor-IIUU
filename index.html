@@ -8,7 +8,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20260928-transparencia-por-capa1">
+        <link rel="stylesheet" href="css/app.css?v=20261002-portada-guard1">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js?v=20260917-sin-actividades-excluidas1"></script>
         <script src="js/app/preservar-usos-anteriores.js?v=20260930-restricciones-complemento1"></script>
@@ -59,26 +59,61 @@
 
         <div id="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
             <div class="modal-content">
-                <button type="button" id="btn-cerrar-portada" class="close-modal-icon" title="Cerrar" aria-label="Cerrar bienvenida">&#10005;</button>
+                <button type="button" id="btn-cerrar-portada" class="close-modal-icon" title="Volver a las opciones" aria-label="Volver a las opciones">&#10005;</button>
 
-                <img class="modal-logo" src="assets/Escudo_de_San_Borja.png" alt="Escudo de San Borja">
-                <h2 id="welcome-title">Municipalidad de San Borja</h2>
-                <h3>Visor de la Ordenanza Nº 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja</h3>
-                <p>Este visor permite consultar de forma interactiva la compatibilidad de usos del suelo, revisar la información de cada lote y explorar las actividades permitidas o sujetas a restricciones.</p>
-                <hr class="modal-divider">
-                <p class="modal-help-title">¿Cómo usar el visor?</p>
-                <ul>
-                    <li>Use la lupa para buscar una vía y ubicarla rápidamente en el mapa.</li>
-                    <li>Haga clic sobre cualquier polígono para ver el detalle del lote.</li>
-                    <li>Revise las actividades compatibles, observaciones y restricciones desde el panel de detalle.</li>
-                </ul>
-                <div class="modal-buttons">
-                    <button id="btn-ingresar-visor" class="btn-ingresar" type="button">Ingresar al visor</button>
+                <div id="portada-opciones">
+                    <div class="portada-encabezado">
+                        <img class="modal-logo" src="assets/Escudo_de_San_Borja.png" alt="Escudo de San Borja">
+                        <p class="portada-municipalidad">Municipalidad de San Borja</p>
+                        <h2 id="welcome-title">¿Qué deseas consultar?</h2>
+                        <p class="portada-bajada">Selecciona una opción para ingresar al visor</p>
+                    </div>
+
+                    <div class="portada-tarjetas" aria-label="Opciones de consulta">
+                        <button class="portada-tarjeta" type="button" data-open-visor aria-label="Abrir el visor de Giros permitidos">
+                            <span class="portada-icono" aria-hidden="true"><i class="fas fa-store"></i></span>
+                            <span class="portada-tarjeta-contenido">
+                                <span class="portada-tarjeta-titulo">Giros permitidos</span>
+                                <span class="portada-tarjeta-descripcion">Según clases aprobadas en el Índice de Usos de la Ordenanza N.º 2851-MML.</span>
+                            </span>
+                            <span class="portada-flecha" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+
+                        <button class="portada-tarjeta" type="button" data-coming-soon aria-label="Ver el estado del Reglamento de Compatibilidad de Usos">
+                            <span class="portada-icono" aria-hidden="true"><i class="fas fa-building"></i></span>
+                            <span class="portada-tarjeta-contenido">
+                                <span class="portada-tarjeta-titulo">Reglamento de Compatibilidad de Usos</span>
+                                <span class="portada-tarjeta-descripcion">Para edificaciones residenciales y comerciales. Modificatoria de la Ordenanza N.º 491-MSB.</span>
+                            </span>
+                            <span class="portada-flecha" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+
+                        <button class="portada-tarjeta" type="button" data-coming-soon aria-label="Ver el estado de Niveles Operacionales y Estándares de Calidad">
+                            <span class="portada-icono" aria-hidden="true"><i class="fas fa-clipboard-check"></i></span>
+                            <span class="portada-tarjeta-contenido">
+                                <span class="portada-tarjeta-titulo">Niveles Operacionales y Estándares de Calidad</span>
+                                <span class="portada-tarjeta-descripcion">Para edificaciones. Modificatoria de la Ordenanza N.º 491-MSB.</span>
+                            </span>
+                            <span class="portada-flecha" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </div>
+
+                    <div class="source">
+                        Fuente: Municipalidad de San Borja
+                        <span class="privacy-note">Este visor utiliza datos públicos y no recopila información personal.</span>
+                    </div>
                 </div>
-                <div class="source">
-                    Fuente: Municipalidad de San Borja
-                    <span class="privacy-note">Este visor utiliza datos públicos y no recopila información personal.</span>
-                </div>
+
+                <section id="portada-proximamente" class="portada-proximamente" aria-labelledby="portada-proximamente-titulo" aria-live="polite" hidden>
+                    <span class="portada-proximamente-icono" aria-hidden="true"><i class="fas fa-wrench"></i></span>
+                    <p class="portada-municipalidad">Nuevo módulo</p>
+                    <h2 id="portada-proximamente-titulo">Estamos preparando este visor</h2>
+                    <p id="portada-proximamente-descripcion" class="portada-proximamente-descripcion"></p>
+                    <button type="button" id="btn-volver-opciones" class="btn-volver-opciones">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        Volver a las opciones
+                    </button>
+                </section>
             </div>
         </div>
 
@@ -136,7 +171,7 @@
         <script src="js/app/layers.js?v=20261001-poligono-parques1"></script>
         <script src="js/app/controls.js?v=20260928-opacidad-capas1"></script>
         <script src="js/app/panel.js?v=20260930-restricciones-complemento1"></script>
-        <script src="js/app/welcome-modal.js"></script>
+        <script src="js/app/welcome-modal.js?v=20261002-portada-guard1"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>
         <script src="js/app/map-opacity.js?v=20260824-toolbar2"></script>
         <script src="js/app/vias-search.js?v=20260928-teclado-sugerencias2"></script>
