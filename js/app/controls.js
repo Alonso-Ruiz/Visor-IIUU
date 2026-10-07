@@ -379,6 +379,17 @@
         };
         capasAuxiliaresControl.addTo(map);
 
+        var consultaCiiuControl = L.control({position: 'bottomleft'});
+        consultaCiiuControl.onAdd = function() {
+            var div = L.DomUtil.create('div', 'control-consulta-ciiu');
+            div.id = 'control-consulta-ciiu';
+            div.innerHTML = '<button type="button" id="boton-consulta-ciiu" class="boton-consulta-ciiu" aria-label="Abrir consulta de actividades por CIIU" title="Consulta de actividades por CIIU"><i class="fas fa-list-alt" aria-hidden="true"></i></button>';
+            L.DomEvent.disableClickPropagation(div);
+            L.DomEvent.disableScrollPropagation(div);
+            return div;
+        };
+        consultaCiiuControl.addTo(map);
+
         (function iniciarCapasAuxiliares() {
             var control = document.getElementById('control-capas-auxiliares');
             var boton = document.getElementById('boton-capas-auxiliares');

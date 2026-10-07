@@ -8,7 +8,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20261002-portada-guard1">
+        <link rel="stylesheet" href="css/app.css?v=20261007-retiros-option3">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js?v=20260917-sin-actividades-excluidas1"></script>
         <script src="js/app/preservar-usos-anteriores.js?v=20260930-restricciones-complemento1"></script>
@@ -25,7 +25,7 @@
             </div>
             <span class="encabezado-separador" aria-hidden="true"></span>
             <div class="encabezado-titulos">
-                <h1>Ordenanza Nº 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja</h1>
+                <h1 id="titulo-visor-principal">Ordenanza Nº 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja</h1>
                 <span class="encabezado-titulo-separador" aria-hidden="true"></span>
                 <p class="encabezado-subtitulo">Visor de usos compatibles</p>
             </div>
@@ -88,14 +88,15 @@
                             <span class="portada-flecha" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
                         </button>
 
-                        <button class="portada-tarjeta" type="button" data-coming-soon aria-label="Ver el estado de Niveles Operacionales y Estándares de Calidad">
-                            <span class="portada-icono" aria-hidden="true"><i class="fas fa-clipboard-check"></i></span>
+                        <button class="portada-tarjeta" type="button" data-open-retiros aria-label="Abrir el visor de retiros normativos">
+                            <span class="portada-icono" aria-hidden="true"><i class="fas fa-road"></i></span>
                             <span class="portada-tarjeta-contenido">
-                                <span class="portada-tarjeta-titulo">Niveles Operacionales y Estándares de Calidad</span>
-                                <span class="portada-tarjeta-descripcion">Para edificaciones. Modificatoria de la Ordenanza N.º 491-MSB.</span>
+                                <span class="portada-tarjeta-titulo">Retiros normativos</span>
+                                <span class="portada-tarjeta-descripcion">Consulta polígonos y líneas de retiro, con sus categorías y compatibilidad de uso.</span>
                             </span>
                             <span class="portada-flecha" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
                         </button>
+
                     </div>
 
                     <div class="source">
@@ -114,7 +115,67 @@
                         Volver a las opciones
                     </button>
                 </section>
+
+                <section id="portada-consulta-ciiu" class="consulta-ciiu" aria-labelledby="consulta-ciiu-titulo" hidden>
+                    <div class="consulta-ciiu-cabecera">
+                        <button type="button" class="btn-volver-opciones consulta-ciiu-volver" id="btn-volver-consulta-ciiu">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                            Volver al mapa
+                        </button>
+                        <p class="portada-municipalidad">Consulta de actividades económicas</p>
+                        <h2 id="consulta-ciiu-titulo">Encuentra tu actividad económica</h2>
+                        <p class="portada-bajada">Elige cómo buscar y consulta la información de tu giro.</p>
+                    </div>
+
+                    <div class="consulta-ciiu-modos" role="group" aria-label="Forma de búsqueda">
+                        <button type="button" data-ciiu-modo="descripcion" aria-pressed="true" aria-controls="ciiu-por-descripcion"><i class="fas fa-search" aria-hidden="true"></i> Por descripción</button>
+                        <button type="button" data-ciiu-modo="actividad" aria-pressed="false" aria-controls="ciiu-por-actividad"><i class="fas fa-list" aria-hidden="true"></i> Por actividad económica</button>
+                        <button type="button" data-ciiu-modo="codigo" aria-pressed="false" aria-controls="ciiu-por-codigo"><i class="fas fa-hashtag" aria-hidden="true"></i> Por código CIIU</button>
+                    </div>
+                    <form id="consulta-ciiu-formulario" class="consulta-ciiu-formulario">
+                    <div id="ciiu-por-descripcion" class="consulta-ciiu-filtros" data-ciiu-panel="descripcion">
+                        <label class="consulta-ciiu-busqueda" for="consulta-ciiu-texto">
+                            <span>¿Qué actividad buscas?</span>
+                            <span class="consulta-ciiu-input-wrap"><i class="fas fa-search" aria-hidden="true"></i><input id="consulta-ciiu-texto" type="search" placeholder="Ej.: panadería o peluquería" autocomplete="off"></span>
+                        </label>
+                    </div>
+                    <div id="ciiu-por-actividad" class="consulta-ciiu-filtros" data-ciiu-panel="actividad" hidden>
+                        <label for="consulta-ciiu-seccion">1. Sección · sector económico
+                            <select id="consulta-ciiu-seccion"><option value="">Todas las secciones</option></select>
+                        </label>
+                        <label for="consulta-ciiu-division">2. División · grupo de actividades
+                            <select id="consulta-ciiu-division" disabled><option value="">Todas las divisiones</option></select>
+                        </label>
+                        <label for="consulta-ciiu-clase">3. Clase · actividad específica
+                            <select id="consulta-ciiu-clase" disabled><option value="">Todas las clases</option></select>
+                        </label>
+                    </div>
+                    <div id="ciiu-por-codigo" class="consulta-ciiu-filtros" data-ciiu-panel="codigo" hidden>
+                        <label for="consulta-ciiu-revision">Versión del código
+                            <select id="consulta-ciiu-revision"><option value="4">CIIU Rev. 4 · actual</option><option value="3">CIIU Rev. 3 · antecedente</option></select>
+                        </label>
+                        <label for="consulta-ciiu-codigo">Código CIIU · 4 dígitos
+                            <span class="consulta-ciiu-input-wrap"><i class="fas fa-hashtag" aria-hidden="true"></i><input id="consulta-ciiu-codigo" type="text" inputmode="numeric" maxlength="4" placeholder="Ej.: 1071" autocomplete="off"></span>
+                        </label>
+                    </div>
+                    <div class="consulta-ciiu-acciones"><button type="submit" class="consulta-ciiu-buscar"><i class="fas fa-search" aria-hidden="true"></i> Buscar</button><button type="button" id="consulta-ciiu-limpiar" class="consulta-ciiu-limpiar">Limpiar búsqueda</button></div>
+                    </form>
+                    <div class="consulta-ciiu-resultados-cabecera"><strong id="consulta-ciiu-conteo" aria-live="polite">Resultados</strong></div>
+                    <div id="consulta-ciiu-resultados" class="consulta-ciiu-resultados" aria-live="polite"></div>
+                    <details class="consulta-ciiu-alcance"><summary>Sobre esta información</summary><div class="consulta-ciiu-aviso"><i class="fas fa-info-circle" aria-hidden="true"></i><span>La X y los ámbitos corresponden al antecedente de la Ordenanza 1429. La equivalencia no confirma por sí sola la compatibilidad actual en una categoría ni en un predio. En la matriz de la Ordenanza 2851, R indica permitido con restricciones y la celda gris (—) no tiene marca.</span></div>
+                    <p class="consulta-ciiu-pendientes">La base identifica 166 equivalencias. El archivo señala otros 46 giros con X cuyo traslado requiere precisar componentes o clases; no están incluidos en estos resultados.</p>
+                    </details>
+                </section>
             </div>
+        </div>
+
+        <div id="retiros-cabecera" class="retiros-cabecera" hidden>
+            <button type="button" id="btn-volver-retiros" class="retiros-volver">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                Opciones
+            </button>
+            <strong>Retiros normativos</strong>
+            <span id="retiros-estado" role="status" aria-live="polite"></span>
         </div>
 
         <div id="panel-usos" class="minimizado">
@@ -169,9 +230,12 @@
         <script src="js/app/core.js?v=20260928-permitido-restriccion1"></script>
         <script src="js/app/legend-filters.js?v=20261001-parques1"></script>
         <script src="js/app/layers.js?v=20261001-poligono-parques1"></script>
-        <script src="js/app/controls.js?v=20260928-opacidad-capas1"></script>
+        <script src="js/app/controls.js?v=20261002-consulta-ciiu1"></script>
+        <script src="js/app/visor-retiros.js?v=20261007-leaflet-reutilizable1"></script>
         <script src="js/app/panel.js?v=20260930-restricciones-complemento1"></script>
-        <script src="js/app/welcome-modal.js?v=20261002-portada-guard1"></script>
+        <script src="data/equivalencias_2851.js?v=20261002-consulta-ciiu1"></script>
+        <script src="js/app/consulta-ciiu.js?v=20261005-consulta-simple1"></script>
+        <script src="js/app/welcome-modal.js?v=20261007-retiros-option3"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>
         <script src="js/app/map-opacity.js?v=20260824-toolbar2"></script>
         <script src="js/app/vias-search.js?v=20260928-teclado-sugerencias2"></script>
