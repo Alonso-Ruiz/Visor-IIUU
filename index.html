@@ -8,7 +8,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20261007-retiros-option3">
+        <link rel="stylesheet" href="css/app.css?v=20261009-navegacion-visores2">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js?v=20260917-sin-actividades-excluidas1"></script>
         <script src="js/app/preservar-usos-anteriores.js?v=20260930-restricciones-complemento1"></script>
@@ -30,6 +30,12 @@
                 <p class="encabezado-subtitulo">Visor de usos compatibles</p>
             </div>
         </header>
+
+        <nav class="navegacion-visores" aria-label="Seleccionar visor">
+            <button type="button" data-visor="1" aria-label="Abrir visor 1: Giros permitidos" aria-pressed="true" title="Giros permitidos">1</button>
+            <button type="button" data-visor="2" aria-label="Visor 2 próximamente" title="Próximamente" disabled>2</button>
+            <button type="button" data-visor="3" aria-label="Abrir visor 3: Retiros normativos" aria-pressed="false" title="Retiros normativos">3</button>
+        </nav>
 
         <div id="map"></div>
 
@@ -169,14 +175,36 @@
             </div>
         </div>
 
-        <div id="retiros-cabecera" class="retiros-cabecera" hidden>
-            <button type="button" id="btn-volver-retiros" class="retiros-volver">
-                <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                Opciones
-            </button>
-            <strong>Retiros normativos</strong>
-            <span id="retiros-estado" role="status" aria-live="polite"></span>
-        </div>
+        <aside id="panel-capas-retiros" class="panel-capas-retiros" aria-label="Capas del mapa de retiros" hidden>
+            <h3 class="retiros-panel-titulo">Capas del mapa</h3>
+            <p class="retiros-panel-ayuda">Activa las capas que necesitas para comparar lotes y retiros.</p>
+            <div class="retiros-capas-grupo">
+                <h3>Predios</h3>
+                <label><input type="checkbox" data-retiro-capa="lotes" checked disabled><i class="muestra-retiros-poligono-gris" aria-hidden="true"></i><span>Lotes grises</span></label>
+                <label><input type="checkbox" data-retiro-capa="compatibles" checked disabled><i class="muestra-retiros-poligono-azul" aria-hidden="true"></i><span>Lotes compatibles</span></label>
+            </div>
+            <div class="retiros-capas-grupo">
+                <h3>Retiros normativos</h3>
+                <label><input type="checkbox" data-retiro-capa="poligonos" checked disabled><i class="muestra-retiros-poligono" aria-hidden="true"></i><span>Áreas de retiro</span></label>
+                <label><input type="checkbox" data-retiro-capa="lineas3" checked disabled><i class="muestra-retiros-linea muestra-retiros-linea-3" aria-hidden="true"></i><span>Líneas de retiro · 3 m</span></label>
+                <label><input type="checkbox" data-retiro-capa="lineas5" checked disabled><i class="muestra-retiros-linea muestra-retiros-linea-5" aria-hidden="true"></i><span>Líneas de retiro · 5 m</span></label>
+            </div>
+            <div class="retiros-capas-grupo retiros-capas-grupo-contexto">
+                <h3>Contexto</h3>
+                <label><input type="checkbox" data-retiro-capa="contexto" checked disabled><i class="muestra-retiros-contexto" aria-hidden="true"></i><span>Área urbana</span></label>
+            </div>
+            <div class="retiros-capas-grupo">
+                <h3>Vías</h3>
+                <label><input type="checkbox" data-retiro-capa="vias" checked><i class="muestra-retiros-vias" aria-hidden="true"></i><span>Vías y nombres</span></label>
+            </div>
+            <div class="leyenda-retiros" aria-label="Leyenda de compatibilidad">
+                <h3>Compatibilidad del retiro</h3>
+                <span><i class="muestra-retiros-compatible"></i>Compatible</span>
+                <span><i class="muestra-retiros-obra"></i>Solo obra nueva</span>
+                <span><i class="muestra-retiros-sin"></i>Sin compatibilidad</span>
+                <small>Trazo fino: 3 m · trazo grueso: 5 m</small>
+            </div>
+        </aside>
 
         <div id="panel-usos" class="minimizado">
             <button type="button" id="boton-altura-panel" class="boton-altura-panel" aria-label="Expandir detalle del lote"></button>
@@ -198,6 +226,10 @@
             </div>
 
             <div id="contenido-scrollable">
+                <div id="retiros-detalle" hidden>
+                    <p class="retiros-detalle-intro">Selecciona un lote, un área o una línea de retiro para consultar sus datos.</p>
+                    <div id="retiros-detalle-campos"></div>
+                </div>
                 <div id="ventanas-zona">
                     <div id="ventana-observaciones">
                         <h5>Observaciones</h5>
@@ -231,14 +263,14 @@
         <script src="js/app/legend-filters.js?v=20261001-parques1"></script>
         <script src="js/app/layers.js?v=20261001-poligono-parques1"></script>
         <script src="js/app/controls.js?v=20261002-consulta-ciiu1"></script>
-        <script src="js/app/visor-retiros.js?v=20261007-leaflet-reutilizable1"></script>
+        <script src="js/app/visor-retiros.js?v=20261009-retiros-popup1"></script>
         <script src="js/app/panel.js?v=20260930-restricciones-complemento1"></script>
         <script src="data/equivalencias_2851.js?v=20261002-consulta-ciiu1"></script>
         <script src="js/app/consulta-ciiu.js?v=20261005-consulta-simple1"></script>
-        <script src="js/app/welcome-modal.js?v=20261007-retiros-option3"></script>
+        <script src="js/app/welcome-modal.js?v=20261009-navegacion-visores1"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>
         <script src="js/app/map-opacity.js?v=20260824-toolbar2"></script>
-        <script src="js/app/vias-search.js?v=20260928-teclado-sugerencias2"></script>
+        <script src="js/app/vias-search.js?v=20261009-retiros-vias1"></script>
         <script src="js/app/geoapify-config.js?v=20260928-geoapify-demo1"></script>
         <script src="js/app/address-search.js?v=20260928-geoapify-lotes2"></script>
     </body>

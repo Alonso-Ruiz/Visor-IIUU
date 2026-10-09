@@ -3,6 +3,7 @@
         let capaViasEtiquetas = null;
         let temporizadorViasEtiquetas = null;
         let rendererViasEtiquetas = null;
+        let etiquetasViasVisibles = true;
         cargarVias();
 
         function cargarVias() {
@@ -45,6 +46,8 @@
                 map.removeLayer(capaViasEtiquetas);
                 capaViasEtiquetas = null;
             }
+
+            if (!etiquetasViasVisibles) return;
 
             var zoom = map.getZoom();
             if (zoom < 14) return;
@@ -93,6 +96,17 @@
             clearTimeout(temporizadorViasEtiquetas);
             temporizadorViasEtiquetas = setTimeout(construirEtiquetasVias, espera || 120);
         }
+
+        window.establecerVisibilidadVias = function(visible) {
+            etiquetasViasVisibles = !!visible;
+            if (!etiquetasViasVisibles && capaViasEtiquetas) {
+                map.removeLayer(capaViasEtiquetas);
+                capaViasEtiquetas = null;
+            } else if (etiquetasViasVisibles) {
+                programarActualizacionEtiquetasVias(0);
+            }
+        };
+        window.obtenerVisibilidadVias = function() { return etiquetasViasVisibles; };
 
         map.on('movestart zoomstart', function() {
             document.body.classList.add('mapa-en-movimiento');
