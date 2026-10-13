@@ -44,6 +44,15 @@
                 .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
+        function htmlEquivalenciaRev3(giro) {
+            if (!giro || (!giro.EQUIVALENCIA_REV3 && !giro.NOMBRE_GIRO_EQUIVALENTE_REV3)) return '';
+            return '<small class="nota-actividad-zre">Equivalencia CIIU Rev. 3: ' +
+                escaparHtml(giro.EQUIVALENCIA_REV3 || '—') +
+                (giro.NOMBRE_GIRO_EQUIVALENTE_REV3
+                    ? ' · ' + escaparHtml(giro.NOMBRE_GIRO_EQUIVALENTE_REV3).replace(/\n/g, '<br>')
+                    : '') + '</small>';
+        }
+
         function obtenerPropiedad(obj, nombres) {
             obj = obj || {};
             for (var i = 0; i < nombres.length; i++) {
@@ -441,7 +450,7 @@
                     girosHtml = '<ul class="lista-actividades">';
                     item.giros.forEach(function(g) {
                         var codigoGiro = g.COD_GIRO ? '<small style="color:#666;margin-left:8px;">' + escaparHtml(g.COD_GIRO) + '</small>' : '';
-                        girosHtml += '<li><span>' + escaparHtml(g.ACTIVIDAD) + '</span>' + codigoGiro + '</li>';
+                        girosHtml += '<li><span>' + escaparHtml(g.ACTIVIDAD) + htmlEquivalenciaRev3(g) + '</span>' + codigoGiro + '</li>';
                     });
                     girosHtml += '</ul>';
                 } else {
@@ -637,6 +646,13 @@
                 var generales = window.RESTRICCIONES_IIUU.disposicionesGenerales || [];
                 var textoGeneral = '<details class="disposiciones-generales"><summary>Disposiciones generales y licencias existentes</summary>' +
                     generales.map(function (texto) { return '<p>' + escaparHtml(texto) + '</p>'; }).join('') + '</details>';
+                var notasIndice = window.datosNotasIndiceDistrital || [];
+                if (notasIndice.length) {
+                    textoGeneral += '<details class="disposiciones-generales"><summary>Notas del Índice distrital</summary>' +
+                        notasIndice.map(function (nota) {
+                            return '<p><strong>' + escaparHtml(nota.numero) + '.</strong> ' + escaparHtml(nota.texto) + '</p>';
+                        }).join('') + '</details>';
+                }
                 var textoRest = document.getElementById('texto-restricciones');
                 textoRest.innerHTML = (divRest.style.display === 'none' ? '' : textoRest.innerHTML) + textoGeneral;
                 divRest.style.display = 'block';
@@ -736,7 +752,13 @@
                             ? motorRestricciones.obtenerZRE(g, zreId, matrizZre)
                             : null;
                         girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;flex-wrap:wrap;">' +
-                            '<span>' + escaparHtml(g.ACTIVIDAD) + '</span>' +
+                            '<span>' + escaparHtml(g.ACTIVIDAD) +
+                            (g.EQUIVALENCIA_REV3 || g.NOMBRE_GIRO_EQUIVALENTE_REV3
+                                ? '<small class="nota-actividad-zre">Equivalencia CIIU Rev. 3: ' +
+                                    escaparHtml(g.EQUIVALENCIA_REV3 || '—') +
+                                    (g.NOMBRE_GIRO_EQUIVALENTE_REV3 ? ' · ' + escaparHtml(g.NOMBRE_GIRO_EQUIVALENTE_REV3).replace(/\n/g, '<br>') : '') +
+                                    '</small>'
+                                : '') + '</span>' +
                             '<span style="background:' + col.bg + ';color:' + col.txt + ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>' +
                             (g.OBSERVACIONES ? '<small class="nota-actividad-zre">' + escaparHtml(g.OBSERVACIONES) + '</small>' : '') +
                             (autorizacion === 'R' ? renderizarRestriccionGiroZre(reglaGiro) : '') +
@@ -889,7 +911,7 @@
                             ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>';
                         var codigoGiro = g.COD_GIRO ? '<small style="color:#666;margin-right:auto;">' + escaparHtml(g.COD_GIRO) + '</small>' : '';
                         girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;">' +
-                            '<span>' + escaparHtml(g.ACTIVIDAD) + '</span>' + codigoGiro + badge + '</li>';
+                            '<span>' + escaparHtml(g.ACTIVIDAD) + htmlEquivalenciaRev3(g) + '</span>' + codigoGiro + badge + '</li>';
                         if (reglaGiro && reglaGiro.condiciones.length) {
                             restriccionesGirosHtml += renderizarRestriccionesGiro(
                                 reglaGiro,

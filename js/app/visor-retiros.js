@@ -23,13 +23,16 @@
     var botonCapasAuxiliares = document.getElementById('boton-capas-auxiliares');
     var contenidoBotonCapasOriginal = botonCapasAuxiliares ? botonCapasAuxiliares.innerHTML : '';
     var etiquetaBotonCapasOriginal = botonCapasAuxiliares ? botonCapasAuxiliares.getAttribute('aria-label') : '';
-    var carga = null;
+    var cargaBase = null;
+    var cargaPredios = null;
+    var preparacionPredios = null;
     var estadoAnterior = null;
     var activo = false;
     var sesion = 0;
     var indiceClicPoligonos = Object.create(null);
     var tamanoCeldaClic = 0.001;
     var ultimoClicDeCapa = null;
+    var ultimoCursorRetiros = 0;
 
     function agregarScript(ruta) {
         return new Promise(function(resolve, reject) {
@@ -45,20 +48,31 @@
         });
     }
 
-    function cargarDatos() {
-        if (carga) return carga;
-        if (window.geojsonRetirosContexto && window.geojsonRetirosLotes && window.geojsonRetirosCompatibles && window.geojsonRetirosPoligonos && window.geojsonRetirosLineas) return Promise.resolve();
-        carga = Promise.all([
+    function cargarDatosBase() {
+        if (cargaBase) return cargaBase;
+        if (window.geojsonRetirosContexto && window.geojsonRetirosPoligonos && window.geojsonRetirosLineas) return Promise.resolve();
+        cargaBase = Promise.all([
             agregarScript('data/retiros_contexto.js?v=20261009-1'),
-            agregarScript('data/retiros_lotes.js?v=20261009-1'),
-            agregarScript('data/retiros_compatibles.js?v=20261009-1'),
             agregarScript('data/retiros_poligonos.js?v=20261009-1'),
             agregarScript('data/retiros_lineas.js?v=20261009-1')
         ]).catch(function(error) {
-            carga = null;
+            cargaBase = null;
             throw error;
         });
-        return carga;
+        return cargaBase;
+    }
+
+    function cargarDatosPredios() {
+        if (cargaPredios) return cargaPredios;
+        if (window.geojsonRetirosLotes && window.geojsonRetirosCompatibles) return Promise.resolve();
+        cargaPredios = Promise.all([
+            agregarScript('data/retiros_lotes.js?v=20261009-1'),
+            agregarScript('data/retiros_compatibles.js?v=20261009-1')
+        ]).catch(function(error) {
+            cargaPredios = null;
+            throw error;
+        });
+        return cargaPredios;
     }
 
     function textoSeguro(valor) {
@@ -175,6 +189,9 @@
 
     function actualizarCursorRetiros(e) {
         if (!activo || !e || !e.latlng) return;
+        var ahora = Date.now();
+        if (ahora - ultimoCursorRetiros < 45) return;
+        ultimoCursorRetiros = ahora;
         var candidato = poligonoBajoPunto([e.latlng.lng, e.latlng.lat]);
         map.getContainer().classList.toggle('retiros-cursor-clicable', Boolean(candidato));
     }
@@ -239,8 +256,7 @@
             opacity: 1,
             fill: true,
             fillColor: compatible ? '#333333' : '#78e1d8',
-            fillOpacity: 0.5,
-            interactive: true
+            fillOpacity: 0.5
         };
     }
 
@@ -261,15 +277,7 @@
         };
     }
 
-    function crearCapas() {
-        if (capaRetirosPoligonos) return;
-        indiceClicPoligonos = Object.create(null);
-        indexarPoligonos(window.geojsonRetirosLotes, 'Lote', 1);
-        indexarPoligonos(window.geojsonRetirosCompatibles, 'Lote compatible', 2);
-        indexarPoligonos(window.geojsonRetirosPoligonos, 'Área de retiro', 3);
-        Object.keys(indiceClicPoligonos).forEach(function(llave) {
-            indiceClicPoligonos[llave].sort(function(a, b) { return b.prioridad - a.prioridad; });
-        });
+    function crearPanes() {
         [
             ['pane_retiros_contexto', 410],
             ['pane_retiros_lotes', 420],
@@ -283,38 +291,41 @@
                 map.getPane(definicion[0]).style.pointerEvents = 'auto';
             }
         });
+    }
 
-        function capaPoligonal(datos, pane, estilo, titulo) {
+    function ordenarIndiceClicPoligonos() {
+        Object.keys(indiceClicPoligonos).forEach(function(llave) {
+            indiceClicPoligonos[llave].sort(function(a, b) { return b.prioridad - a.prioridad; });
+        });
+    }
+
+    function crearCapasBase() {
+        if (capaRetirosPoligonos) return;
+        indiceClicPoligonos = Object.create(null);
+        indexarPoligonos(window.geojsonRetirosPoligonos, 'Área de retiro', 3);
+        ordenarIndiceClicPoligonos();
+        crearPanes();
+
+        function capaPoligonal(datos, pane, estilo, titulo, interactiva) {
             return L.geoJSON(datos, {
                 pane: pane,
-                renderer: L.canvas({ pane: pane, padding: 0.2, tolerance: 6 }),
-                smoothFactor: 1,
-                interactive: true,
+                renderer: L.canvas({ pane: pane, padding: 0.1, tolerance: 6 }),
+                smoothFactor: 2,
+                interactive: interactiva !== false,
                 style: estilo,
-                onEachFeature: function(feature, layer) { hacerClicable(feature, layer, titulo); }
+                onEachFeature: interactiva === false ? undefined : function(feature, layer) { hacerClicable(feature, layer, titulo); }
             });
         }
 
         capaRetirosContexto = capaPoligonal(window.geojsonRetirosContexto, 'pane_retiros_contexto', {
             color: '#cccccc', weight: 0, fillColor: '#e6e6e6', fillOpacity: 1
-        }, 'Área urbana');
-        capaRetirosLotes = capaPoligonal(window.geojsonRetirosLotes, 'pane_retiros_lotes', {
-            color: 'rgba(197,197,197,0.85)', weight: 0.8, fillColor: '#f2f2f2', fillOpacity: 1
-        }, 'Lote');
-        capaRetirosCompatibles = capaPoligonal(window.geojsonRetirosCompatibles, 'pane_retiros_compatibles', {
-            color: 'rgba(255,255,255,0.82)', weight: 0.8, dashArray: '5 2',
-            fillColor: '#3368a0', fillOpacity: 1
-        }, 'Lote compatible');
-
+        }, 'Área urbana', true);
         capaRetirosPoligonos = L.geoJSON(window.geojsonRetirosPoligonos, {
             pane: 'pane_retiros_nuevos_poligonos',
-            interactive: true,
-            renderer: L.canvas({ pane: 'pane_retiros_nuevos_poligonos', padding: 0.2, tolerance: 6 }),
+            interactive: false,
+            renderer: L.canvas({ pane: 'pane_retiros_nuevos_poligonos', padding: 0.1, tolerance: 6 }),
             smoothFactor: 1,
-            style: estiloPoligono,
-            onEachFeature: function(feature, layer) {
-                hacerClicable(feature, layer, 'Área de retiro');
-            }
+            style: estiloPoligono
         });
         function crearLineas(ancho) {
             var features = window.geojsonRetirosLineas.features.filter(function(feature) {
@@ -323,12 +334,10 @@
             return L.geoJSON({ type: 'FeatureCollection', features: features }, {
                 pane: 'pane_retiros_nuevas_lineas',
                 interactive: true,
-                renderer: L.canvas({ pane: 'pane_retiros_nuevas_lineas', padding: 0.2, tolerance: 7 }),
+                renderer: L.canvas({ pane: 'pane_retiros_nuevas_lineas', padding: 0.1, tolerance: 7 }),
                 smoothFactor: 1,
                 style: estiloLinea,
-                onEachFeature: function(feature, layer) {
-                    hacerClicable(feature, layer, 'Línea de retiro');
-                }
+                onEachFeature: function(feature, layer) { hacerClicable(feature, layer, 'Línea de retiro'); }
             });
         }
         capaRetirosLineas3m = crearLineas('3');
@@ -338,8 +347,92 @@
         window.capaRetirosNormativosLineas5m = capaRetirosLineas5m;
     }
 
+    function agregarGeometriasPorLotes(datos, titulo, prioridad, capa) {
+        var features = [];
+        (datos && datos.features || []).forEach(function(feature) {
+            if (!feature.geometry) return;
+            if (feature.geometry.type === 'Polygon') {
+                features.push(feature);
+            } else if (feature.geometry.type === 'MultiPolygon') {
+                feature.geometry.coordinates.forEach(function(coordenadas) {
+                    features.push({
+                        type: 'Feature',
+                        properties: feature.properties || {},
+                        geometry: { type: 'Polygon', coordinates: coordenadas }
+                    });
+                });
+            }
+        });
+
+        return new Promise(function(resolve, reject) {
+            var offset = 0;
+            function procesarLote() {
+                try {
+                    var siguiente = Math.min(offset + 300, features.length);
+                    var lote = features.slice(offset, siguiente);
+                    if (lote.length) {
+                        indexarPoligonos({ type: 'FeatureCollection', features: lote }, titulo, prioridad);
+                        capa.addData({ type: 'FeatureCollection', features: lote });
+                    }
+                    offset = siguiente;
+                    if (offset < features.length) {
+                        if (window.requestAnimationFrame) window.requestAnimationFrame(procesarLote);
+                        else window.setTimeout(procesarLote, 16);
+                    } else {
+                        resolve();
+                    }
+                } catch (error) {
+                    reject(error);
+                }
+            }
+            procesarLote();
+        });
+    }
+
+    function crearCapasPredios() {
+        if (preparacionPredios) return preparacionPredios;
+        if (capaRetirosLotes) return Promise.resolve();
+        crearPanes();
+        capaRetirosLotes = L.geoJSON(null, {
+            pane: 'pane_retiros_lotes',
+            renderer: L.canvas({ pane: 'pane_retiros_lotes', padding: 0.1, tolerance: 6 }),
+            smoothFactor: 1,
+            interactive: false,
+            style: {
+                color: 'rgba(197,197,197,0.85)', weight: 0.8, fillColor: '#f2f2f2', fillOpacity: 1
+            }
+        });
+        capaRetirosCompatibles = L.geoJSON(null, {
+            pane: 'pane_retiros_compatibles',
+            renderer: L.canvas({ pane: 'pane_retiros_compatibles', padding: 0.1, tolerance: 6 }),
+            smoothFactor: 1,
+            interactive: false,
+            style: {
+                color: 'rgba(255,255,255,0.82)', weight: 0.8, dashArray: '5 2',
+                fillColor: '#3368a0', fillOpacity: 1
+            }
+        });
+        // Insert higher-priority compatible lots first; then stream gray lot geometry in frames.
+        preparacionPredios = agregarGeometriasPorLotes(window.geojsonRetirosCompatibles, 'Lote compatible', 2, capaRetirosCompatibles)
+            .then(function() {
+                return agregarGeometriasPorLotes(window.geojsonRetirosLotes, 'Lote', 1, capaRetirosLotes);
+            })
+            .then(ordenarIndiceClicPoligonos)
+            .finally(function() { preparacionPredios = null; });
+        return preparacionPredios;
+    }
+
     function mostrarPanelCapas(mostrar) {
         if (panelCapas) panelCapas.hidden = !mostrar;
+    }
+
+    function mostrarProgresoCarga(texto) {
+        if (estado) {
+            estado.textContent = texto;
+            estado.hidden = !texto;
+        } else if (ayudaDetalle) {
+            ayudaDetalle.textContent = texto || 'Haz clic en un lote, área o línea del mapa para consultar sus datos.';
+        }
     }
 
     function obtenerCapas() {
@@ -351,6 +444,23 @@
             lineas3: capaRetirosLineas3m,
             lineas5: capaRetirosLineas5m
         };
+    }
+
+    function habilitarControlesCapas(ids) {
+        if (!panelCapas) return;
+        panelCapas.querySelectorAll('[data-retiro-capa]').forEach(function(input) {
+            if (ids.indexOf(input.dataset.retiroCapa) !== -1) input.disabled = false;
+        });
+    }
+
+    function agregarCapasMarcadas(ids) {
+        if (!panelCapas) return;
+        var capas = obtenerCapas();
+        panelCapas.querySelectorAll('[data-retiro-capa]').forEach(function(input) {
+            if (ids.indexOf(input.dataset.retiroCapa) === -1 || !input.checked) return;
+            var capa = capas[input.dataset.retiroCapa];
+            if (capa && !map.hasLayer(capa)) capa.addTo(map);
+        });
     }
 
     function conectarPanelCapas() {
@@ -425,33 +535,42 @@
         ocultarCapasPrincipales();
         if (window.limpiarRetiroResaltado) window.limpiarRetiroResaltado();
         map.closePopup();
-        if (estado) { estado.textContent = 'Cargando capas…'; estado.hidden = false; }
+        mostrarProgresoCarga('Cargando mapa…');
         map.invalidateSize({ pan: false });
 
-        cargarDatos().then(function() {
+        var etapaCarga = 'mapa';
+        cargarDatosBase().then(function() {
             if (!activo || sesionActual !== sesion) return;
-            crearCapas();
-            var controles = panelCapas ? panelCapas.querySelectorAll('[data-retiro-capa]') : [];
-            Array.prototype.forEach.call(controles, function(input) { input.disabled = false; });
+            crearCapasBase();
+            habilitarControlesCapas(['contexto', 'poligonos', 'lineas3', 'lineas5']);
+            agregarCapasMarcadas(['contexto', 'poligonos', 'lineas3', 'lineas5']);
             var viasControl = panelCapas && panelCapas.querySelector('[data-retiro-capa="vias"]');
             if (viasControl && window.establecerVisibilidadVias) window.establecerVisibilidadVias(viasControl.checked);
-            var capas = obtenerCapas();
-            Array.prototype.forEach.call(controles, function(input) {
-                var capa = capas[input.dataset.retiroCapa];
-                if (input.checked && capa) capa.addTo(map);
-            });
             var limites = capaRetirosContexto.getBounds();
-            [capaRetirosLotes, capaRetirosCompatibles, capaRetirosPoligonos,
-                capaRetirosLineas3m, capaRetirosLineas5m].forEach(function(capa) {
+            [capaRetirosPoligonos, capaRetirosLineas3m, capaRetirosLineas5m].forEach(function(capa) {
                 if (capa.getBounds().isValid()) limites.extend(capa.getBounds());
             });
             if (limites.isValid()) map.fitBounds(limites, { paddingTopLeft: [34, 34], paddingBottomRight: [panelCapas && !panelCapas.hidden ? 360 : 34, 34], maxZoom: 17, animate: false });
-            if (estado) { estado.textContent = ''; estado.hidden = true; }
+            mostrarProgresoCarga('Cargando lotes… Puedes navegar mientras se completa.');
+            etapaCarga = 'predios';
+            return cargarDatosPredios();
+        }).then(function() {
+            if (!activo || sesionActual !== sesion) return;
+            mostrarProgresoCarga('Preparando predios… Puedes navegar mientras se completa.');
+            var preparacionPredios = crearCapasPredios();
+            habilitarControlesCapas(['lotes', 'compatibles']);
+            agregarCapasMarcadas(['lotes', 'compatibles']);
+            return preparacionPredios;
+        }).then(function() {
+            if (!activo || sesionActual !== sesion) return;
+            mostrarProgresoCarga('');
         }).catch(function(error) {
             if (sesionActual !== sesion) return;
             console.error('No se pudieron cargar las capas de retiros.', error);
-            if (estado) { estado.textContent = 'No se pudieron cargar las capas. Vuelve a intentarlo.'; estado.hidden = false; }
-            activo = false;
+            mostrarProgresoCarga(etapaCarga === 'predios'
+                ? 'No se pudieron cargar los lotes. Vuelve a intentarlo.'
+                : 'No se pudieron cargar las capas. Vuelve a intentarlo.');
+            if (etapaCarga !== 'predios') activo = false;
         });
     }
 

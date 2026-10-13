@@ -1876,6 +1876,7 @@ body {
 }
 
 .nota-actividad-zre {
+    display: block;
     flex-basis: 100%;
     margin: 2px 0 0;
     color: #555;

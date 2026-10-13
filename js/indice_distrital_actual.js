@@ -1,5 +1,4 @@
-// Fuente: Excel distrital proporcionado el 01/10/2026 y propuesta de reglamento,
-// artículos 16-27 y 34-42. Los giros mantienen el texto literal del Excel.
+// Fuente: Final IIUU.xlsx, Índice de Uso para las Actividades Urbanas a nivel distrital.
 var datosActividadesIndice = [
   {
     "SECCIÓN": "C",
@@ -8,7 +7,7 @@ var datosActividadesIndice = [
     "CLASE": "1071",
     "DESCRIPCIÓN DE LA CLASE": "Elaboración de productos de panadería",
     "N°": "01",
-    "ACTIVIDAD": "Elaboración artesanal de masas panificadas u horneadas, con reparto, sin atención y sin consumo.",
+    "ACTIVIDAD": "Elaboración artesanal de masas panificadas u horneadas, con reparto, con atención, sin consumo.",
     "OBSERVACIONES": "",
     "COD_GIRO": "1071-01",
     "NOMBRES_PARA_EL_VISOR": [
@@ -18,6 +17,9 @@ var datosActividadesIndice = [
       "reparto de productos propios"
     ],
     "BUSQUEDA": [
+      "Elaboración artesanal de masas panificadas u horneadas, con reparto, con atención, sin consumo.",
+      "D154101",
+      "Panaderías y pastelerías",
       "panadería por pedido",
       "pastelería por delivery",
       "elaboración sin atención al público",
@@ -25,12 +27,14 @@ var datosActividadesIndice = [
       "Elaboración artesanal de masas panificadas u horneadas, con reparto, sin atención y sin consumo."
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Vecinal": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "D154101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Panaderías y pastelerías"
   },
   {
     "SECCIÓN": "C",
@@ -39,7 +43,7 @@ var datosActividadesIndice = [
     "CLASE": "1071",
     "DESCRIPCIÓN DE LA CLASE": "Elaboración de productos de panadería",
     "N°": "02",
-    "ACTIVIDAD": "Elaboración artesanal de masas panificadas u horneadas, con reparto, con atención, sin consumo.",
+    "ACTIVIDAD": "Elaboración artesanal de masas panificadas u horneadas, con reparto, con atención y con consumo.",
     "OBSERVACIONES": "",
     "COD_GIRO": "1071-02",
     "NOMBRES_PARA_EL_VISOR": [
@@ -50,6 +54,9 @@ var datosActividadesIndice = [
       "reparto de productos propios"
     ],
     "BUSQUEDA": [
+      "Elaboración artesanal de masas panificadas u horneadas, con reparto, con atención y con consumo.",
+      "D154101",
+      "Panaderías y pastelerías",
       "panadería con reparto",
       "pastelería con delivery",
       "repostería por pedido",
@@ -58,48 +65,14 @@ var datosActividadesIndice = [
       "Elaboración artesanal de masas panificadas u horneadas, con reparto, con atención, sin consumo."
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
-  },
-  {
-    "SECCIÓN": "C",
-    "DIVISIÓN": "10",
-    "GRUPO": "107",
-    "CLASE": "1071",
-    "DESCRIPCIÓN DE LA CLASE": "Elaboración de productos de panadería",
-    "N°": "03",
-    "ACTIVIDAD": "Elaboración artesanal de masas panificadas u horneadas, con reparto, con atención y con consumo.",
-    "OBSERVACIONES": "",
-    "COD_GIRO": "1071-03",
-    "NOMBRES_PARA_EL_VISOR": [
-      "panadería",
-      "pastelería",
-      "bollería",
-      "repostería",
-      "dulces caseros",
-      "tortas",
-      "panadería artesanal",
-      "biscochería"
-    ],
-    "BUSQUEDA": [
-      "panadería",
-      "pastelería",
-      "bollería",
-      "repostería",
-      "dulces caseros",
-      "tortas",
-      "panadería artesanal",
-      "biscochería",
-      "Elaboración artesanal de masas panificadas u horneadas, con reparto, con atención y con consumo."
-    ],
-    "ZONAS": {
-      "Uso Mixto Zonal": "R",
-      "Uso Mixto Metropolitano": "R",
-      "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "D154101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Panaderías y pastelerías"
   },
   {
     "SECCIÓN": "C",
@@ -121,22 +94,25 @@ var datosActividadesIndice = [
       "taller de costura"
     ],
     "BUSQUEDA": [
+      "Servicio de confección, arreglo o reparación de prendas de vestir a pedido, con atención directa, prueba y entrega en local",
+      "D181016\nD181017",
+      "Modistas, costureras\nSastrerías",
       "sastrería",
       "costurera",
       "modista",
       "arreglo de ropa",
       "basta de pantalón",
       "confección a medida",
-      "taller de costura",
-      "Servicio de confección, arreglo o reparación de prendas de vestir a pedido, con atención directa, prueba y entrega en local"
+      "taller de costura"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "D181016\nD181017",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Modistas, costureras\nSastrerías"
   },
   {
     "SECCIÓN": "C",
@@ -155,18 +131,21 @@ var datosActividadesIndice = [
       "uniformes por encargo"
     ],
     "BUSQUEDA": [
+      "Servicio de confección a pedido o por encargo, con recepción de pedidos y entrega programada.",
+      "D181016\nD181017",
+      "Modistas, costureras\nSastrerías",
       "confección por pedido",
       "costura a puerta cerrada",
       "entrega de prendas",
-      "uniformes por encargo",
-      "Servicio de confección a pedido o por encargo, con recepción de pedidos y entrega programada."
+      "uniformes por encargo"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "D181016\nD181017",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Modistas, costureras\nSastrerías"
   },
   {
     "SECCIÓN": "C",
@@ -190,6 +169,9 @@ var datosActividadesIndice = [
       "impresión a color"
     ],
     "BUSQUEDA": [
+      "Impresión y reproducción digital de documentos y material gráfico simple, comprendiendo formatos impresos de uso personal, comercial, educativo, administrativo o institucional, elaborados mediante equipos digitales de oficina o mostrador.",
+      "D222117",
+      "Fotocopiadoras y tipeos en computadora e impresiones",
       "imprenta",
       "fotocopiadora",
       "copias",
@@ -198,15 +180,16 @@ var datosActividadesIndice = [
       "anillado",
       "empastado",
       "centro de copiado",
-      "impresión a color",
-      "Impresión y reproducción digital de documentos y material gráfico simple, comprendiendo formatos impresos de uso personal, comercial, educativo, administrativo o institucional, elaborados mediante equipos digitales de oficina o mostrador."
+      "impresión a color"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Vecinal": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "D222117",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Fotocopiadoras y tipeos en computadora e impresiones"
   },
   {
     "SECCIÓN": "C",
@@ -225,17 +208,21 @@ var datosActividadesIndice = [
       "entrega de impresos"
     ],
     "BUSQUEDA": [
+      "Impresión por encargo de documentos, piezas gráficas, publicaciones breves, material publicitario y productos impresos personalizados, en tirajes definidos por pedido.",
+      "D222117",
+      "Fotocopiadoras y tipeos en computadora e impresiones",
       "impresión por encargo",
       "imprenta sin atención al público",
       "serigrafía por pedido",
-      "entrega de impresos",
-      "Impresión por encargo de documentos, piezas gráficas, publicaciones breves, material publicitario y productos impresos personalizados, en tirajes definidos por pedido."
+      "entrega de impresos"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
+      "Uso Mixto Vecinal": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "D222117",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Fotocopiadoras y tipeos en computadora e impresiones"
   },
   {
     "SECCIÓN": "G",
@@ -255,17 +242,21 @@ var datosActividadesIndice = [
       "autos nuevos"
     ],
     "BUSQUEDA": [
+      "Venta de vehículos automotores mediante sala de exhibición de unidades, sin taller",
+      "G501001",
+      "Venta de vehículos automotores de pasajeros (para uso privado)",
       "concesionario de autos",
       "showroom de autos",
       "venta de autos",
       "tienda de autos",
-      "autos nuevos",
-      "Venta de vehículos automotores mediante sala de exhibición de unidades, sin taller"
+      "autos nuevos"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G501001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de vehículos automotores de pasajeros (para uso privado)"
   },
   {
     "SECCIÓN": "G",
@@ -284,16 +275,20 @@ var datosActividadesIndice = [
       "autopatio"
     ],
     "BUSQUEDA": [
+      "Venta de vehículos automotores con sala de exhibición, patio de vehículos y área de entrega de unidades",
+      "G501001",
+      "Venta de vehículos automotores de pasajeros (para uso privado)",
       "concesionario con patio",
       "venta de autos usados",
       "compraventa de autos",
-      "autopatio",
-      "Venta de vehículos automotores con sala de exhibición, patio de vehículos y área de entrega de unidades"
+      "autopatio"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G501001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de vehículos automotores de pasajeros (para uso privado)"
   },
   {
     "SECCIÓN": "G",
@@ -314,17 +309,21 @@ var datosActividadesIndice = [
       "lavado de motor"
     ],
     "BUSQUEDA": [
+      "Servicio de lavado, limpieza de vehículos automotores",
+      "G502001\nG502002",
+      "Servicio de lavado de vehículos\nServicio de lustrado de vehículos",
       "carwash",
       "lavado de autos",
       "lavadero de carros",
       "detailing",
       "encerado",
-      "lavado de motor",
-      "Servicio de lavado, limpieza de vehículos automotores"
+      "lavado de motor"
     ],
     "ZONAS": {
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G502001\nG502002",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Servicio de lavado de vehículos\nServicio de lustrado de vehículos"
   },
   {
     "SECCIÓN": "G",
@@ -345,17 +344,21 @@ var datosActividadesIndice = [
       "servicio rápido"
     ],
     "BUSQUEDA": [
+      "Servicio de mantenimiento preventivo y servicio rápido de vehículos automotores (lubricación, neumáticos, baterías)",
+      "G502003",
+      "Taller de mecánica",
       "lubricentro",
       "cambio de aceite",
       "llantería",
       "venta e instalación de baterías",
       "alineamiento y balanceo",
-      "servicio rápido",
-      "Servicio de mantenimiento preventivo y servicio rápido de vehículos automotores (lubricación, neumáticos, baterías)"
+      "servicio rápido"
     ],
     "ZONAS": {
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G502003",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Taller de mecánica"
   },
   {
     "SECCIÓN": "G",
@@ -375,16 +378,20 @@ var datosActividadesIndice = [
       "taller de autos"
     ],
     "BUSQUEDA": [
+      "Servicio de reparación mecánica, eléctrica, de carrocería y pintura de vehículos automotores",
+      "G502003",
+      "Taller de mecánica",
       "taller mecánico",
       "mecánica automotriz",
       "planchado y pintura",
       "electricidad automotriz",
-      "taller de autos",
-      "Servicio de reparación mecánica, eléctrica, de carrocería y pintura de vehículos automotores"
+      "taller de autos"
     ],
     "ZONAS": {
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G502003",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Taller de mecánica"
   },
   {
     "SECCIÓN": "G",
@@ -403,16 +410,20 @@ var datosActividadesIndice = [
       "tienda de repuestos"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de partes, piezas y accesorios para vehículos automotores, sin instalación",
+      "G503001",
+      "Venta de repuestos para vehículos",
       "autopartes",
       "repuestos de autos",
       "accesorios para autos",
-      "tienda de repuestos",
-      "Venta al por menor de partes, piezas y accesorios para vehículos automotores, sin instalación"
+      "tienda de repuestos"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G503001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de repuestos para vehículos"
   },
   {
     "SECCIÓN": "G",
@@ -432,17 +443,21 @@ var datosActividadesIndice = [
       "lunas para autos"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de partes, piezas y accesorios para vehículos automotores con servicio de instalación",
+      "G503001",
+      "Venta de repuestos para vehículos",
       "accesorios con instalación",
       "polarizado",
       "audio para autos",
       "alarmas para autos",
-      "lunas para autos",
-      "Venta al por menor de partes, piezas y accesorios para vehículos automotores con servicio de instalación"
+      "lunas para autos"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G503001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de repuestos para vehículos"
   },
   {
     "SECCIÓN": "G",
@@ -462,17 +477,21 @@ var datosActividadesIndice = [
       "scooters"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de motocicletas, partes y accesorios en sala de exhibición",
+      "G504001\nG504002",
+      "Venta de motocicletas\nVenta de repuestos para motocicletas",
       "tienda de motos",
       "concesionario de motos",
       "venta de motos",
       "repuestos de motos",
-      "scooters",
-      "Venta al por menor de motocicletas, partes y accesorios en sala de exhibición"
+      "scooters"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G504001\nG504002",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de motocicletas\nVenta de repuestos para motocicletas"
   },
   {
     "SECCIÓN": "G",
@@ -490,15 +509,19 @@ var datosActividadesIndice = [
       "reparación de motos"
     ],
     "BUSQUEDA": [
+      "Servicio de mantenimiento y reparación de motocicletas, incluyendo partes, piezas y accesorios",
+      "G504002\nG504003",
+      "Venta de repuestos para motocicletas\nTaller de reparación de motocicletas",
       "taller de motos",
       "mecánica de motos",
-      "reparación de motos",
-      "Servicio de mantenimiento y reparación de motocicletas, incluyendo partes, piezas y accesorios"
+      "reparación de motos"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G504002\nG504003",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de repuestos para motocicletas\nTaller de reparación de motocicletas"
   },
   {
     "SECCIÓN": "G",
@@ -519,22 +542,26 @@ var datosActividadesIndice = [
       "bodega de esquina"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano mediante atención por mostrador",
+      "G 521101",
+      "Bodegas",
       "bodega",
       "abarrotes",
       "tienda de barrio",
       "tiendita",
       "venta de comida para mascotas",
-      "bodega de esquina",
-      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano mediante atención por mostrador"
+      "bodega de esquina"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Preferente": "X",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G 521101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Bodegas"
   },
   {
     "SECCIÓN": "G",
@@ -553,20 +580,24 @@ var datosActividadesIndice = [
       "minimercado"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano en establecimiento de autoservicio",
+      "G 521106",
+      "Minimarket",
       "minimarket",
       "tienda de conveniencia",
       "market",
-      "minimercado",
-      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano en establecimiento de autoservicio"
+      "minimercado"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Preferente": "X",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G 521106",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Minimarket"
   },
   {
     "SECCIÓN": "G",
@@ -585,17 +616,21 @@ var datosActividadesIndice = [
       "autoservicio"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano en autoservicio, con almacenamiento complementario y operación de carga y descarga",
+      "G 521105",
+      "Supermercados",
       "supermercado",
       "hipermercado",
       "supermarket",
-      "autoservicio",
-      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano en autoservicio, con almacenamiento complementario y operación de carga y descarga"
+      "autoservicio"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G 521105",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Supermercados"
   },
   {
     "SECCIÓN": "G",
@@ -616,18 +651,22 @@ var datosActividadesIndice = [
       "mercado itinerante"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano de gran variedad en autoservicio, con preparación de pedidos y recojo; sin almacén autónomo ni centro de distribución",
+      "G 521105",
+      "Supermercados",
       "feria",
       "feria temporal",
       "bioferia",
       "feria gastronómica",
       "feria artesanal",
-      "mercado itinerante",
-      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano de gran variedad en autoservicio, con preparación de pedidos y recojo; sin almacén autónomo ni centro de distribución"
+      "mercado itinerante"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G 521105",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Supermercados"
   },
   {
     "SECCIÓN": "G",
@@ -646,15 +685,21 @@ var datosActividadesIndice = [
       "puestos de mercado"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano de gran variedad, organizada por secciones bajo un único operador y una sola gestión comercial",
+      "G 521105",
+      "Supermercados",
       "mercado",
       "mercado de abastos",
       "mercadillo",
-      "puestos de mercado",
-      "Venta al por menor de alimentos, bebidas y productos de consumo cotidiano de gran variedad, organizada por secciones bajo un único operador y una sola gestión comercial"
+      "puestos de mercado"
     ],
     "ZONAS": {
-      "Uso de Recreación Pública": "R"
-    }
+      "Uso Mixto Metropolitano": "X",
+      "Uso Mixto Intensivo": "X",
+      "Uso de Recreación Pública": "X"
+    },
+    "EQUIVALENCIA_REV3": "G 521105",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Supermercados"
   },
   {
     "SECCIÓN": "G",
@@ -676,21 +721,25 @@ var datosActividadesIndice = [
       "souvenirs"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de productos diversos de consumo personal, doméstico o cotidiano, con atención",
+      "G521911\nG521906\nG52199\nG52198\nG52197\nG52196\nG521905\nG521904\nG521903",
+      "Venta de productos diversos para el hogar\nVenta de ropa y aparatos electrodomésticos\nVenta de artículos de plástico y acrílico\nVenta de juguetes, bijoutería y artículos de vidrio\nVenta de artículos deportivos y regalos\nventa de artículos de madera, corcho y mimbre\nVenta de muebles y regalos\nVenta de ropa y productos de belleza\nBazares y regalos",
       "bazar",
       "tienda de regalos",
       "novedades",
       "artículos para el hogar",
       "todo a sol",
       "cotillón",
-      "souvenirs",
-      "Venta al por menor de productos diversos de consumo personal, doméstico o cotidiano, con atención"
+      "souvenirs"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
-      "Uso Mixto Metropolitano": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
+      "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G521911\nG521906\nG52199\nG52198\nG52197\nG52196\nG521905\nG521904\nG521903",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de productos diversos para el hogar\nVenta de ropa y aparatos electrodomésticos\nVenta de artículos de plástico y acrílico\nVenta de juguetes, bijoutería y artículos de vidrio\nVenta de artículos deportivos y regalos\nventa de artículos de madera, corcho y mimbre\nVenta de muebles y regalos\nVenta de ropa y productos de belleza\nBazares y regalos"
   },
   {
     "SECCIÓN": "G",
@@ -709,16 +758,20 @@ var datosActividadesIndice = [
       "stands comerciales"
     ],
     "BUSQUEDA": [
+      "Agrupación de comercios minoristas independientes dentro de una misma edificación",
+      "G52196\nG52199\nG52198\nG52197\nG521906\nG521905\nG521904\nG521903",
+      "Venta de artículos de madera, corcho y mimbre\nVenta de artículos de plástico y acrílico\nVenta de juguetes, bijoutería y artículos de vidrio\nVenta de artículos deportivos y regalos\nVenta de ropa y aparatos electrodomésticos\nVenta de muebles y regalos\nVenta de ropa y productos de belleza\nBazares y regalos",
       "galería comercial",
       "galería",
       "pasaje comercial",
-      "stands comerciales",
-      "Agrupación de comercios minoristas independientes dentro de una misma edificación"
+      "stands comerciales"
     ],
     "ZONAS": {
-      "Uso Mixto Metropolitano": "R",
+      "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G52196\nG52199\nG52198\nG52197\nG521906\nG521905\nG521904\nG521903",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de artículos de madera, corcho y mimbre\nVenta de artículos de plástico y acrílico\nVenta de juguetes, bijoutería y artículos de vidrio\nVenta de artículos deportivos y regalos\nVenta de ropa y aparatos electrodomésticos\nVenta de muebles y regalos\nVenta de ropa y productos de belleza\nBazares y regalos"
   },
   {
     "SECCIÓN": "G",
@@ -737,15 +790,20 @@ var datosActividadesIndice = [
       "tienda de departamentos"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de productos diversos mediante módulos o secciones integradas bajo un único operador y una sola gestión comercial",
+      "G521901",
+      "Venta de ropa, electrodomésticos, artículos para el hogar, etc. - Grandes almacenes",
       "tienda por departamentos",
       "multimarca",
       "multitienda",
-      "tienda de departamentos",
-      "Venta al por menor de productos diversos mediante módulos o secciones integradas bajo un único operador y una sola gestión comercial"
+      "tienda de departamentos"
     ],
     "ZONAS": {
+      "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G521901",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de ropa, electrodomésticos, artículos para el hogar, etc. - Grandes almacenes"
   },
   {
     "SECCIÓN": "G",
@@ -764,15 +822,20 @@ var datosActividadesIndice = [
       "strip center"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de productos diversos en establecimiento de gran formato, con almacenamiento complementario y despacho de productos; sin venta mayorista ni centro de distribución",
+      "G52196\nG52199\nG52198\nG52197\nG521906\nG521905\nG521904\nG521903",
+      "Venta de artículos de madera, corcho y mimbre\nVenta de artículos de plástico y acrílico\nVenta de juguetes, bijoutería y artículos de vidrio\nVenta de artículos deportivos y regalos\nVenta de ropa y aparatos electrodomésticos\nVenta de muebles y regalos\nVenta de ropa y productos de belleza\nBazares y regalos",
       "centro comercial",
       "mall",
       "plaza comercial",
-      "strip center",
-      "Venta al por menor de productos diversos en establecimiento de gran formato, con almacenamiento complementario y despacho de productos; sin venta mayorista ni centro de distribución"
+      "strip center"
     ],
     "ZONAS": {
+      "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G52196\nG52199\nG52198\nG52197\nG521906\nG521905\nG521904\nG521903",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de artículos de madera, corcho y mimbre\nVenta de artículos de plástico y acrílico\nVenta de juguetes, bijoutería y artículos de vidrio\nVenta de artículos deportivos y regalos\nVenta de ropa y aparatos electrodomésticos\nVenta de muebles y regalos\nVenta de ropa y productos de belleza\nBazares y regalos"
   },
   {
     "SECCIÓN": "G",
@@ -794,23 +857,27 @@ var datosActividadesIndice = [
       "chocolatería"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de pan, productos de confitería, abarrotes y alimentos envasados, sin preparación en el establecimiento",
+      "G522007\nG522006\nG522004",
+      "Venta de golosinas y confitería\nVenta de alimentos enlatados y envasados - suplemento vitamínico\nVenta de pan y productos de panadería",
       "venta de pan",
       "confitería",
       "dulces",
       "golosinas",
       "snacks",
       "productos envasados",
-      "chocolatería",
-      "Venta al por menor de pan, productos de confitería, abarrotes y alimentos envasados, sin preparación en el establecimiento"
+      "chocolatería"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Preferente": "X",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G522007\nG522006\nG522004",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de golosinas y confitería\nVenta de alimentos enlatados y envasados - suplemento vitamínico\nVenta de pan y productos de panadería"
   },
   {
     "SECCIÓN": "G",
@@ -832,21 +899,25 @@ var datosActividadesIndice = [
       "tienda de productos orgánicos / tienda orgánica"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de alimentos incluidos frutas, verduras, lácteos, huevos, alimentos envasados y productos orgánicos en comercio especializado, sin preparación, sin consumo",
+      "G522009\nG522003",
+      "Lecherías y otros productos lácteos\nVerdulerías y fruterías",
       "frutería",
       "verdulería",
       "venta de huevos",
       "lácteos",
       "quesería",
       "productos orgánicos",
-      "tienda de productos orgánicos / tienda orgánica",
-      "Venta al por menor de alimentos incluidos frutas, verduras, lácteos, huevos, alimentos envasados y productos orgánicos en comercio especializado, sin preparación, sin consumo"
+      "tienda de productos orgánicos / tienda orgánica"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G522009\nG522003",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Lecherías y otros productos lácteos\nVerdulerías y fruterías"
   },
   {
     "SECCIÓN": "G",
@@ -867,19 +938,23 @@ var datosActividadesIndice = [
       "charcutería"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de carnes, pescados y productos refrigerados en comercio especializado",
+      "G522013\nG522010\nG522005\nG522002",
+      "Venta de embutidos\nAvícolas\nVenta de pescado, mariscos y productos conexos\nCarnicerías",
       "carnicería",
       "venta de pollo",
       "avícola",
       "pescadería",
       "embutidos",
-      "charcutería",
-      "Venta al por menor de carnes, pescados y productos refrigerados en comercio especializado"
+      "charcutería"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G522013\nG522010\nG522005\nG522002",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de embutidos\nAvícolas\nVenta de pescado, mariscos y productos conexos\nCarnicerías"
   },
   {
     "SECCIÓN": "G",
@@ -900,18 +975,22 @@ var datosActividadesIndice = [
       "agua de mesa"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de bebidas envasadas en comercio especializado",
+      "G522001",
+      "Licorerías (sin consumo)",
       "licorería",
       "venta de licores",
       "vinería",
       "venta de cerveza",
       "venta de bebidas",
-      "agua de mesa",
-      "Venta al por menor de bebidas envasadas en comercio especializado"
+      "agua de mesa"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G522001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Licorerías (sin consumo)"
   },
   {
     "SECCIÓN": "G",
@@ -932,20 +1011,24 @@ var datosActividadesIndice = [
       "cargadores"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de equipos informáticos, telefonía, accesorios y productos tecnológicos, con atención",
+      "G523929\nG523926",
+      "Venta de audífonos / Productos multimedia\nVenta de aparatos telefónicos / Venta de celulares, accesorios y reparación",
       "tienda de celulares",
       "accesorios de celular",
       "venta de laptops",
       "tecnología",
       "gadgets",
-      "cargadores",
-      "Venta al por menor de equipos informáticos, telefonía, accesorios y productos tecnológicos, con atención"
+      "cargadores"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523929\nG523926",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de audífonos / Productos multimedia\nVenta de aparatos telefónicos / Venta de celulares, accesorios y reparación"
   },
   {
     "SECCIÓN": "G",
@@ -965,18 +1048,22 @@ var datosActividadesIndice = [
       "gamer store"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de equipos informáticos, de telecomunicaciones, software, accesorios y soluciones tecnológicas en comercio especializado",
+      "G523929\nG523926\nG523904",
+      "Venta de audífonos / Productos multimedia\nVenta de aparatos telefónicos / Venta de celulares, accesorios y reparación\nVenta de computadoras y softwares",
       "tienda de computadoras",
       "tienda de tecnología",
       "venta de software",
       "tienda de cómputo",
-      "gamer store",
-      "Venta al por menor de equipos informáticos, de telecomunicaciones, software, accesorios y soluciones tecnológicas en comercio especializado"
+      "gamer store"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523929\nG523926\nG523904",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de audífonos / Productos multimedia\nVenta de aparatos telefónicos / Venta de celulares, accesorios y reparación\nVenta de computadoras y softwares"
   },
   {
     "SECCIÓN": "G",
@@ -995,15 +1082,19 @@ var datosActividadesIndice = [
       "televisores"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de equipos de sonido, video y accesorios, con atención",
+      "G523305",
+      "Equipo de radio y televisión",
       "venta de audio y video",
       "parlantes",
       "audífonos",
-      "televisores",
-      "Venta al por menor de equipos de sonido, video y accesorios, con atención"
+      "televisores"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R"
-    }
+      "Uso Residencial Especial": "X"
+    },
+    "EQUIVALENCIA_REV3": "G523305",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Equipo de radio y televisión"
   },
   {
     "SECCIÓN": "G",
@@ -1017,11 +1108,15 @@ var datosActividadesIndice = [
     "COD_GIRO": "4742-02",
     "NOMBRES_PARA_EL_VISOR": [],
     "BUSQUEDA": [
-      "Venta al por menor de equipos de sonido, video con exhibición y orientación técnica, sin taller de reparación"
+      "Venta al por menor de equipos de sonido, video con exhibición y orientación técnica, sin taller de reparación",
+      "G523305",
+      "Equipo de radio y televisión"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R"
-    }
+      "Uso Residencial Especial": "X"
+    },
+    "EQUIVALENCIA_REV3": "G523305",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Equipo de radio y televisión"
   },
   {
     "SECCIÓN": "G",
@@ -1043,21 +1138,25 @@ var datosActividadesIndice = [
       "textilería"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de telas, tejidos, artículos de mercería y productos textiles para uso personal, doméstico o decorativo",
+      "G523203",
+      "Venta de telas y tejidos",
       "venta de telas",
       "mercería",
       "tienda de telas",
       "botonería",
       "lanas",
       "hilos",
-      "textilería",
-      "Venta al por menor de telas, tejidos, artículos de mercería y productos textiles para uso personal, doméstico o decorativo"
+      "textilería"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523203",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de telas y tejidos"
   },
   {
     "SECCIÓN": "G",
@@ -1078,17 +1177,21 @@ var datosActividadesIndice = [
       "artículos de gasfitería"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de artículos de ferretería, pinturas y vidrios, sin almacén independiente",
+      "G523406",
+      "Venta de materiales de construcción (solo venta y exhibición de acabados; no se permite almacén)",
       "ferretería",
       "pinturería",
       "vidriería",
       "venta de cerraduras",
       "materiales eléctricos",
-      "artículos de gasfitería",
-      "Venta al por menor de artículos de ferretería, pinturas y vidrios, sin almacén independiente"
+      "artículos de gasfitería"
     ],
     "ZONAS": {
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523406",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de materiales de construcción (solo venta y exhibición de acabados; no se permite almacén)"
   },
   {
     "SECCIÓN": "G",
@@ -1106,14 +1209,18 @@ var datosActividadesIndice = [
       "despacho de productos propios"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de artículos de ferretería y materiales de construcción, con almacenamiento complementario y despacho de productos; sin venta mayorista",
+      "G523405\nG523403\nG523402\nG523401",
+      "Venta de sanitarios y mayólicas (pisos laminados)\nVenta de vidrios y artículos de vidrio - Vidrierías\nVenta de pinturas, barnices y lacas\nFerreterías",
       "ferretería con depósito complementario",
       "materiales de construcción al por menor",
-      "despacho de productos propios",
-      "Venta al por menor de artículos de ferretería y materiales de construcción, con almacenamiento complementario y despacho de productos; sin venta mayorista"
+      "despacho de productos propios"
     ],
     "ZONAS": {
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523405\nG523403\nG523402\nG523401",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de sanitarios y mayólicas (pisos laminados)\nVenta de vidrios y artículos de vidrio - Vidrierías\nVenta de pinturas, barnices y lacas\nFerreterías"
   },
   {
     "SECCIÓN": "G",
@@ -1134,18 +1241,22 @@ var datosActividadesIndice = [
       "tapicería"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de alfombras, cortinas, tapices, revestimientos para acabados del hogar",
+      "G523303",
+      "Venta de cortinas y tapices",
       "cortinas",
       "alfombras",
       "persianas",
       "papel mural",
       "decoración textil",
-      "tapicería",
-      "Venta al por menor de alfombras, cortinas, tapices, revestimientos para acabados del hogar"
+      "tapicería"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523303",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de cortinas y tapices"
   },
   {
     "SECCIÓN": "G",
@@ -1166,19 +1277,21 @@ var datosActividadesIndice = [
       "bazar del hogar"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de menaje, enseres y artículos de iluminación, con atención",
       "menaje",
       "artículos de cocina",
       "iluminación",
       "lámparas",
       "decoración del hogar",
-      "bazar del hogar",
-      "Venta al por menor de menaje, enseres y artículos de iluminación, con atención"
+      "bazar del hogar"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "G",
@@ -1198,18 +1311,22 @@ var datosActividadesIndice = [
       "línea blanca"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de electrodomésticos, muebles, artículos de iluminación y enseres domésticos en comercio especializado, con exhibición",
+      "G523311\nG523307\nG523306\nG523304\nG523301",
+      "Venta de electrodomésticos y reparación\nColchonería\nInstrumentos musicales\nLocerías\nVenta de artefactos de iluminación y bronce",
       "electrodomésticos",
       "mueblería",
       "tienda de muebles",
       "colchones",
-      "línea blanca",
-      "Venta al por menor de electrodomésticos, muebles, artículos de iluminación y enseres domésticos en comercio especializado, con exhibición"
+      "línea blanca"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523311\nG523307\nG523306\nG523304\nG523301",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de electrodomésticos y reparación\nColchonería\nInstrumentos musicales\nLocerías\nVenta de artefactos de iluminación y bronce"
   },
   {
     "SECCIÓN": "G",
@@ -1229,19 +1346,23 @@ var datosActividadesIndice = [
       "bazar escolar"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de útiles de escritorio, papelería y artículos de oficina, con atención",
+      "G523909",
+      "Venta de materiales y equipo de oficina",
       "librería escolar",
       "papelería",
       "útiles escolares",
       "artículos de oficina",
-      "bazar escolar",
-      "Venta al por menor de útiles de escritorio, papelería y artículos de oficina, con atención"
+      "bazar escolar"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523909",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de materiales y equipo de oficina"
   },
   {
     "SECCIÓN": "G",
@@ -1261,18 +1382,21 @@ var datosActividadesIndice = [
       "librería de libros usados"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de libros, revistas y periódicos en librería",
       "librería",
       "venta de libros",
       "revistas",
       "quiosco de periódicos",
-      "librería de libros usados",
-      "Venta al por menor de libros, revistas y periódicos en librería"
+      "librería de libros usados"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "G",
@@ -1291,18 +1415,22 @@ var datosActividadesIndice = [
       "accesorios deportivos"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de artículos deportivos y bicicletas, sin armado y sin mantenimiento",
+      "G523907",
+      "Librerías",
       "tienda deportiva",
       "artículos deportivos",
       "venta de bicicletas",
-      "accesorios deportivos",
-      "Venta al por menor de artículos deportivos y bicicletas, sin armado y sin mantenimiento"
+      "accesorios deportivos"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523907",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Librerías"
   },
   {
     "SECCIÓN": "G",
@@ -1321,17 +1449,21 @@ var datosActividadesIndice = [
       "tienda de ciclismo"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de artículos deportivos y bicicletas, con armado y ajuste de productos nuevos; sin taller de reparación",
+      "G523917\nG523903",
+      "Venta de bicicletas\nVenta de artículos deportivos",
       "bicicletería con armado",
       "tienda de bicicletas",
       "tienda outdoor",
-      "tienda de ciclismo",
-      "Venta al por menor de artículos deportivos y bicicletas, con armado y ajuste de productos nuevos; sin taller de reparación"
+      "tienda de ciclismo"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523917\nG523903",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de bicicletas\nVenta de artículos deportivos"
   },
   {
     "SECCIÓN": "G",
@@ -1351,19 +1483,21 @@ var datosActividadesIndice = [
       "piñatería"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de juegos, juguetes y productos recreativos",
       "juguetería",
       "tienda de juguetes",
       "juegos de mesa",
       "tienda de videojuegos",
-      "piñatería",
-      "Venta al por menor de juegos, juguetes y productos recreativos"
+      "piñatería"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "G",
@@ -1386,6 +1520,9 @@ var datosActividadesIndice = [
       "tienda de moda"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de prendas de vestir, calzado y artículos de cuero, con atención",
+      "G523213\nG523212\nG523211\nG523210\nG523209\nG523208\nG523207\nG523206\nG523205\nG523203\nG523202\nG523201",
+      "Venta de prendas de vestir para damas\nCasas de novios\nSombrerería\nPeletería\nLencería\nMaletería\nVenta de ropa para bebés\nVenta de ropa para niños\nVenta de prendas de vestir para caballeros\nVenta de telas y tejidos\nBoutiques\nZapaterías",
       "tienda de ropa",
       "boutique",
       "zapatería",
@@ -1393,15 +1530,16 @@ var datosActividadesIndice = [
       "artículos de cuero",
       "lencería",
       "ropa de bebé",
-      "tienda de moda",
-      "Venta al por menor de prendas de vestir, calzado y artículos de cuero, con atención"
+      "tienda de moda"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523213\nG523212\nG523211\nG523210\nG523209\nG523208\nG523207\nG523206\nG523205\nG523203\nG523202\nG523201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de prendas de vestir para damas\nCasas de novios\nSombrerería\nPeletería\nLencería\nMaletería\nVenta de ropa para bebés\nVenta de ropa para niños\nVenta de prendas de vestir para caballeros\nVenta de telas y tejidos\nBoutiques\nZapaterías"
   },
   {
     "SECCIÓN": "G",
@@ -1420,17 +1558,21 @@ var datosActividadesIndice = [
       "zapatería de gran formato"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de prendas de vestir, calzado y artículos de cuero, mediante exhibición y selección en comercio especializado",
+      "G523204",
+      "Venta de artículos de cuero y accesorios de viaje",
       "outlet",
       "tienda de ropa grande",
       "tienda de moda de gran formato",
-      "zapatería de gran formato",
-      "Venta al por menor de prendas de vestir, calzado y artículos de cuero, mediante exhibición y selección en comercio especializado"
+      "zapatería de gran formato"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523204",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de artículos de cuero y accesorios de viaje"
   },
   {
     "SECCIÓN": "G",
@@ -1451,23 +1593,27 @@ var datosActividadesIndice = [
       "tienda vegana"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de productos medicinales, suplementos de uso terapéutico y productos naturales medicinales, sin preparación, sin consumo",
+      "G523104",
+      "Casas naturistas",
       "tienda naturista",
       "casa naturista",
       "productos naturales",
       "suplementos",
       "herboristería",
-      "tienda vegana",
-      "Venta al por menor de productos medicinales, suplementos de uso terapéutico y productos naturales medicinales, sin preparación, sin consumo"
+      "tienda vegana"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Preferente": "X",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523104",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Casas naturistas"
   },
   {
     "SECCIÓN": "G",
@@ -1486,21 +1632,25 @@ var datosActividadesIndice = [
       "farmacia de barrio"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de medicamentos y productos farmacéuticos, con atención",
+      "G523101",
+      "Farmacias y boticas (incluye servicio de entrega a domicilio)",
       "farmacia",
       "botica",
       "droguería",
-      "farmacia de barrio",
-      "Venta al por menor de medicamentos y productos farmacéuticos, con atención"
+      "farmacia de barrio"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Preferente": "X",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Farmacias y boticas (incluye servicio de entrega a domicilio)"
   },
   {
     "SECCIÓN": "G",
@@ -1519,18 +1669,24 @@ var datosActividadesIndice = [
       "sillas de ruedas"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de productos ortopédicos, material e instrumental médico",
+      "G523102",
+      "Venta de productos ortopédicos, material e instrumental médico",
       "ortopedia",
       "venta de equipos médicos",
       "insumos médicos",
-      "sillas de ruedas",
-      "Venta al por menor de productos ortopédicos, material e instrumental médico"
+      "sillas de ruedas"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523102",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de productos ortopédicos, material e instrumental médico"
   },
   {
     "SECCIÓN": "G",
@@ -1552,20 +1708,27 @@ var datosActividadesIndice = [
       "centro de estética"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de perfumes, cosméticos, artículos de tocador y productos de cuidado personal",
+      "G523103",
+      "Perfumerías y droguerías",
       "perfumería",
       "cosméticos",
       "tienda de belleza",
       "maquillaje",
       "productos de belleza",
       "centro de belleza",
-      "centro de estética",
-      "Venta al por menor de perfumes, cosméticos, artículos de tocador y productos de cuidado personal"
+      "centro de estética"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
-      "Uso Mixto Intensivo": "X"
-    }
+      "Uso Mixto Intensivo": "X",
+      "Uso Mixto Especializado": "X"
+    },
+    "EQUIVALENCIA_REV3": "G523103",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Perfumerías y droguerías"
   },
   {
     "SECCIÓN": "G",
@@ -1586,21 +1749,25 @@ var datosActividadesIndice = [
       "piñatería"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de productos nuevos no alimenticios para celebraciones, decoración, recuerdos, artesanía, flores y plantas",
+      "G523927\nG523918\nG523910\nG523906",
+      "Venta de productos diversos: cotillón, piñatería\nVenta de artículos artesanales\nVenta de juguetes\nVenta de plantas y flores",
       "florería",
       "vivero",
       "plantas",
       "arreglos florales",
       "floristería",
-      "piñatería",
-      "Venta al por menor de productos nuevos no alimenticios para celebraciones, decoración, recuerdos, artesanía, flores y plantas"
+      "piñatería"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523927\nG523918\nG523910\nG523906",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de productos diversos: cotillón, piñatería\nVenta de artículos artesanales\nVenta de juguetes\nVenta de plantas y flores"
   },
   {
     "SECCIÓN": "G",
@@ -1620,20 +1787,24 @@ var datosActividadesIndice = [
       "lentes de sol"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de productos ópticos, con o sin medición visual",
+      "G523911",
+      "Venta de otros prod. no alimenticios, monturas de lentes (ópticas)",
       "óptica",
       "lentes",
       "medida de vista",
       "lentes de contacto",
-      "lentes de sol",
-      "Venta al por menor de productos ópticos, con o sin medición visual"
+      "lentes de sol"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523911",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de otros prod. no alimenticios, monturas de lentes (ópticas)"
   },
   {
     "SECCIÓN": "G",
@@ -1653,20 +1824,24 @@ var datosActividadesIndice = [
       "venta de cámaras"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de artículos fotográficos, relojería y joyería",
+      "G523912",
+      "Relojerías y joyerías",
       "joyería",
       "relojería",
       "bisutería",
       "tienda de fotografía",
-      "venta de cámaras",
-      "Venta al por menor de artículos fotográficos, relojería y joyería"
+      "venta de cámaras"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523912",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Relojerías y joyerías"
   },
   {
     "SECCIÓN": "G",
@@ -1675,7 +1850,7 @@ var datosActividadesIndice = [
     "CLASE": "4773",
     "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de otros productos nuevos en comercios especializados",
     "N°": "04",
-    "ACTIVIDAD": "Venta al por menor de animales de compañía, alimentos, accesorios y productos para su cuidado, sin servicios veterinarios",
+    "ACTIVIDAD": "Venta al por menor de artículos diversos en comercios especializados",
     "OBSERVACIONES": "",
     "COD_GIRO": "4773-04",
     "NOMBRES_PARA_EL_VISOR": [
@@ -1687,6 +1862,9 @@ var datosActividadesIndice = [
       "acuario"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de artículos diversos en comercios especializados",
+      "G523928\nG523922\nG523921\nG523920\nG523919\nG523914\nG523913\nG523902\nG523905",
+      "Armerías\nVenta de disfraces y alquiler\nVenta de artículos de pirotecnia\nVenta de artículos religiosos\nPlaterías\nVenta de peces ornamentales\nMercerías y pasamanerías\nVenta de artículos de recuerdo\nVenta de artículos fotográficos y ópticos",
       "petshop",
       "pet shop",
       "Petshop",
@@ -1696,11 +1874,39 @@ var datosActividadesIndice = [
       "Venta al por menor de animales de compañía, alimentos, accesorios y productos para su cuidado, sin servicios veterinarios"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G523928\nG523922\nG523921\nG523920\nG523919\nG523914\nG523913\nG523902\nG523905",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Armerías\nVenta de disfraces y alquiler\nVenta de artículos de pirotecnia\nVenta de artículos religiosos\nPlaterías\nVenta de peces ornamentales\nMercerías y pasamanerías\nVenta de artículos de recuerdo\nVenta de artículos fotográficos y ópticos"
+  },
+  {
+    "SECCIÓN": "G",
+    "DIVISIÓN": "47",
+    "GRUPO": "477",
+    "CLASE": "4773",
+    "DESCRIPCIÓN DE LA CLASE": "Venta al por menor de otros productos nuevos en comercios especializados",
+    "N°": "05",
+    "ACTIVIDAD": "Venta al por menor de animales de compañía, alimentos, accesorios y productos para su cuidado, sin servicios veterinarios",
+    "OBSERVACIONES": "",
+    "COD_GIRO": "4773-05",
+    "NOMBRES_PARA_EL_VISOR": [],
+    "BUSQUEDA": [
+      "Venta al por menor de animales de compañía, alimentos, accesorios y productos para su cuidado, sin servicios veterinarios",
+      "G523930\nG523901",
+      "Venta de productos veterinarios / Venta de accesorios para mascotas\nVenta de animales caseros"
+    ],
+    "ZONAS": {
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
+      "Uso Mixto Metropolitano": "X",
+      "Uso Mixto Intensivo": "X"
+    },
+    "EQUIVALENCIA_REV3": "G523930\nG523901",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de productos veterinarios / Venta de accesorios para mascotas\nVenta de animales caseros"
   },
   {
     "SECCIÓN": "G",
@@ -1722,21 +1928,25 @@ var datosActividadesIndice = [
       "casa de empeño"
     ],
     "BUSQUEDA": [
+      "Venta al por menor de artículos de segunda mano, antigüedades, coleccionables en comercio especializado",
+      "G524002",
+      "Venta de antigüedades",
       "tienda de segunda mano",
       "antigüedades",
       "ropa americana",
       "cachina",
       "compraventa",
       "tienda vintage",
-      "casa de empeño",
-      "Venta al por menor de artículos de segunda mano, antigüedades, coleccionables en comercio especializado"
+      "casa de empeño"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G524002",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de antigüedades"
   },
   {
     "SECCIÓN": "G",
@@ -1756,18 +1966,22 @@ var datosActividadesIndice = [
       "emprendimiento online"
     ],
     "BUSQUEDA": [
+      "Venta al por menor por internet o catálogo con punto de recojo, sin almacenamiento, sin despacho",
+      "G525101",
+      "Venta de productos de todo tipo por catálogo / Call center",
       "tienda online con recojo",
       "punto de entrega",
       "pick up",
       "venta por catálogo",
-      "emprendimiento online",
-      "Venta al por menor por internet o catálogo con punto de recojo, sin almacenamiento, sin despacho"
+      "emprendimiento online"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G525101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de productos de todo tipo por catálogo / Call center"
   },
   {
     "SECCIÓN": "G",
@@ -1785,16 +1999,20 @@ var datosActividadesIndice = [
       "comercio electrónico"
     ],
     "BUSQUEDA": [
+      "Venta al por menor por internet con almacenamiento complementario y despacho de productos; sin almacén autónomo ni centro de distribución",
+      "G525101",
+      "Venta de productos de todo tipo por catálogo / Call center",
       "tienda online con almacén complementario",
       "despacho de productos propios",
-      "comercio electrónico",
-      "Venta al por menor por internet con almacenamiento complementario y despacho de productos; sin almacén autónomo ni centro de distribución"
+      "comercio electrónico"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
-      "Uso Mixto Metropolitano": "R",
+      "Uso Mixto Zonal": "X",
+      "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G525101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Venta de productos de todo tipo por catálogo / Call center"
   },
   {
     "SECCIÓN": "H",
@@ -1813,23 +2031,25 @@ var datosActividadesIndice = [
       "carga de scooters"
     ],
     "BUSQUEDA": [
+      "Servicio de recarga eléctrica para vehículos, bicicletas o scooters, con permanencia únicamente durante la recarga; sin taller de reparación",
       "electrolinera",
       "carga de autos eléctricos",
       "carga de bicicletas",
-      "carga de scooters",
-      "Servicio de recarga eléctrica para vehículos, bicicletas o scooters, con permanencia únicamente durante la recarga; sin taller de reparación"
+      "carga de scooters"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Hospitales": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "H",
@@ -1850,25 +2070,29 @@ var datosActividadesIndice = [
       "edificio de estacionamiento"
     ],
     "BUSQUEDA": [
+      "Servicio de estacionamiento vehicular en playa o edificio de estacionamientos",
+      "I630309",
+      "Playas de estacionamiento o garajes",
       "playa de estacionamiento",
       "estacionamiento",
       "cochera",
       "parking",
       "garaje",
-      "edificio de estacionamiento",
-      "Servicio de estacionamiento vehicular en playa o edificio de estacionamientos"
+      "edificio de estacionamiento"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Hospitales": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "I630309",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Playas de estacionamiento o garajes"
   },
   {
     "SECCIÓN": "H",
@@ -1886,16 +2110,20 @@ var datosActividadesIndice = [
       "envío de cartas"
     ],
     "BUSQUEDA": [
+      "Servicios postales con atención al público y entrega de envíos, sin centro de distribución",
+      "I641201\nI641105",
+      "Servicios postales internacionales\nServicios postales nacionales",
       "oficina postal",
       "correo",
-      "envío de cartas",
-      "Servicios postales con atención al público y entrega de envíos, sin centro de distribución"
+      "envío de cartas"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "I641201\nI641105",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Servicios postales internacionales\nServicios postales nacionales"
   },
   {
     "SECCIÓN": "H",
@@ -1913,17 +2141,19 @@ var datosActividadesIndice = [
       "gestión de courier sin acopio"
     ],
     "BUSQUEDA": [
+      "Coordinación de servicios de mensajería desde oficina, sin atención, sin recepción, sin acopio o almacenamiento de envíos",
       "oficina de mensajería",
       "coordinación de repartidores",
-      "gestión de courier sin acopio",
-      "Coordinación de servicios de mensajería desde oficina, sin atención, sin recepción, sin acopio o almacenamiento de envíos"
+      "gestión de courier sin acopio"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Zonal": "R",
-      "Uso Mixto Metropolitano": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Zonal": "X",
+      "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "H",
@@ -1943,18 +2173,20 @@ var datosActividadesIndice = [
       "delivery de paquetes"
     ],
     "BUSQUEDA": [
+      "Servicios de mensajería y courier con atención al público para recepción y entrega temporal de envíos",
       "courier",
       "mensajería",
       "envíos",
       "agencia de encomiendas",
-      "delivery de paquetes",
-      "Servicios de mensajería y courier con atención al público para recepción y entrega temporal de envíos"
+      "delivery de paquetes"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "I",
@@ -1975,20 +2207,24 @@ var datosActividadesIndice = [
       "casa de huéspedes"
     ],
     "BUSQUEDA": [
+      "Prestación de alojamiento temporal sin salones para eventos ni actividades complementarias de concurrencia pública",
+      "H551008",
+      "Hoteles, hoteles con tragamonedas",
       "hostal",
       "apart-hotel",
       "hospedaje",
       "aparthotel",
       "bed and breakfast",
-      "casa de huéspedes",
-      "Prestación de alojamiento temporal sin salones para eventos ni actividades complementarias de concurrencia pública"
+      "casa de huéspedes"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "H551008",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Hoteles, hoteles con tragamonedas"
   },
   {
     "SECCIÓN": "I",
@@ -2008,19 +2244,23 @@ var datosActividadesIndice = [
       "hotel corporativo"
     ],
     "BUSQUEDA": [
+      "Prestación de alojamiento temporal con actividades complementarias de alimentación, reuniones o eventos",
+      "H551008",
+      "Hoteles, hoteles con tragamonedas",
       "hotel",
       "hotel con restaurante",
       "hotel de negocios",
       "hotel boutique",
-      "hotel corporativo",
-      "Prestación de alojamiento temporal con actividades complementarias de alimentación, reuniones o eventos"
+      "hotel corporativo"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "H551008",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Hoteles, hoteles con tragamonedas"
   },
   {
     "SECCIÓN": "I",
@@ -2042,25 +2282,29 @@ var datosActividadesIndice = [
       "reparto de productos propios"
     ],
     "BUSQUEDA": [
+      "Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras, con o sin consumo",
+      "H552014\nH552010\nH552008",
+      "Fuente de soda, cafeterías, etc (Venta de menu sin preparacion en el local)\nHeladerías\nSandwicherías",
       "comida rápida",
       "hamburguesería",
       "servicio al mostrador",
       "recojo de comida",
       "dark kitchen",
       "cocina oculta",
-      "reparto de productos propios",
-      "Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras, con o sin consumo"
+      "reparto de productos propios"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
-      "Uso de Recreación Pública": "R",
-      "Hospitales": "R",
-      "Educación": "R",
+      "Uso de Recreación Pública": "X",
+      "Hospitales": "X",
+      "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "H552014\nH552010\nH552008",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Fuente de soda, cafeterías, etc (Venta de menu sin preparacion en el local)\nHeladerías\nSandwicherías"
   },
   {
     "SECCIÓN": "I",
@@ -2086,6 +2330,9 @@ var datosActividadesIndice = [
       "snack bar"
     ],
     "BUSQUEDA": [
+      "Preparación y expendio de comidas de servicio rápido en establecimiento, módulo o vehículo gastronómico autorizado, para consumo, recojo o reparto de productos, con o sin atención al público",
+      "H552033",
+      "Comidas rápidas",
       "cafetería",
       "coffee shop",
       "café",
@@ -2096,19 +2343,20 @@ var datosActividadesIndice = [
       "fuente de soda",
       "crepería",
       "bubble tea",
-      "snack bar",
-      "Preparación y expendio de comidas de servicio rápido en establecimiento, módulo o vehículo gastronómico autorizado, para consumo, recojo o reparto de productos, con o sin atención al público"
+      "snack bar"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
-      "Uso de Recreación Pública": "R",
-      "Hospitales": "R",
-      "Educación": "R",
+      "Uso de Recreación Pública": "X",
+      "Hospitales": "X",
+      "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "H552033",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Comidas rápidas"
   },
   {
     "SECCIÓN": "I",
@@ -2135,6 +2383,9 @@ var datosActividadesIndice = [
       "experiencias gastronómicas"
     ],
     "BUSQUEDA": [
+      "Preparación y expendio de comidas y bebidas con servicio a la mesa y consumo",
+      "H552003",
+      "Restaurantes",
       "restaurante",
       "cevichería",
       "pollería",
@@ -2146,16 +2397,17 @@ var datosActividadesIndice = [
       "anticuchería",
       "sanguchería con mesas",
       "gastrobares y rooftops",
-      "experiencias gastronómicas",
-      "Preparación y expendio de comidas y bebidas con servicio a la mesa y consumo"
+      "experiencias gastronómicas"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "H552003",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Restaurantes"
   },
   {
     "SECCIÓN": "I",
@@ -2174,19 +2426,21 @@ var datosActividadesIndice = [
       "mercado gastronómico"
     ],
     "BUSQUEDA": [
+      "Expendio simultáneo de comidas y bebidas por varios operadores en un área común de consumo",
       "patio de comidas",
       "food court",
       "food hall",
-      "mercado gastronómico",
-      "Expendio simultáneo de comidas y bebidas por varios operadores en un área común de consumo"
+      "mercado gastronómico"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "I",
@@ -2206,19 +2460,21 @@ var datosActividadesIndice = [
       "cocina de eventos"
     ],
     "BUSQUEDA": [
+      "Preparación de comidas por encargo para eventos, sin consumo, con despacho de productos",
       "catering",
       "servicio de banquetes",
       "buffet para eventos",
       "bocaditos por encargo",
-      "cocina de eventos",
-      "Preparación de comidas por encargo para eventos, sin consumo, con despacho de productos"
+      "cocina de eventos"
     ],
     "ZONAS": {
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Hospitales": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "I",
@@ -2237,18 +2493,20 @@ var datosActividadesIndice = [
       "cafetería de colegio"
     ],
     "BUSQUEDA": [
+      "Preparación y suministro de comidas a un cliente determinado mediante contrato, sin atención y sin venta mayorista",
       "concesionario de comedor",
       "comedor institucional",
       "comedor de empresa",
-      "cafetería de colegio",
-      "Preparación y suministro de comidas a un cliente determinado mediante contrato, sin atención y sin venta mayorista"
+      "cafetería de colegio"
     ],
     "ZONAS": {
-      "Uso de Recreación Pública": "R",
-      "Hospitales": "R",
-      "Educación": "R",
+      "Uso de Recreación Pública": "X",
+      "Hospitales": "X",
+      "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "J",
@@ -2267,17 +2525,19 @@ var datosActividadesIndice = [
       "productora de TV"
     ],
     "BUSQUEDA": [
+      "Producción de películas cinematográficas en estudio o set de grabación",
       "productora audiovisual",
       "estudio de grabación de video",
       "set de filmación",
-      "productora de TV",
-      "Producción de películas cinematográficas en estudio o set de grabación"
+      "productora de TV"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "J",
@@ -2295,16 +2555,20 @@ var datosActividadesIndice = [
       "sala de cine"
     ],
     "BUSQUEDA": [
+      "Exhibición de películas cinematográficas y audiovisuales en una o más salas",
+      "O921201",
+      "Exhibición de filmes y videocintas en cinematógrafos (cines)",
       "cine",
       "multicine",
-      "sala de cine",
-      "Exhibición de películas cinematográficas y audiovisuales en una o más salas"
+      "sala de cine"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Uso de Recreación Pública": "R"
-    }
+      "Uso de Recreación Pública": "X"
+    },
+    "EQUIVALENCIA_REV3": "O921201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Exhibición de filmes y videocintas en cinematógrafos (cines)"
   },
   {
     "SECCIÓN": "J",
@@ -2323,16 +2587,18 @@ var datosActividadesIndice = [
       "estudio de podcast"
     ],
     "BUSQUEDA": [
+      "Grabación de sonido y edición musical en estudio",
       "estudio de grabación",
       "estudio de música",
       "sala de ensayo",
-      "estudio de podcast",
-      "Grabación de sonido y edición musical en estudio"
+      "estudio de podcast"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "J",
@@ -2351,15 +2617,17 @@ var datosActividadesIndice = [
       "radio online"
     ],
     "BUSQUEDA": [
+      "Transmisión de radio con estudio y cabina de emisión",
       "radio",
       "emisora",
       "estación de radio",
-      "radio online",
-      "Transmisión de radio con estudio y cabina de emisión"
+      "radio online"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "J",
@@ -2379,16 +2647,20 @@ var datosActividadesIndice = [
       "recargas"
     ],
     "BUSQUEDA": [
+      "Servicios de telecomunicaciones de acceso a internet, telefonía y recargas, con atención (cabinas y locutorios)",
+      "I642001",
+      "Comunicaciones telefónicas, cabinas de internet",
       "cabina de internet",
       "locutorio",
       "centro de llamadas",
       "internet",
-      "recargas",
-      "Servicios de telecomunicaciones de acceso a internet, telefonía y recargas, con atención (cabinas y locutorios)"
+      "recargas"
     ],
     "ZONAS": {
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "I642001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Comunicaciones telefónicas, cabinas de internet"
   },
   {
     "SECCIÓN": "J",
@@ -2407,16 +2679,18 @@ var datosActividadesIndice = [
       "nodo de fibra óptica"
     ],
     "BUSQUEDA": [
+      "Servicio de telecomunicaciones mediante operación técnica, estaciones terminales satelitales, nodos de transmisión o reventa de servicios de telecomunicaciones, sin atención al público ni almacenamiento logístico",
       "centro de datos",
       "data center",
       "operador de telecomunicaciones",
-      "nodo de fibra óptica",
-      "Servicio de telecomunicaciones mediante operación técnica, estaciones terminales satelitales, nodos de transmisión o reventa de servicios de telecomunicaciones, sin atención al público ni almacenamiento logístico"
+      "nodo de fibra óptica"
     ],
     "ZONAS": {
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "J",
@@ -2436,16 +2710,20 @@ var datosActividadesIndice = [
       "reparación de computadoras"
     ],
     "BUSQUEDA": [
+      "Servicios de tecnología de la información e informáticos para recuperación ante desastres informáticos, configuración de computadoras personales e instalación de programas informáticos, con atención en oficina",
+      "K729001",
+      "Actividades de informática",
       "soporte técnico",
       "empresa de software",
       "servicios TI",
       "desarrollo web",
-      "reparación de computadoras",
-      "Servicios de tecnología de la información e informáticos para recuperación ante desastres informáticos, configuración de computadoras personales e instalación de programas informáticos, con atención en oficina"
+      "reparación de computadoras"
     ],
     "ZONAS": {
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "K729001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Actividades de informática"
   },
   {
     "SECCIÓN": "K",
@@ -2464,19 +2742,23 @@ var datosActividadesIndice = [
       "agente corresponsal"
     ],
     "BUSQUEDA": [
+      "Intermediación monetaria mediante cajero automático o agente corresponsal en local independiente",
+      "J651901",
+      "Bancos comerciales, cajeros automáticos",
       "cajero automático",
       "agente bancario",
       "cajero",
-      "agente corresponsal",
-      "Intermediación monetaria mediante cajero automático o agente corresponsal en local independiente"
+      "agente corresponsal"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "J651901",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Bancos comerciales, cajeros automáticos"
   },
   {
     "SECCIÓN": "K",
@@ -2485,7 +2767,7 @@ var datosActividadesIndice = [
     "CLASE": "6419",
     "DESCRIPCIÓN DE LA CLASE": "Otros tipos de intermediación monetaria.",
     "N°": "02",
-    "ACTIVIDAD": "Intemediación monetaria en gencia bancaria, caja o cooperativa de ahorro y crédito",
+    "ACTIVIDAD": "Intermediación monetaria en agencia bancaria, caja o cooperativa de ahorro y crédito",
     "OBSERVACIONES": "",
     "COD_GIRO": "6419-02",
     "NOMBRES_PARA_EL_VISOR": [
@@ -2497,21 +2779,25 @@ var datosActividadesIndice = [
       "financiera"
     ],
     "BUSQUEDA": [
+      "Intermediación monetaria en agencia bancaria, caja o cooperativa de ahorro y crédito",
+      "J651905\nJ651904\nJ651903\nJ651902\nJ651901",
+      "Bancos del Estado\nFinancieras\nCajas de ahorro\nBancos de descuento\nBancos comerciales, cajeros automáticos",
       "banco",
       "agencia bancaria",
       "caja municipal",
       "caja de ahorros",
       "cooperativa",
-      "financiera",
-      "Intemediación monetaria en gencia bancaria, caja o cooperativa de ahorro y crédito"
+      "financiera"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "J651905\nJ651904\nJ651903\nJ651902\nJ651901",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Bancos del Estado\nFinancieras\nCajas de ahorro\nBancos de descuento\nBancos comerciales, cajeros automáticos"
   },
   {
     "SECCIÓN": "K",
@@ -2531,19 +2817,23 @@ var datosActividadesIndice = [
       "fintech"
     ],
     "BUSQUEDA": [
+      "Servicios financieros no bancarios de arrendamiento financiero, factoraje, créditos, en oficina",
+      "J659203\nJ659201",
+      "Cooperativas y panderos\nCasas de préstamo",
       "financiera",
       "casa de préstamos",
       "leasing",
       "factoring",
-      "fintech",
-      "Servicios financieros no bancarios de arrendamiento financiero, factoraje, créditos, en oficina"
+      "fintech"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "J659203\nJ659201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Cooperativas y panderos\nCasas de préstamo"
   },
   {
     "SECCIÓN": "K",
@@ -2562,18 +2852,22 @@ var datosActividadesIndice = [
       "corredor de seguros"
     ],
     "BUSQUEDA": [
+      "Seguros de vida mediante concertación y gestión de contratos de anualidades, seguros de vida, invalidez o doble indemnización, en oficina",
+      "J660101",
+      "Seguro de vida y otros",
       "aseguradora",
       "seguros",
       "oficina de seguros",
-      "corredor de seguros",
-      "Seguros de vida mediante concertación y gestión de contratos de anualidades, seguros de vida, invalidez o doble indemnización, en oficina"
+      "corredor de seguros"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "J660101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Seguro de vida y otros"
   },
   {
     "SECCIÓN": "K",
@@ -2591,17 +2885,21 @@ var datosActividadesIndice = [
       "fondo de pensiones"
     ],
     "BUSQUEDA": [
+      "Fondos de pensiones mediante operación de fondos, planes o programas de pensiones y jubilación, en oficina",
+      "J660204\nJ660203",
+      "Administradoras de fondos de pensiones\nActividad de captación e inversión de fondos",
       "AFP",
       "oficina de AFP",
-      "fondo de pensiones",
-      "Fondos de pensiones mediante operación de fondos, planes o programas de pensiones y jubilación, en oficina"
+      "fondo de pensiones"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "J660204\nJ660203",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Administradoras de fondos de pensiones\nActividad de captación e inversión de fondos"
   },
   {
     "SECCIÓN": "K",
@@ -2618,16 +2916,20 @@ var datosActividadesIndice = [
       "BVL"
     ],
     "BUSQUEDA": [
+      "Administración de mercados de valores, en oficina",
+      "J671101",
+      "Actividades de bolsa de valores",
       "bolsa de valores",
-      "BVL",
-      "Administración de mercados de valores, en oficina"
+      "BVL"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "J671101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Actividades de bolsa de valores"
   },
   {
     "SECCIÓN": "K",
@@ -2645,18 +2947,22 @@ var datosActividadesIndice = [
       "cambio de dólares"
     ],
     "BUSQUEDA": [
+      "Cambio de moneda en casa de cambio",
+      "J671904",
+      "Casas de cambio",
       "casa de cambio",
       "cambista",
-      "cambio de dólares",
-      "Cambio de moneda en casa de cambio"
+      "cambio de dólares"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "J671904",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Casas de cambio"
   },
   {
     "SECCIÓN": "K",
@@ -2675,19 +2981,23 @@ var datosActividadesIndice = [
       "inversiones"
     ],
     "BUSQUEDA": [
+      "Corretaje de valores y de contratos de productos básicos (corredores de bolsa), en oficina",
+      "J671201",
+      "Servicio de corredores de bolsa y actividades conexas",
       "corredor de bolsa",
       "sociedad agente de bolsa",
       "SAB",
-      "inversiones",
-      "Corretaje de valores y de contratos de productos básicos (corredores de bolsa), en oficina"
+      "inversiones"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "J671201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Servicio de corredores de bolsa y actividades conexas"
   },
   {
     "SECCIÓN": "L",
@@ -2706,18 +3016,22 @@ var datosActividadesIndice = [
       "arrendamiento de inmuebles propios"
     ],
     "BUSQUEDA": [
+      "Actividades inmobiliarias de operación, arrendamiento o cesión de uso de bienes inmuebles propios o arrendados, incluidos espacios de trabajo equipados, oficinas flexibles, coworking y business center, cuando la prestación principal sea el uso del inmueble y los servicios administrativos sean accesorios",
+      "K701001",
+      "Compra, venta y alquiler de bienes inmuebles propios o alquilados",
       "inmobiliaria de bienes propios",
       "sala de ventas",
       "compraventa de inmuebles propios",
-      "arrendamiento de inmuebles propios",
-      "Actividades inmobiliarias de operación, arrendamiento o cesión de uso de bienes inmuebles propios o arrendados, incluidos espacios de trabajo equipados, oficinas flexibles, coworking y business center, cuando la prestación principal sea el uso del inmueble y los servicios administrativos sean accesorios"
+      "arrendamiento de inmuebles propios"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "K701001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Compra, venta y alquiler de bienes inmuebles propios o alquilados"
   },
   {
     "SECCIÓN": "L",
@@ -2736,18 +3050,22 @@ var datosActividadesIndice = [
       "bienes raíces"
     ],
     "BUSQUEDA": [
+      "Actividades inmobiliarias de corretaje y administración inmobiliaria, en oficina",
+      "K702004",
+      "Tasación de bienes inmuebles",
       "corredor inmobiliario",
       "agente inmobiliario",
       "administración de edificios",
-      "bienes raíces",
-      "Actividades inmobiliarias de corretaje y administración inmobiliaria, en oficina"
+      "bienes raíces"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "K702004",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Tasación de bienes inmuebles"
   },
   {
     "SECCIÓN": "M",
@@ -2764,16 +3082,20 @@ var datosActividadesIndice = [
       "notario"
     ],
     "BUSQUEDA": [
+      "Actividades jurídicas de servicios notariales",
+      "K741102",
+      "Notarios y escribanos",
       "notaría",
-      "notario",
-      "Actividades jurídicas de servicios notariales"
+      "notario"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "K741102",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Notarios y escribanos"
   },
   {
     "SECCIÓN": "M",
@@ -2793,19 +3115,23 @@ var datosActividadesIndice = [
       "consultorio jurídico"
     ],
     "BUSQUEDA": [
+      "Actividades jurídicas de abogacía y estudios jurídicos, en oficina",
+      "K741103\nK741101",
+      "Estudios jurídicos\nActividades de arbitradores, centros de conciliación",
       "abogado",
       "estudio de abogados",
       "estudio jurídico",
       "asesoría legal",
-      "consultorio jurídico",
-      "Actividades jurídicas de abogacía y estudios jurídicos, en oficina"
+      "consultorio jurídico"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "K741103\nK741101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Estudios jurídicos\nActividades de arbitradores, centros de conciliación"
   },
   {
     "SECCIÓN": "M",
@@ -2814,7 +3140,7 @@ var datosActividadesIndice = [
     "CLASE": "6920",
     "DESCRIPCIÓN DE LA CLASE": "Actividades de contabilidad, teneduría de libros y auditoría; consultoría fiscal",
     "N°": "01",
-    "ACTIVIDAD": "Actiividades de contabilidad, auditoría y asesoría tributaria, en oficina",
+    "ACTIVIDAD": "Actividades de contabilidad, auditoría y asesoría tributaria, en oficina",
     "OBSERVACIONES": "",
     "COD_GIRO": "6920-01",
     "NOMBRES_PARA_EL_VISOR": [
@@ -2825,19 +3151,23 @@ var datosActividadesIndice = [
       "asesoría tributaria"
     ],
     "BUSQUEDA": [
+      "Actividades de contabilidad, auditoría y asesoría tributaria, en oficina",
+      "K741201",
+      "Estudios contables",
       "contador",
       "estudio contable",
       "asesoría contable",
       "auditoría",
-      "asesoría tributaria",
-      "Actiividades de contabilidad, auditoría y asesoría tributaria, en oficina"
+      "asesoría tributaria"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "K741201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Estudios contables"
   },
   {
     "SECCIÓN": "M",
@@ -2856,22 +3186,24 @@ var datosActividadesIndice = [
       "sede de empresa"
     ],
     "BUSQUEDA": [
+      "Actividades de oficinas principales, sedes u oficinas administrativas centralizadas para la supervisión y gestión de otras unidades de la misma empresa",
       "oficina",
       "oficinas administrativas",
       "oficina corporativa",
-      "sede de empresa",
-      "Actividades de oficinas principales, sedes u oficinas administrativas centralizadas para la supervisión y gestión de otras unidades de la misma empresa"
+      "sede de empresa"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
-      "Hospitales": "R",
-      "Educación": "R",
+      "Hospitales": "X",
+      "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "M",
@@ -2893,25 +3225,27 @@ var datosActividadesIndice = [
       "oficinas flexibles"
     ],
     "BUSQUEDA": [
+      "Actividades de oficinas regionales, distritales o subsidiarias de gestión para la supervisión de operaciones de otras unidades de la misma empresa",
       "coworking",
       "cowork",
       "oficina compartida",
       "oficina virtual",
       "espacio de trabajo compartido",
       "business center",
-      "oficinas flexibles",
-      "Actividades de oficinas regionales, distritales o subsidiarias de gestión para la supervisión de operaciones de otras unidades de la misma empresa"
+      "oficinas flexibles"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
-      "Hospitales": "R",
-      "Educación": "R",
+      "Hospitales": "X",
+      "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "M",
@@ -2930,18 +3264,22 @@ var datosActividadesIndice = [
       "agencia de medios"
     ],
     "BUSQUEDA": [
+      "Publicidad y gestión de medios publicitarios, en oficina",
+      "K743004\nK743001",
+      "Servicios sobre venta de tiempo y espac.en div. medios de difusión\nServicios de publicidad",
       "agencia de publicidad",
       "agencia de marketing",
       "marketing digital",
-      "agencia de medios",
-      "Publicidad y gestión de medios publicitarios, en oficina"
+      "agencia de medios"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "K743004\nK743001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Servicios sobre venta de tiempo y espac.en div. medios de difusión\nServicios de publicidad"
   },
   {
     "SECCIÓN": "M",
@@ -2960,19 +3298,23 @@ var datosActividadesIndice = [
       "foto estudio"
     ],
     "BUSQUEDA": [
+      "Servicios de fotografía en estudio",
+      "K749402",
+      "Estudios fotográficos",
       "estudio fotográfico",
       "fotógrafo",
       "fotos carnet",
-      "foto estudio",
-      "Servicios de fotografía en estudio"
+      "foto estudio"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "K749402",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Estudios fotográficos"
   },
   {
     "SECCIÓN": "M",
@@ -2993,17 +3335,21 @@ var datosActividadesIndice = [
       "traducción"
     ],
     "BUSQUEDA": [
+      "Actividades profesionales, científicas y técnicas de consultoría y servicios técnicos, en oficina",
+      "K749905",
+      "Servicios profesionales diversos",
       "consultora",
       "consultoría",
       "oficina de ingeniería",
       "arquitectos",
       "diseño gráfico",
-      "traducción",
-      "Actividades profesionales, científicas y técnicas de consultoría y servicios técnicos, en oficina"
+      "traducción"
     ],
     "ZONAS": {
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "K749905",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Servicios profesionales diversos"
   },
   {
     "SECCIÓN": "M",
@@ -3022,19 +3368,23 @@ var datosActividadesIndice = [
       "clínica de mascotas"
     ],
     "BUSQUEDA": [
+      "Actividades veterinarias de atención ambulatoria en consultorio",
+      "N852006",
+      "Consultorios de médicos veterinarios",
       "veterinaria",
       "consultorio veterinario",
       "vet",
-      "clínica de mascotas",
-      "Actividades veterinarias de atención ambulatoria en consultorio"
+      "clínica de mascotas"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "N852006",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Consultorios de médicos veterinarios"
   },
   {
     "SECCIÓN": "M",
@@ -3054,19 +3404,23 @@ var datosActividadesIndice = [
       "hotel de mascotas"
     ],
     "BUSQUEDA": [
+      "Actividades veterinarias en clínica u hospital veterinario con cirugía, diagnóstico u hospitalización de animales vinculada al tratamiento y bajo atención veterinaria",
+      "N852006",
+      "Consultorios de médicos veterinarios",
       "clínica veterinaria",
       "hospital veterinario",
       "veterinaria 24 horas",
       "guardería de mascotas",
-      "hotel de mascotas",
-      "Actividades veterinarias en clínica u hospital veterinario con cirugía, diagnóstico u hospitalización de animales vinculada al tratamiento y bajo atención veterinaria"
+      "hotel de mascotas"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "N852006",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Consultorios de médicos veterinarios"
   },
   {
     "SECCIÓN": "N",
@@ -3086,18 +3440,22 @@ var datosActividadesIndice = [
       "agencia de personal"
     ],
     "BUSQUEDA": [
+      "Agencias de empleo y colocación de personal",
+      "K749101",
+      "Agencias de empleo",
       "agencia de empleo",
       "bolsa de trabajo",
       "reclutamiento",
       "headhunter",
-      "agencia de personal",
-      "Agencias de empleo y colocación de personal"
+      "agencia de personal"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "K749101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Agencias de empleo"
   },
   {
     "SECCIÓN": "N",
@@ -3115,17 +3473,21 @@ var datosActividadesIndice = [
       "turismo"
     ],
     "BUSQUEDA": [
+      "Agencias de viajes",
+      "I630401",
+      "Agencias de viaje, agencias de turismo",
       "agencia de viajes",
       "venta de pasajes",
-      "turismo",
-      "Agencias de viajes"
+      "turismo"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "I630401",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Agencias de viaje, agencias de turismo"
   },
   {
     "SECCIÓN": "N",
@@ -3144,17 +3506,21 @@ var datosActividadesIndice = [
       "city tour"
     ],
     "BUSQUEDA": [
+      "Servicios de operadores turísticos",
+      "I630401",
+      "Agencias de viaje, agencias de turismo",
       "operador turístico",
       "agencia de turismo",
       "tours",
-      "city tour",
-      "Servicios de operadores turísticos"
+      "city tour"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "I630401",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Agencias de viaje, agencias de turismo"
   },
   {
     "SECCIÓN": "N",
@@ -3173,17 +3539,19 @@ var datosActividadesIndice = [
       "monitoreo de alarmas"
     ],
     "BUSQUEDA": [
+      "Servicios de seguridad privada, sin armería ni patio de vehículos, en oficina",
       "empresa de seguridad",
       "vigilancia",
       "seguridad privada",
-      "monitoreo de alarmas",
-      "Servicios de seguridad privada, sin armería ni patio de vehículos, en oficina"
+      "monitoreo de alarmas"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Otros Usos": "R"
-    }
+      "Otros Usos": "X"
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "N",
@@ -3205,19 +3573,21 @@ var datosActividadesIndice = [
       "conferencias y eventos corporativos"
     ],
     "BUSQUEDA": [
+      "Organización y realización de convenciones, conferencias, reuniones corporativas, ferias y exposiciones en centros o espacios para eventos",
       "centro de convenciones",
       "centro de eventos",
       "local de eventos",
       "salón de eventos",
       "ferias",
       "reuniones corporativas y after office",
-      "conferencias y eventos corporativos",
-      "Organización y realización de convenciones, conferencias, reuniones corporativas, ferias y exposiciones en centros o espacios para eventos"
+      "conferencias y eventos corporativos"
     ],
     "ZONAS": {
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "O",
@@ -3226,7 +3596,7 @@ var datosActividadesIndice = [
     "CLASE": "8411",
     "DESCRIPCIÓN DE LA CLASE": "Actividades de la administración pública en general",
     "N°": "01",
-    "ACTIVIDAD": "Servicios de la administración pública en general, es sedes de la administración pública y de órganos de gobierno",
+    "ACTIVIDAD": "Servicios de la administración pública en general, en sedes de la administración pública y de órganos de gobierno",
     "OBSERVACIONES": "",
     "COD_GIRO": "8411-01",
     "NOMBRES_PARA_EL_VISOR": [
@@ -3237,16 +3607,18 @@ var datosActividadesIndice = [
       "entidad pública"
     ],
     "BUSQUEDA": [
+      "Servicios de la administración pública en general, en sedes de la administración pública y de órganos de gobierno",
       "municipalidad",
       "ministerio",
       "sede de gobierno",
       "congreso",
-      "entidad pública",
-      "Servicios de la administración pública en general, es sedes de la administración pública y de órganos de gobierno"
+      "entidad pública"
     ],
     "ZONAS": {
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "O",
@@ -3255,7 +3627,7 @@ var datosActividadesIndice = [
     "CLASE": "8413",
     "DESCRIPCIÓN DE LA CLASE": "Regulación y facilitación de la actividad económica",
     "N°": "01",
-    "ACTIVIDAD": "Regulación y facilitación de la actividad económica, en oficinas de regulación, atención y facilitación de la administración pública       ",
+    "ACTIVIDAD": "Regulación y facilitación de la actividad económica, en oficinas de regulación, atención y facilitación de la administración pública",
     "OBSERVACIONES": "",
     "COD_GIRO": "8413-01",
     "NOMBRES_PARA_EL_VISOR": [
@@ -3265,6 +3637,9 @@ var datosActividadesIndice = [
       "centro MAC"
     ],
     "BUSQUEDA": [
+      "Regulación y facilitación de la actividad económica, en oficinas de regulación, atención y facilitación de la administración pública",
+      "L751301",
+      "Serv. adm. relacionados con comercio (oficinas administrativas)",
       "oficina pública",
       "oficina de atención al ciudadano",
       "agencia estatal",
@@ -3272,9 +3647,11 @@ var datosActividadesIndice = [
       "Regulación y facilitación de la actividad económica, en oficinas de regulación, atención y facilitación de la administración pública       "
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
-      "Uso Residencial Especial": "R"
-    }
+      "Uso Residencial Preferente": "X",
+      "Uso Residencial Especial": "X"
+    },
+    "EQUIVALENCIA_REV3": "L751301",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Serv. adm. relacionados con comercio (oficinas administrativas)"
   },
   {
     "SECCIÓN": "P",
@@ -3295,17 +3672,21 @@ var datosActividadesIndice = [
       "cuna jardín"
     ],
     "BUSQUEDA": [
+      "Enseñanza de nivel preescolar en establecimientos de educación inicial (cuna, jardín)",
+      "M801006\nM801005\nM801003",
+      "Enseñanza preescolar - Jardines o nidos, centros de estimulación temprana\nEnseñanza preescolar pública\nEnseñanza preescolar privada",
       "nido",
       "cuna",
       "jardín de niños",
       "kinder",
       "educación inicial",
-      "cuna jardín",
-      "Enseñanza de nivel preescolar en establecimientos de educación inicial (cuna, jardín)"
+      "cuna jardín"
     ],
     "ZONAS": {
       "Educación": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "M801006\nM801005\nM801003",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Enseñanza preescolar - Jardines o nidos, centros de estimulación temprana\nEnseñanza preescolar pública\nEnseñanza preescolar privada"
   },
   {
     "SECCIÓN": "P",
@@ -3324,15 +3705,19 @@ var datosActividadesIndice = [
       "CEBA no escolarizado - nivel primaria"
     ],
     "BUSQUEDA": [
+      "Enseñanza de nivel primario",
+      "M809001\nM801004\nM801002\nM801001",
+      "Escuelas de primaria y secundaria para adultos\nEnseñanza primaria pública\nEnseñanza primaria\nServicio de enseñanza espec. para niños discapacitados",
       "colegio primaria",
       "escuela primaria",
       "primaria",
-      "CEBA no escolarizado - nivel primaria",
-      "Enseñanza de nivel primario"
+      "CEBA no escolarizado - nivel primaria"
     ],
     "ZONAS": {
       "Educación": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "M809001\nM801004\nM801002\nM801001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Escuelas de primaria y secundaria para adultos\nEnseñanza primaria pública\nEnseñanza primaria\nServicio de enseñanza espec. para niños discapacitados"
   },
   {
     "SECCIÓN": "P",
@@ -3351,15 +3736,19 @@ var datosActividadesIndice = [
       "CEBA no escolarizado - nivel secundaria"
     ],
     "BUSQUEDA": [
+      "Enseñanza secundaria de formación general",
+      "M809001\nM802102\nM802101",
+      "Escuelas de primaria y secundaria para adultos\nEnseñanza secundaria\nEnseñanza especial de tipo académico para estudiantes discapacitados",
       "colegio secundaria",
       "escuela secundaria",
       "secundaria",
-      "CEBA no escolarizado - nivel secundaria",
-      "Enseñanza secundaria de formación general"
+      "CEBA no escolarizado - nivel secundaria"
     ],
     "ZONAS": {
       "Educación": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "M809001\nM802102\nM802101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Escuelas de primaria y secundaria para adultos\nEnseñanza secundaria\nEnseñanza especial de tipo académico para estudiantes discapacitados"
   },
   {
     "SECCIÓN": "P",
@@ -3378,20 +3767,24 @@ var datosActividadesIndice = [
       "escuela de oficios"
     ],
     "BUSQUEDA": [
+      "Enseñanza técnico-productiva en aula o taller, con prácticas formativas y sin producción comercial",
+      "M809010\nM809009\nM802202\nM802201",
+      "Academias de cosmetología\nAcademias de corte y confección\nInstituto de enseñanza a personas excepcionales\nInstituto de enseñanza técnica",
       "cetpro pequeño",
       "taller técnico",
       "curso técnico",
-      "escuela de oficios",
-      "Enseñanza técnico-productiva en aula o taller, con prácticas formativas y sin producción comercial"
+      "escuela de oficios"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
+      "Uso Residencial Preferente": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "M809010\nM809009\nM802202\nM802201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Academias de cosmetología\nAcademias de corte y confección\nInstituto de enseñanza a personas excepcionales\nInstituto de enseñanza técnica"
   },
   {
     "SECCIÓN": "P",
@@ -3410,11 +3803,11 @@ var datosActividadesIndice = [
       "escuela técnica"
     ],
     "BUSQUEDA": [
+      "Enseñanza técnico-productiva en centro educativo con talleres y laboratorios",
       "cetpro",
       "instituto técnico productivo",
       "centro técnico",
-      "escuela técnica",
-      "Enseñanza técnico-productiva en centro educativo con talleres y laboratorios"
+      "escuela técnica"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
@@ -3422,7 +3815,9 @@ var datosActividadesIndice = [
       "Uso Mixto Intensivo": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "P",
@@ -3442,16 +3837,20 @@ var datosActividadesIndice = [
       "escuela superior"
     ],
     "BUSQUEDA": [
+      "Enseñanza superior universitaria y no universitaria",
+      "M803001",
+      "Instituto de enseñanza superior",
       "universidad",
       "instituto",
       "instituto superior",
       "escuela de posgrado",
-      "escuela superior",
-      "Enseñanza superior universitaria y no universitaria"
+      "escuela superior"
     ],
     "ZONAS": {
       "Educación": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "M803001",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Instituto de enseñanza superior"
   },
   {
     "SECCIÓN": "P",
@@ -3478,6 +3877,7 @@ var datosActividadesIndice = [
       "clases deportivas"
     ],
     "BUSQUEDA": [
+      "Educación deportiva mediante enseñanza y entrenamiento en ambiente cerrado, sin cancha, campo, piscina o graderías",
       "yoga",
       "pilates",
       "artes marciales",
@@ -3489,12 +3889,13 @@ var datosActividadesIndice = [
       "spinning",
       "academia deportiva",
       "entrenamiento deportivo",
-      "clases deportivas",
-      "Educación deportiva mediante enseñanza y entrenamiento en ambiente cerrado, sin cancha, campo, piscina o graderías"
+      "clases deportivas"
     ],
     "ZONAS": {
       "Educación": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "P",
@@ -3522,6 +3923,7 @@ var datosActividadesIndice = [
       "academia de padel"
     ],
     "BUSQUEDA": [
+      "Educación deportiva mediante enseñanza y entrenamiento deportivo en instalación especializada con cancha, campo, piscina, coliseo o graderías",
       "escuela deportiva",
       "academia deportiva",
       "fútbol",
@@ -3534,12 +3936,13 @@ var datosActividadesIndice = [
       "pádel",
       "padel",
       "academia de pádel",
-      "academia de padel",
-      "Educación deportiva mediante enseñanza y entrenamiento deportivo en instalación especializada con cancha, campo, piscina, coliseo o graderías"
+      "academia de padel"
     ],
     "ZONAS": {
       "Educación": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "P",
@@ -3561,24 +3964,28 @@ var datosActividadesIndice = [
       "clases de fotografía"
     ],
     "BUSQUEDA": [
+      "Enseñanza cultural y artística en aula, taller o estudio, sin presentación de espectáculos al público",
+      "M809015",
+      "Academias de música",
       "clases de música",
       "academia de música",
       "clases de piano",
       "clases de guitarra",
       "taller de pintura",
       "taller de arte",
-      "clases de fotografía",
-      "Enseñanza cultural y artística en aula, taller o estudio, sin presentación de espectáculos al público"
+      "clases de fotografía"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
+      "Uso Residencial Preferente": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "M809015",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Academias de música"
   },
   {
     "SECCIÓN": "P",
@@ -3600,24 +4007,28 @@ var datosActividadesIndice = [
       "salsa"
     ],
     "BUSQUEDA": [
+      "Enseñanza cultural de danza, teatro y artes escénicas en ambientes destinados al movimiento, ensayo o representación formativa",
+      "M809007\nM809011",
+      "Academia de ballet\nAcademia de danzas folclóricas",
       "academia de baile",
       "academia de danza",
       "ballet",
       "teatro",
       "escuela de actuación",
       "marinera",
-      "salsa",
-      "Enseñanza cultural de danza, teatro y artes escénicas en ambientes destinados al movimiento, ensayo o representación formativa"
+      "salsa"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
+      "Uso Residencial Preferente": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "M809007\nM809011",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Academia de ballet\nAcademia de danzas folclóricas"
   },
   {
     "SECCIÓN": "P",
@@ -3641,6 +4052,9 @@ var datosActividadesIndice = [
       "capacitación y educación ejecutiva"
     ],
     "BUSQUEDA": [
+      "Enseñanza complementaria de capacitación profesional o ejecutiva y tutoría especializada, sin otorgamiento de grado académico",
+      "M809017\nM809016\nM809014\nM809013\nM809012\nM809008\nM809006\nM809005\nM809004\nM809003\nM809002",
+      "Academias de aviación comercial\nAcademias de oratoria\nAcademias de locución\nAcademias de idiomas\nAcademias de enseñanza comercial\nAcademias de computación\nOtros tipos de enseñanza no clasificados previamente\nAcademias preuniversitarias\nInstrucción para adultos de clases diurnas\nEnseñanza a distancia\nProgramas de alfabetización para adultos",
       "academia preuniversitaria",
       "academia pre",
       "centro de idiomas",
@@ -3649,18 +4063,19 @@ var datosActividadesIndice = [
       "tutoría",
       "clases particulares",
       "academia de manejo",
-      "capacitación y educación ejecutiva",
-      "Enseñanza complementaria de capacitación profesional o ejecutiva y tutoría especializada, sin otorgamiento de grado académico"
+      "capacitación y educación ejecutiva"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
+      "Uso Residencial Preferente": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "M809017\nM809016\nM809014\nM809013\nM809012\nM809008\nM809006\nM809005\nM809004\nM809003\nM809002",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Academias de aviación comercial\nAcademias de oratoria\nAcademias de locución\nAcademias de idiomas\nAcademias de enseñanza comercial\nAcademias de computación\nOtros tipos de enseñanza no clasificados previamente\nAcademias preuniversitarias\nInstrucción para adultos de clases diurnas\nEnseñanza a distancia\nProgramas de alfabetización para adultos"
   },
   {
     "SECCIÓN": "P",
@@ -3678,27 +4093,29 @@ var datosActividadesIndice = [
       "formación religiosa"
     ],
     "BUSQUEDA": [
+      "Enseñanza de formación religiosa",
       "catequesis",
       "escuela bíblica",
-      "formación religiosa",
-      "Enseñanza de formación religiosa"
+      "formación religiosa"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
+      "Uso Residencial Preferente": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "Q",
     "DIVISIÓN": "86",
     "GRUPO": "861",
     "CLASE": "8610",
-    "DESCRIPCIÓN DE LA CLASE": "Actividades de hospitales",
+    "DESCRIPCIÓN DE LA CLASE": "Actividades de hospitales (11)",
     "N°": "01",
     "ACTIVIDAD": "Actividades hospitalarias en establecimiento especializado de menor complejidad, destinado principalmente a pacientes internos, con atención médica, diagnóstico y tratamiento",
     "OBSERVACIONES": "",
@@ -3711,29 +4128,33 @@ var datosActividadesIndice = [
       "posta privada"
     ],
     "BUSQUEDA": [
+      "Actividades hospitalarias en establecimiento especializado de menor complejidad, destinado principalmente a pacientes internos, con atención médica, diagnóstico y tratamiento",
+      "N851110\nN851109\nN851108\nN851107\nN851106",
+      "Clínicas generales y especializadas\nAsilos - Centro residencial gerontológico\nServicio de radiología y anestesiología\nCentros de rehabilitación y otras terapias\nCentros de atención odontológica",
       "policlínico",
       "centro médico",
       "clínica ambulatoria",
       "centro de salud",
-      "posta privada",
-      "Actividades hospitalarias en establecimiento especializado de menor complejidad, destinado principalmente a pacientes internos, con atención médica, diagnóstico y tratamiento"
+      "posta privada"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Preferente": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N851110\nN851109\nN851108\nN851107\nN851106",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Clínicas generales y especializadas\nAsilos - Centro residencial gerontológico\nServicio de radiología y anestesiología\nCentros de rehabilitación y otras terapias\nCentros de atención odontológica"
   },
   {
     "SECCIÓN": "Q",
     "DIVISIÓN": "86",
     "GRUPO": "861",
     "CLASE": "8610",
-    "DESCRIPCIÓN DE LA CLASE": "Actividades de hospitales",
+    "DESCRIPCIÓN DE LA CLASE": "Actividades de hospitales (11)",
     "N°": "02",
     "ACTIVIDAD": "Actividades hospitalarias en clínica con internamiento, servicios médicos y paramédicos, diagnóstico y tratamiento hospitalario",
     "OBSERVACIONES": "",
@@ -3744,26 +4165,30 @@ var datosActividadesIndice = [
       "maternidad"
     ],
     "BUSQUEDA": [
+      "Actividades hospitalarias en clínica con internamiento, servicios médicos y paramédicos, diagnóstico y tratamiento hospitalario",
+      "N851110\nN851109\nN851108\nN851107\nN851106",
+      "Clínicas generales y especializadas\nAsilos - Centro residencial gerontológico\nServicio de radiología y anestesiología\nCentros de rehabilitación y otras terapias\nCentros de atención odontológica",
       "clínica",
       "clínica con hospitalización",
-      "maternidad",
-      "Actividades hospitalarias en clínica con internamiento, servicios médicos y paramédicos, diagnóstico y tratamiento hospitalario"
+      "maternidad"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N851110\nN851109\nN851108\nN851107\nN851106",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Clínicas generales y especializadas\nAsilos - Centro residencial gerontológico\nServicio de radiología y anestesiología\nCentros de rehabilitación y otras terapias\nCentros de atención odontológica"
   },
   {
     "SECCIÓN": "Q",
     "DIVISIÓN": "86",
     "GRUPO": "861",
     "CLASE": "8610",
-    "DESCRIPCIÓN DE LA CLASE": "Actividades de hospitales",
+    "DESCRIPCIÓN DE LA CLASE": "Actividades de hospitales (11)",
     "N°": "03",
     "ACTIVIDAD": "Actividades hospitalarias en hospital general o especializado, con atención de pacientes internos, servicios de diagnóstico, tratamiento, urgencias y servicios hospitalarios complementarios",
     "OBSERVACIONES": "",
@@ -3772,15 +4197,19 @@ var datosActividadesIndice = [
       "hospital"
     ],
     "BUSQUEDA": [
-      "hospital",
-      "Actividades hospitalarias en hospital general o especializado, con atención de pacientes internos, servicios de diagnóstico, tratamiento, urgencias y servicios hospitalarios complementarios"
+      "Actividades hospitalarias en hospital general o especializado, con atención de pacientes internos, servicios de diagnóstico, tratamiento, urgencias y servicios hospitalarios complementarios",
+      "N851110\nN851109\nN851108\nN851107\nN851106",
+      "Clínicas generales y especializadas\nAsilos - Centro residencial gerontológico\nServicio de radiología y anestesiología\nCentros de rehabilitación y otras terapias\nCentros de atención odontológica",
+      "hospital"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N851110\nN851109\nN851108\nN851107\nN851106",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Clínicas generales y especializadas\nAsilos - Centro residencial gerontológico\nServicio de radiología y anestesiología\nCentros de rehabilitación y otras terapias\nCentros de atención odontológica"
   },
   {
     "SECCIÓN": "Q",
@@ -3802,24 +4231,28 @@ var datosActividadesIndice = [
       "consultorio"
     ],
     "BUSQUEDA": [
+      "Actividades médicas u odontológicas en consultorio médico",
+      "N851236\nN851210\nN851209\nN851208\nN851207\nN851206\nN851205\nN851204\nN851202\nN851201",
+      "Clínicas dentales\nPoliclínicos\nCentros médicos\nOtras especialidades\nPediatras\nCardiólogos\nGinecólogos\nOculistas\nConsultorios odontológicos\nConsultorios de medicina general",
       "consultorio médico",
       "consultorio dental",
       "dentista",
       "odontólogo",
       "pediatra",
       "dermatólogo",
-      "consultorio",
-      "Actividades médicas u odontológicas en consultorio médico"
+      "consultorio"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Residencial Especial": "X",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N851236\nN851210\nN851209\nN851208\nN851207\nN851206\nN851205\nN851204\nN851202\nN851201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Clínicas dentales\nPoliclínicos\nCentros médicos\nOtras especialidades\nPediatras\nCardiólogos\nGinecólogos\nOculistas\nConsultorios odontológicos\nConsultorios de medicina general"
   },
   {
     "SECCIÓN": "Q",
@@ -3842,6 +4275,9 @@ var datosActividadesIndice = [
       "centro de dermatología"
     ],
     "BUSQUEDA": [
+      "Actividades médicas u odontológicas en centro ambulatorio con varios consultorios, con atención preventiva o especializada",
+      "N851236\nN851213\nN851210\nN851209\nN851208\nN851207\nN851206\nN851205\nN851204\nN851202\nN851201",
+      "Clínicas dentales\nAcupuntura\nPoliclínicos\nCentros médicos\nOtras especialidades\nPediatras\nCardiólogos\nGinecólogos\nOculistas\nConsultorios odontológicos\nConsultorios de medicina general",
       "centro médico",
       "centro odontológico",
       "clínica dental",
@@ -3849,17 +4285,18 @@ var datosActividadesIndice = [
       "policonsultorio",
       "centros médicos ambulatorios",
       "Medicina preventiva",
-      "centro de dermatología",
-      "Actividades médicas u odontológicas en centro ambulatorio con varios consultorios, con atención preventiva o especializada"
+      "centro de dermatología"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N851236\nN851213\nN851210\nN851209\nN851208\nN851207\nN851206\nN851205\nN851204\nN851202\nN851201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Clínicas dentales\nAcupuntura\nPoliclínicos\nCentros médicos\nOtras especialidades\nPediatras\nCardiólogos\nGinecólogos\nOculistas\nConsultorios odontológicos\nConsultorios de medicina general"
   },
   {
     "SECCIÓN": "Q",
@@ -3880,22 +4317,24 @@ var datosActividadesIndice = [
       "coaching"
     ],
     "BUSQUEDA": [
+      "Atención de la salud humana de tipo psicológico y de bienestar emocional en consultorio, prestada por profesionales de la salud y sin internamiento",
       "psicólogo",
       "consultorio psicológico",
       "terapia",
       "bienestar emocional",
       "psicoterapia",
-      "coaching",
-      "Atención de la salud humana de tipo psicológico y de bienestar emocional en consultorio, prestada por profesionales de la salud y sin internamiento"
+      "coaching"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "Q",
@@ -3921,6 +4360,9 @@ var datosActividadesIndice = [
       "centro de wellness y salud integral"
     ],
     "BUSQUEDA": [
+      "Atención de la salud humana mediante servicios ambulatorios de enfermería, fisioterapia, podología, rehabilitación, nutrición, dietética, acupuntura y otras atenciones, sin internamiento y prestados por personal de salud o paramédico habilitado",
+      "N851904",
+      "Actividades de auxiliares de odontología",
       "fisioterapia",
       "terapia física",
       "rehabilitación",
@@ -3931,17 +4373,18 @@ var datosActividadesIndice = [
       "terapia de lenguaje",
       "acupuntura",
       "nutrición y bienestar",
-      "centro de wellness y salud integral",
-      "Atención de la salud humana mediante servicios ambulatorios de enfermería, fisioterapia, podología, rehabilitación, nutrición, dietética, acupuntura y otras atenciones, sin internamiento y prestados por personal de salud o paramédico habilitado"
+      "centro de wellness y salud integral"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N851904",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Actividades de auxiliares de odontología"
   },
   {
     "SECCIÓN": "Q",
@@ -3959,19 +4402,21 @@ var datosActividadesIndice = [
       "medicina ocupacional"
     ],
     "BUSQUEDA": [
+      "Atención de la salud humana mediante servicios de salud ocupacional",
       "salud ocupacional",
       "exámenes ocupacionales",
-      "medicina ocupacional",
-      "Atención de la salud humana mediante servicios de salud ocupacional"
+      "medicina ocupacional"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "Q",
@@ -3992,21 +4437,25 @@ var datosActividadesIndice = [
       "ecografías"
     ],
     "BUSQUEDA": [
+      "Atención de la salud humana mediante servicios de laboratorio clínico y centro de toma de muestras",
+      "N851901",
+      "Laboratorios clínicos",
       "laboratorio clínico",
       "análisis clínicos",
       "toma de muestras",
       "centro de diagnóstico",
       "rayos x",
-      "ecografías",
-      "Atención de la salud humana mediante servicios de laboratorio clínico y centro de toma de muestras"
+      "ecografías"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N851901",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Laboratorios clínicos"
   },
   {
     "SECCIÓN": "Q",
@@ -4024,14 +4473,16 @@ var datosActividadesIndice = [
       "residencia geriátrica con enfermería"
     ],
     "BUSQUEDA": [
+      "Actividades de atención de enfermería en casa de reposo",
       "casa de reposo con enfermería",
       "centro de cuidados",
-      "residencia geriátrica con enfermería",
-      "Actividades de atención de enfermería en casa de reposo"
+      "residencia geriátrica con enfermería"
     ],
     "ZONAS": {
       "Hospitales": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "Q",
@@ -4049,15 +4500,17 @@ var datosActividadesIndice = [
       "clínica psiquiátrica"
     ],
     "BUSQUEDA": [
+      "Actividades de atención en salud mental en institución, con internamiento",
       "centro de salud mental",
       "centro de rehabilitación",
-      "clínica psiquiátrica",
-      "Actividades de atención en salud mental en institución, con internamiento"
+      "clínica psiquiátrica"
     ],
     "ZONAS": {
       "Hospitales": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "Q",
@@ -4077,22 +4530,26 @@ var datosActividadesIndice = [
       "residencia geriátrica"
     ],
     "BUSQUEDA": [
+      "Actividades de atención en residencia para personas mayores o con discapacidad",
+      "N853107",
+      "Centro de atención para el adulto mayor u otro con características y servicios similares (con alojamiento)",
       "casa de reposo",
       "asilo",
       "residencia para adultos mayores",
       "hogar de ancianos",
-      "residencia geriátrica",
-      "Actividades de atención en residencia para personas mayores o con discapacidad"
+      "residencia geriátrica"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N853107",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Centro de atención para el adulto mayor u otro con características y servicios similares (con alojamiento)"
   },
   {
     "SECCIÓN": "Q",
@@ -4110,15 +4567,17 @@ var datosActividadesIndice = [
       "refugio"
     ],
     "BUSQUEDA": [
+      "Actividades de atención en albergue",
       "albergue",
       "casa hogar",
-      "refugio",
-      "Actividades de atención en albergue"
+      "refugio"
     ],
     "ZONAS": {
       "Hospitales": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "Q",
@@ -4137,21 +4596,25 @@ var datosActividadesIndice = [
       "centro de rehabilitación diurna"
     ],
     "BUSQUEDA": [
+      "Asistencia social para personas mayores o con discapacidad en centro de día, sin alojamiento",
+      "N853216",
+      "Centro de atención para el adulto mayor u otro con características y servicios similares (sin alojamiento)",
       "centro de día",
       "centro del adulto mayor",
       "CIAM",
-      "centro de rehabilitación diurna",
-      "Asistencia social para personas mayores o con discapacidad en centro de día, sin alojamiento"
+      "centro de rehabilitación diurna"
     ],
     "ZONAS": {
-      "Uso Mixto Vecinal": "R",
-      "Uso Mixto Zonal": "R",
+      "Uso Mixto Vecinal": "X",
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Uso Mixto Especializado": "X",
       "Hospitales": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N853216",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Centro de atención para el adulto mayor u otro con características y servicios similares (sin alojamiento)"
   },
   {
     "SECCIÓN": "Q",
@@ -4170,17 +4633,19 @@ var datosActividadesIndice = [
       "ONG de asistencia"
     ],
     "BUSQUEDA": [
+      "Asistencia social mediante comedores y programas sociales, sin alojamiento",
       "comedor popular",
       "olla común",
       "programa social",
-      "ONG de asistencia",
-      "Asistencia social mediante comedores y programas sociales, sin alojamiento"
+      "ONG de asistencia"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
-      "Uso Mixto Vecinal": "R",
+      "Uso Residencial Preferente": "X",
+      "Uso Mixto Vecinal": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "Q",
@@ -4201,20 +4666,24 @@ var datosActividadesIndice = [
       "estimulación temprana"
     ],
     "BUSQUEDA": [
+      "Asistencia social de cuidado diurno infantil, sin alojamiento ni prestación de educación inicial escolarizada",
+      "N853207",
+      "Guarderías (casa cuna)",
       "guardería",
       "cuna",
       "wawa wasi",
       "cuidado de niños",
       "daycare",
-      "estimulación temprana",
-      "Asistencia social de cuidado diurno infantil, sin alojamiento ni prestación de educación inicial escolarizada"
+      "estimulación temprana"
     ],
     "ZONAS": {
-      "Uso Residencial Preferente": "R",
-      "Uso Mixto Vecinal": "R",
+      "Uso Residencial Preferente": "X",
+      "Uso Mixto Vecinal": "X",
       "Educación": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "N853207",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Guarderías (casa cuna)"
   },
   {
     "SECCIÓN": "R",
@@ -4233,16 +4702,18 @@ var datosActividadesIndice = [
       "producción artística"
     ],
     "BUSQUEDA": [
+      "Producción de espectáculos y artes escénicas",
       "productora de espectáculos",
       "compañía de teatro",
       "productora de conciertos",
-      "producción artística",
-      "Producción de espectáculos y artes escénicas"
+      "producción artística"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "R",
@@ -4264,17 +4735,19 @@ var datosActividadesIndice = [
       "centro cultural"
     ],
     "BUSQUEDA": [
+      "Espectáculos artísticos en vivo en sala o teatro",
       "teatro",
       "auditorio",
       "sala de conciertos",
       "centro cultural",
-      "sala de espectáculos",
-      "Espectáculos artísticos en vivo en sala o teatro"
+      "sala de espectáculos"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "R",
@@ -4292,16 +4765,20 @@ var datosActividadesIndice = [
       "sala de lectura"
     ],
     "BUSQUEDA": [
+      "Actividades de bibliotecas y archivos",
+      "O923101\nO913101",
+      "Salas de lectura, de audición y proyección\n Bibliotecas",
       "biblioteca",
       "archivo",
-      "sala de lectura",
-      "Actividades de bibliotecas y archivos"
+      "sala de lectura"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O923101\nO913101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Salas de lectura, de audición y proyección\n Bibliotecas"
   },
   {
     "SECCIÓN": "R",
@@ -4319,15 +4796,17 @@ var datosActividadesIndice = [
       "sala de exposiciones"
     ],
     "BUSQUEDA": [
+      "Actividades de museos y galerías de exhibición",
       "museo",
       "galería de arte",
-      "sala de exposiciones",
-      "Actividades de museos y galerías de exhibición"
+      "sala de exposiciones"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "R",
@@ -4346,16 +4825,20 @@ var datosActividadesIndice = [
       "apuestas"
     ],
     "BUSQUEDA": [
+      "Actividades de apuestas deportivas en agencia, sin máquinas de juego",
+      "O924903",
+      "Casas de juegos de azar y apuestas; casinos de juegos, tragamonedas con restaurantes de cinco tenedores y apuestas deportivas",
       "casa de apuestas",
       "apuestas deportivas",
       "agencia de lotería",
-      "apuestas",
-      "Actividades de apuestas deportivas en agencia, sin máquinas de juego"
+      "apuestas"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O924903",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Casas de juegos de azar y apuestas; casinos de juegos, tragamonedas con restaurantes de cinco tenedores y apuestas deportivas"
   },
   {
     "SECCIÓN": "R",
@@ -4374,16 +4857,20 @@ var datosActividadesIndice = [
       "bingo"
     ],
     "BUSQUEDA": [
+      "Actividades de juegos de azar con máquinas tragamonedas o casino",
+      "O924903",
+      "Casas de juegos de azar y apuestas; casinos de juegos, tragamonedas con restaurantes de cinco tenedores y apuestas deportivas",
       "casino",
       "tragamonedas",
       "sala de juegos",
-      "bingo",
-      "Actividades de juegos de azar con máquinas tragamonedas o casino"
+      "bingo"
     ],
     "ZONAS": {
-      "Uso Mixto Metropolitano": "R",
+      "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O924903",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Casas de juegos de azar y apuestas; casinos de juegos, tragamonedas con restaurantes de cinco tenedores y apuestas deportivas"
   },
   {
     "SECCIÓN": "R",
@@ -4392,7 +4879,7 @@ var datosActividadesIndice = [
     "CLASE": "9311",
     "DESCRIPCIÓN DE LA CLASE": "Gestión de instalaciones deportivas",
     "N°": "01",
-    "ACTIVIDAD": "Gestión de istalaciones deportivas mediante operación de centros deportivos cerrados para acondicionamiento físico, entrenamiento funcional, práctica individual, simulación deportiva, boleras o escalada indoor, sin cancha, campo o piscina",
+    "ACTIVIDAD": "Gestión de instalaciones deportivas mediante operación de centros deportivos cerrados para acondicionamiento físico, entrenamiento funcional, práctica individual, simulación deportiva, boleras o escalada indoor, sin cancha, campo o piscina",
     "OBSERVACIONES": "",
     "COD_GIRO": "9311-01",
     "NOMBRES_PARA_EL_VISOR": [
@@ -4406,6 +4893,9 @@ var datosActividadesIndice = [
       "escalada indoor / palestra"
     ],
     "BUSQUEDA": [
+      "Gestión de instalaciones deportivas mediante operación de centros deportivos cerrados para acondicionamiento físico, entrenamiento funcional, práctica individual, simulación deportiva, boleras o escalada indoor, sin cancha, campo o piscina",
+      "O924111",
+      "Gimnasios, spa, fisicoculturismo",
       "gimnasio",
       "gym",
       "fitness",
@@ -4421,7 +4911,9 @@ var datosActividadesIndice = [
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O924111",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Gimnasios, spa, fisicoculturismo"
   },
   {
     "SECCIÓN": "R",
@@ -4447,6 +4939,9 @@ var datosActividadesIndice = [
       "canchas de pickleball"
     ],
     "BUSQUEDA": [
+      "Gestión de instalaciones deportivas mediante operación, reserva y alquiler de centros o instalaciones con cancha, campo o piscina, para práctica deportiva por turnos o membresía",
+      "O924111",
+      "Gimnasios, spa, fisicoculturismo",
       "alquiler de canchas",
       "cancha de fútbol",
       "loza deportiva",
@@ -4457,14 +4952,16 @@ var datosActividadesIndice = [
       "cancha de padel",
       "alquiler de pádel",
       "alquiler de padel",
-      "canchas de pickleball",
-      "Gestión de instalaciones deportivas mediante operación, reserva y alquiler de centros o instalaciones con cancha, campo o piscina, para práctica deportiva por turnos o membresía"
+      "canchas de pickleball"
     ],
     "ZONAS": {
+      "Uso Mixto Zonal": "X",
       "Uso Mixto Intensivo": "X",
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O924111",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Gimnasios, spa, fisicoculturismo"
   },
   {
     "SECCIÓN": "R",
@@ -4485,20 +4982,24 @@ var datosActividadesIndice = [
       "club de padel"
     ],
     "BUSQUEDA": [
+      "Actividades de clubes deportivos",
+      "O924110\nO924109\nO924108\nO924107",
+      "Academias de karate\nAcademias de natación\nAcademias de fútbol\nAcademias de tenis",
       "club deportivo",
       "club social deportivo",
       "club de fútbol",
       "club de tenis",
       "club de pádel",
-      "club de padel",
-      "Actividades de clubes deportivos"
+      "club de padel"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O924110\nO924109\nO924108\nO924107",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Academias de karate\nAcademias de natación\nAcademias de fútbol\nAcademias de tenis"
   },
   {
     "SECCIÓN": "R",
@@ -4507,7 +5008,7 @@ var datosActividadesIndice = [
     "CLASE": "9319",
     "DESCRIPCIÓN DE LA CLASE": "Otras actividades deportivas",
     "N°": "01",
-    "ACTIVIDAD": "Actividades deportativas de promoción y organización de competencias",
+    "ACTIVIDAD": "Actividades deportivas de promoción y organización de competencias",
     "OBSERVACIONES": "",
     "COD_GIRO": "9319-01",
     "NOMBRES_PARA_EL_VISOR": [
@@ -4520,19 +5021,21 @@ var datosActividadesIndice = [
       "torneo de padel"
     ],
     "BUSQUEDA": [
+      "Actividades deportivas de promoción y organización de competencias",
       "organización de maratones",
       "torneos deportivos",
       "liga deportiva",
       "eventos deportivos",
       "torneo de tenis",
       "torneo de pádel",
-      "torneo de padel",
-      "Actividades deportativas de promoción y organización de competencias"
+      "torneo de padel"
     ],
     "ZONAS": {
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "R",
@@ -4551,16 +5054,18 @@ var datosActividadesIndice = [
       "parque acuático"
     ],
     "BUSQUEDA": [
+      "Actividades de parque temático o de atracciones",
       "parque de diversiones",
       "parque temático",
       "juegos mecánicos",
-      "parque acuático",
-      "Actividades de parque temático o de atracciones"
+      "parque acuático"
     ],
     "ZONAS": {
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "R",
@@ -4592,6 +5097,9 @@ var datosActividadesIndice = [
       "realidad virtual y simuladores"
     ],
     "BUSQUEDA": [
+      "Actividades de esparcimiento y recreación mediante operación de espacios cerrados de entretenimiento infantil, familiar o temático, sin atracciones mecánicas o acuáticas propias de un parque de atracciones",
+      "O924902",
+      "Ferias y espectáculos de carácter recreativo (centro de entretenimiento infantil)",
       "entretenimiento infantil",
       "recreación infantil",
       "juegos infantiles",
@@ -4608,15 +5116,16 @@ var datosActividadesIndice = [
       "videojuegos",
       "billar",
       "gaming y e-sports",
-      "realidad virtual y simuladores",
-      "Actividades de esparcimiento y recreación mediante operación de espacios cerrados de entretenimiento infantil, familiar o temático, sin atracciones mecánicas o acuáticas propias de un parque de atracciones"
+      "realidad virtual y simuladores"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
-      "Uso de Recreación Pública": "R",
+      "Uso de Recreación Pública": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O924902",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Ferias y espectáculos de carácter recreativo (centro de entretenimiento infantil)"
   },
   {
     "SECCIÓN": "S",
@@ -4636,18 +5145,22 @@ var datosActividadesIndice = [
       "sindicato"
     ],
     "BUSQUEDA": [
+      "Actividades de colegios y asociaciones profesionales, de carácter técnico, científico, académico o cultural, vinculados a una disciplina, profesión o campo de conocimiento",
+      "O911201",
+      "Organiz. científicas, profesionales y técnicas",
       "colegio profesional",
       "asociación",
       "gremio",
       "cámara de comercio",
-      "sindicato",
-      "Actividades de colegios y asociaciones profesionales, de carácter técnico, científico, académico o cultural, vinculados a una disciplina, profesión o campo de conocimiento"
+      "sindicato"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O911201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Organiz. científicas, profesionales y técnicas"
   },
   {
     "SECCIÓN": "S",
@@ -4668,18 +5181,22 @@ var datosActividadesIndice = [
       "salón del reino"
     ],
     "BUSQUEDA": [
+      "Actividades de organizaciones religiosas (templos y locales de culto)",
+      "O919101",
+      "Organizaciones religiosas, iglesias, templos y otros",
       "iglesia",
       "templo",
       "parroquia",
       "capilla",
       "local de culto",
-      "salón del reino",
-      "Actividades de organizaciones religiosas (templos y locales de culto)"
+      "salón del reino"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O919101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Organizaciones religiosas, iglesias, templos y otros"
   },
   {
     "SECCIÓN": "S",
@@ -4698,15 +5215,19 @@ var datosActividadesIndice = [
       "reparación de carteras"
     ],
     "BUSQUEDA": [
+      "Reparación de calzado y artículos de cuero",
+      "G526002",
+      "Renovadoras de calzado y carteras",
       "zapatero",
       "reparación de calzado",
       "remendón",
-      "reparación de carteras",
-      "Reparación de calzado y artículos de cuero"
+      "reparación de carteras"
     ],
     "ZONAS": {
-      "Uso Mixto Zonal": "R"
-    }
+      "Uso Mixto Zonal": "X"
+    },
+    "EQUIVALENCIA_REV3": "G526002",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Renovadoras de calzado y carteras"
   },
   {
     "SECCIÓN": "S",
@@ -4727,20 +5248,24 @@ var datosActividadesIndice = [
       "afilado"
     ],
     "BUSQUEDA": [
+      "Reparación de efectos personales y enseres domésticos como bicicletas, prendas de vestir, joyas, relojes, artículos deportivos, libros, instrumentos musicales, juguetes y otros efectos personales comprendidos en la clase; incluye copia de llaves",
+      "G526007\nG526006",
+      "Otras reparaciones\nReparación de bicicletas",
       "reparación de celulares",
       "relojero",
       "cerrajería",
       "reparación de electrodomésticos",
       "reparación de bicicletas",
-      "afilado",
-      "Reparación de efectos personales y enseres domésticos como bicicletas, prendas de vestir, joyas, relojes, artículos deportivos, libros, instrumentos musicales, juguetes y otros efectos personales comprendidos en la clase; incluye copia de llaves"
+      "afilado"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "G526007\nG526006",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Otras reparaciones\nReparación de bicicletas"
   },
   {
     "SECCIÓN": "S",
@@ -4759,18 +5284,22 @@ var datosActividadesIndice = [
       "lavandería sin equipos"
     ],
     "BUSQUEDA": [
+      "Servicios de lavado y limpieza de prendas mediante recepción y entrega, con lavado realizado fuera del establecimiento y sin equipos de lavado o secado",
+      "O930103\nO930101",
+      "Servicio de recolección y distribución de ropa por las lavanderías\nLavanderías",
       "recepción de ropa",
       "punto de entrega de lavandería",
       "recojo de prendas",
-      "lavandería sin equipos",
-      "Servicios de lavado y limpieza de prendas mediante recepción y entrega, con lavado realizado fuera del establecimiento y sin equipos de lavado o secado"
+      "lavandería sin equipos"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O930103\nO930101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Servicio de recolección y distribución de ropa por las lavanderías\nLavanderías"
   },
   {
     "SECCIÓN": "S",
@@ -4790,18 +5319,22 @@ var datosActividadesIndice = [
       "planta de lavado"
     ],
     "BUSQUEDA": [
+      "Servicios de lavado y limpieza de prendas en lavandería de autoservicio o con equipos de lavado, secado o limpieza en seco en el establecimiento, sin planta industrial autónoma",
+      "O930103\nO930101",
+      "Servicio de recolección y distribución de ropa por las lavanderías\nLavanderías",
       "lavandería de autoservicio",
       "tintorería",
       "lavado al seco",
       "lavandería con equipos",
-      "planta de lavado",
-      "Servicios de lavado y limpieza de prendas en lavandería de autoservicio o con equipos de lavado, secado o limpieza en seco en el establecimiento, sin planta industrial autónoma"
+      "planta de lavado"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O930103\nO930101",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Servicio de recolección y distribución de ropa por las lavanderías\nLavanderías"
   },
   {
     "SECCIÓN": "S",
@@ -4828,6 +5361,9 @@ var datosActividadesIndice = [
       "centro estético"
     ],
     "BUSQUEDA": [
+      "Servicios de cuidado capilar, peluquería y barbería, con atención al público y sin procedimientos médicos",
+      "O930201",
+      "Peluquerías",
       "peluquería",
       "barbería",
       "barber shop",
@@ -4839,15 +5375,16 @@ var datosActividadesIndice = [
       "cejas y pestañas",
       "maquillaje",
       "centro de belleza",
-      "centro estético",
-      "Servicios de cuidado capilar, peluquería y barbería, con atención al público y sin procedimientos médicos"
+      "centro estético"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O930201",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Peluquerías"
   },
   {
     "SECCIÓN": "S",
@@ -4867,19 +5404,23 @@ var datosActividadesIndice = [
       "sauna"
     ],
     "BUSQUEDA": [
+      "Tratamientos de belleza no médicos, incluidos masajes faciales, manicure, pedicure, maquillaje, depilación y cuidado estético no invasivo",
+      "O930202\nO930203",
+      "Salones de belleza y masoterapia\nServ. de masajes faciales, arreglo de manos y pies, podología",
       "spa",
       "masajes",
       "masoterapia",
       "centro de relajación",
-      "sauna",
-      "Tratamientos de belleza no médicos, incluidos masajes faciales, manicure, pedicure, maquillaje, depilación y cuidado estético no invasivo"
+      "sauna"
     ],
     "ZONAS": {
-      "Uso Residencial Especial": "R",
+      "Uso Residencial Especial": "X",
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "O930202\nO930203",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Salones de belleza y masoterapia\nServ. de masajes faciales, arreglo de manos y pies, podología"
   },
   {
     "SECCIÓN": "S",
@@ -4899,18 +5440,20 @@ var datosActividadesIndice = [
       "depilación"
     ],
     "BUSQUEDA": [
+      "Servicios personales no médicos de bienestar o modificación corporal, incluidos sauna, baños de vapor, solario, salón de adelgazamiento, masaje no terapéutico, tatuaje y perforación corporal",
       "tatuajes",
       "piercing",
       "servicios personales",
       "cosmetología",
-      "depilación",
-      "Servicios personales no médicos de bienestar o modificación corporal, incluidos sauna, baños de vapor, solario, salón de adelgazamiento, masaje no terapéutico, tatuaje y perforación corporal"
+      "depilación"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "S",
@@ -4929,17 +5472,19 @@ var datosActividadesIndice = [
       "baño de mascotas"
     ],
     "BUSQUEDA": [
+      "Servicios personales de guarda, alojamiento, paseo, higiene, peluquería y cuidado de animales de compañía, sin atención veterinaria",
       "peluquería canina",
       "grooming",
       "spa para mascotas",
-      "baño de mascotas",
-      "Servicios personales de guarda, alojamiento, paseo, higiene, peluquería y cuidado de animales de compañía, sin atención veterinaria"
+      "baño de mascotas"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "S",
@@ -4957,16 +5502,18 @@ var datosActividadesIndice = [
       "entrenamiento de perros"
     ],
     "BUSQUEDA": [
+      "Servicios personales de entrenamiento y modificación de conducta de animales de compañía",
       "adiestramiento canino",
       "escuela canina",
-      "entrenamiento de perros",
-      "Servicios personales de entrenamiento y modificación de conducta de animales de compañía"
+      "entrenamiento de perros"
     ],
     "ZONAS": {
       "Uso Mixto Zonal": "X",
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": ""
   },
   {
     "SECCIÓN": "U",
@@ -4985,17 +5532,68 @@ var datosActividadesIndice = [
       "representación diplomática"
     ],
     "BUSQUEDA": [
+      "Actividades de organizaciones y órganos extraterritoriales, incluidos organismos internacionales y representaciones diplomáticas",
+      "Q990007\nQ990013",
+      "Organización de Cooperación y Desarrollo Económico\nEmbajadas",
       "embajada",
       "consulado",
       "organismo internacional",
-      "representación diplomática",
-      "Actividades de organizaciones y órganos extraterritoriales, incluidos organismos internacionales y representaciones diplomáticas"
+      "representación diplomática"
     ],
     "ZONAS": {
       "Uso Mixto Metropolitano": "X",
       "Uso Mixto Intensivo": "X",
       "Otros Usos": "X"
-    }
+    },
+    "EQUIVALENCIA_REV3": "Q990007\nQ990013",
+    "NOMBRE_GIRO_EQUIVALENTE_REV3": "Organización de Cooperación y Desarrollo Económico\nEmbajadas"
+  }
+];
+
+var datosNotasIndiceDistrital = [
+  {
+    "numero": 1,
+    "texto": "En Uso Residencial Exclusivo, se consideran compatibles las unidades inmobiliarias que cuenten con declaratoria de fábrica como tienda, local comercial o uso equivalente, los cuales adquieren uso de la categoría USO RESIDENCIAL PREFERENTE."
+  },
+  {
+    "numero": 2,
+    "texto": "En Uso Residencial Preferente, solo se permiten actividades en lotes en esquina. Se exceptúan las vías Av. Bielovucic Cavalier y Av. Buenavista."
+  },
+  {
+    "numero": 3,
+    "texto": "En uso residencial Especial, para los Conjuntos Habitacionales Limatambo y Torres de San Borja, se consideran compatibles las unidades inmobiliarias que cuenten con declaratoria de edificación inscrita en Registros Públicos como tienda, local comercial o uso equivalente."
+  },
+  {
+    "numero": 4,
+    "texto": "En lotes que no se encuentren zonificados como ZSPC (E y H) u OU, se permitirán los usos correspondientes a dichas zonificaciones, siempre que el lote cuente con una superficie mínima de 500 m²."
+  },
+  {
+    "numero": 5,
+    "texto": "En uso de Recreación Pública, las actividades se permitirán exclusivamente en las áreas calificadas como ZRP, y podrán desarrollarse a través de mecanismos de participación de la inversión privada, siempre que se encuentren vinculadas a la gestión, uso y aprovechamiento del espacio público, de conformidad con la Ley de Promoción de la Inversión Privada y la normativa vigente en materia de gestión de espacios públicos."
+  },
+  {
+    "numero": 6,
+    "texto": "En usos específicos, en lotes zonificados como ZSPC (E) y ZSPC (H), el uso principal deberá corresponder, respectivamente, a equipamiento urbano educativo o equipamiento urbano de salud. De manera complementaria, y bajo la modalidad de concesión, se permitirá actividades descritas en el Índice destinadas a apoyar el funcionamiento del equipamiento principal, siempre que no sustituyan al uso principal ni alteren su finalidad."
+  },
+  {
+    "numero": 7,
+    "texto": "Los giros derivan únicamente de las clases CIIU aprobadas por la Ordenanza N° 2851-MML."
+  },
+  {
+    "numero": 8,
+    "texto": "Se mantienen las licencias de funcionamiento preexistentes hasta su cese."
+  },
+  {
+    "numero": 9,
+    "texto": "En caso de acumulación de lotes se adquiere la mayor compatibilidad de uso y se trabaja como única unidad funcional."
+  },
+  {
+    "numero": 10,
+    "texto": "Conforme al artículo 21° de la Ordenanza N° 1862-MML, los procesos de Reajuste Integral de la Zonificación de los Usos del Suelo de Lima Metropolitana y de Cambios Específicos de los Esquemas o Planos de Zonificación Distritales no podrán reducir la calificación de zona ni el nivel de uso de los predios."
+  },
+  {
+    "numero": 11,
+    "texto": "En giros comprendidos dentro de la clase 8610, en lotes que no se encuentren zonificados como H, se consideran compatibles las actividades de esta clase siempre y cuando se utilice todo el lote."
   }
 ];
 var datosNotasRestricciones = {
@@ -5095,6 +5693,8 @@ var datosBuscadorGiros = {
             cod_giro: giro.COD_GIRO,
             clase: giro.CLASE,
             giro: giro.ACTIVIDAD,
+            ciiuRev3: giro.EQUIVALENCIA_REV3,
+            nombreGiroRev3: giro.NOMBRE_GIRO_EQUIVALENTE_REV3,
             nombres_comunes: giro.NOMBRES_PARA_EL_VISOR,
             buscar: giro.BUSQUEDA
         };
