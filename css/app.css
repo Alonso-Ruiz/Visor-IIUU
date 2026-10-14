@@ -1847,34 +1847,6 @@ body {
     margin-bottom: 0;
 }
 
-.detalle-zre-giro {
-    margin-top: 10px;
-    padding-top: 8px;
-    border-top: 1px solid #e7d79b;
-    color: #3d392e;
-    font-size: 11px;
-}
-
-.detalle-zre-giro ul {
-    margin-top: 5px;
-}
-
-.codigo-restriccion-zre {
-    color: #705000;
-    font-size: 12px;
-}
-
-.restriccion-giro-zre {
-    width: 100%;
-    margin-top: 5px;
-    padding: 6px 8px;
-    border: 1px solid #f0d77c;
-    border-radius: 4px;
-    background: #fff9df;
-    font-size: 10px;
-    line-height: 1.35;
-}
-
 .nota-actividad-zre {
     display: block;
     flex-basis: 100%;
@@ -2828,7 +2800,7 @@ body.panel-abierto .leaflet-bottom {
         align-items: stretch;
         justify-content: space-around;
         gap: 0;
-        padding: 8px 14px 7px;
+        padding: 8px 10px 7px;
         border: 0;
         border-radius: 0;
         background: transparent;
@@ -2853,10 +2825,10 @@ body.panel-abierto .leaflet-bottom {
         position: relative;
         z-index: 1;
         display: flex;
-        width: 25% !important;
+        width: 20% !important;
         height: 66px !important;
         min-height: 66px !important;
-        flex: 1 1 25% !important;
+        flex: 1 1 20% !important;
         align-items: flex-start;
         justify-content: center;
         margin: 0 !important;
@@ -2873,7 +2845,7 @@ body.panel-abierto .leaflet-bottom {
         bottom: 1px;
         left: 1px;
         color: var(--mobile-green-dark);
-        font-size: clamp(9px, 2.55vw, 12px);
+        font-size: clamp(9px, 2.2vw, 10.5px);
         font-weight: 600;
         line-height: 1.05;
         text-align: center;
@@ -2900,10 +2872,10 @@ body.panel-abierto .leaflet-bottom {
     .leaflet-bottom.leaflet-left .control-transparencia-mapa,
     .leaflet-bottom.leaflet-left .info.legend.leyenda-abierta,
     .leaflet-bottom.leaflet-left .info.legend.leyenda-cerrada {
-        width: 25% !important;
+        width: 20% !important;
         height: 66px !important;
         min-height: 66px !important;
-        flex: 1 1 25% !important;
+        flex: 1 1 20% !important;
     }
 
     .leaflet-bottom.leaflet-left .norte-magnetico-flotante svg {
@@ -2959,7 +2931,7 @@ body.panel-abierto .leaflet-bottom {
     .leaflet-bottom.leaflet-left .boton-capas-auxiliares i,
     .leaflet-bottom.leaflet-left .boton-consulta-ciiu i,
     .leaflet-bottom.leaflet-left .boton-transparencia-mapa i {
-        font-size: 23px;
+        font-size: 20px;
     }
 
     .leaflet-bottom.leaflet-left .info.legend .leyenda-boton-icon {
@@ -3943,6 +3915,11 @@ body.panel-abierto .leaflet-bottom {
     box-shadow: inset 0 0 0 1px rgba(0, 107, 87, .16), 0 2px 7px rgba(0, 39, 32, .18);
 }
 
+.navegacion-visores button i {
+    font-size: 16px;
+    line-height: 1;
+}
+
 .navegacion-visores button:not(:disabled):hover { transform: translateY(-1px); background: #eaf8f2; }
 .navegacion-visores button:focus-visible { outline: 3px solid #7de2bd; outline-offset: 2px; }
 .navegacion-visores button:disabled { opacity: .58; cursor: not-allowed; box-shadow: none; }
@@ -3952,7 +3929,7 @@ body.panel-abierto .leaflet-bottom {
         --desktop-header-height: 58px;
         --desktop-edge: clamp(12px, 1.2vw, 18px);
         --desktop-search-width: clamp(260px, 22vw, 320px);
-        --desktop-toolbar-width: clamp(300px, 24vw, 340px);
+        --desktop-toolbar-width: clamp(350px, 27vw, 390px);
         --desktop-icon-box: 28px;
         --desktop-icon-size: 17px;
         --desktop-toolbar-label-size: 9px;
@@ -4113,10 +4090,10 @@ body.panel-abierto .leaflet-bottom {
     }
 
     .leaflet-bottom.leaflet-left > .leaflet-control:not(.leaflet-control-scale):not(.norte-magnetico-flotante) {
-        width: 25%;
+        width: 20%;
         height: 46px;
         min-height: 46px;
-        flex-basis: 25%;
+        flex-basis: 20%;
     }
 
     .leaflet-bottom.leaflet-left {
@@ -4144,7 +4121,7 @@ body.panel-abierto .leaflet-bottom {
 
 @media (min-width: 897px) and (max-width: 1180px) {
     :root {
-        --desktop-toolbar-width: clamp(300px, 34vw, 340px);
+        --desktop-toolbar-width: clamp(350px, 41vw, 390px);
     }
 
     .encabezado-institucional {
@@ -4366,7 +4343,7 @@ body.panel-abierto .leaflet-bottom {
 @media (max-width: 767px) {
     .leaflet-bottom.leaflet-left > .leaflet-control:not(.leaflet-control-scale)::after {
         bottom: 8px;
-        font-size: clamp(10px, 3vw, 12px);
+        font-size: clamp(9px, 2.2vw, 10.5px);
         line-height: 1.1;
     }
 }
@@ -4715,5 +4692,133 @@ body.panel-abierto .leaflet-bottom {
         width: min(320px, calc(100vw - 24px));
         max-height: calc(100dvh - 125px);
         padding: 15px;
+    }
+}
+
+/* Selector compacto de visores para móvil: queda justo debajo de la brújula. */
+.navegacion-visores-opciones {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navegacion-visores-toggle {
+    display: none;
+}
+
+@media (min-width: 897px) {
+    .navegacion-visores {
+        top: 12px;
+        right: var(--desktop-edge);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: auto;
+        padding: 0;
+    }
+
+    .navegacion-visores .navegacion-visores-toggle {
+        display: none !important;
+    }
+
+    .navegacion-visores .navegacion-visores-opciones {
+        position: static;
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+    }
+
+    .navegacion-visores .navegacion-visores-opciones button {
+        width: 36px;
+        height: 34px;
+    }
+}
+
+@media (max-width: 896px) {
+    .navegacion-visores {
+        top: 140px;
+        right: 12px;
+        z-index: 1080;
+        display: block;
+        width: 44px;
+        padding: 0;
+    }
+
+    .navegacion-visores-toggle {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--desktop-border, rgba(17, 57, 47, .12)) !important;
+        border-radius: 50% !important;
+        background: var(--desktop-surface, #fff) !important;
+        color: var(--desktop-green, #006b57) !important;
+        box-shadow: var(--desktop-shadow, 0 3px 12px rgba(0, 39, 32, .18)) !important;
+        font-size: 18px !important;
+    }
+
+    .navegacion-visores .navegacion-visores-toggle i {
+        font-size: 25px !important;
+    }
+
+    .navegacion-visores-opciones {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        visibility: hidden;
+        pointer-events: none;
+        opacity: 0;
+        transform-origin: top center;
+        transform: scaleY(.65) translateY(-8px);
+        clip-path: inset(0 0 100% 0 round 15px);
+        transition: transform .24s ease, clip-path .24s ease, opacity .2s ease, visibility 0s .24s;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        padding: 6px;
+        border: 1px solid rgba(17, 57, 47, .1);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, .97);
+        box-shadow: 0 5px 18px rgba(0, 39, 32, .2);
+        backdrop-filter: blur(10px);
+    }
+
+    .navegacion-visores.visores-menu-abierto .navegacion-visores-opciones {
+        visibility: visible;
+        pointer-events: auto;
+        opacity: 1;
+        transform: scaleY(1) translateY(0);
+        clip-path: inset(0 0 0 0 round 15px);
+        transition-delay: 0s;
+    }
+
+    .navegacion-visores .navegacion-visores-opciones button {
+        width: 100%;
+        height: 44px;
+        border-radius: 12px;
+        font-size: 18px;
+    }
+
+    .navegacion-visores .navegacion-visores-opciones button i {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 896px) and (prefers-reduced-motion: reduce) {
+    .navegacion-visores .navegacion-visores-opciones { transition: none; }
+}
+
+@media (max-width: 896px) {
+    body.panel-abierto .navegacion-visores {
+        opacity: 0;
+        pointer-events: none;
     }
 }

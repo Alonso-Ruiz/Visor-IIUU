@@ -230,11 +230,8 @@
         obtenerZRE: restriccionGiroZRE,
         regimenResidencialExclusivo: {
             titulo: 'Condición de compatibilidad',
-            resumen: 'El Uso Residencial Exclusivo mantiene su carácter residencial. El artículo 20 prevé una evaluación excepcional para giros preexistentes.',
-            condiciones: [
-                'Debe existir una licencia de funcionamiento municipal anterior a la publicación de la ordenanza y una declaratoria de edificación o fábrica inscrita que identifique el mismo ambiente como tienda, local comercial o equivalente.',
-                'La clase CIIU debe estar marcada R en Uso Mixto Vecinal y el giro específico debe estar aprobado. Ubicación, delimitación, área y niveles deben coincidir con la licencia y la declaratoria inscrita. Consulte todas las condiciones del artículo 20 del reglamento propuesto.'
-            ]
+            resumen: 'En Uso Residencial Exclusivo, se consideran compatibles las unidades inmobiliarias que cuenten con declaratoria de fábrica como tienda, local comercial o uso equivalente, los cuales adquieren uso de la categoría USO RESIDENCIAL PREFERENTE.',
+            condiciones: []
         }
     };
 })();

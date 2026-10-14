@@ -10,11 +10,61 @@
             var volver = document.getElementById('btn-volver-opciones');
             var volverConsultaCiiu = document.getElementById('btn-volver-consulta-ciiu');
             var abrirConsultaCiiu = document.getElementById('boton-consulta-ciiu');
+            var menuVisores = document.querySelector('.navegacion-visores');
+            var botonMenuVisores = menuVisores ? menuVisores.querySelector('.navegacion-visores-toggle') : null;
             var opciones = modal ? modal.querySelectorAll('[data-open-visor]') : [];
             var proximamente = modal ? modal.querySelectorAll('[data-coming-soon]') : [];
             var tituloProximamente = document.getElementById('portada-proximamente-titulo');
             var descripcionProximamente = document.getElementById('portada-proximamente-descripcion');
             var opcionActiva = null;
+
+            function cerrarMenuVisores() {
+                if (!menuVisores || !botonMenuVisores) return;
+                menuVisores.classList.remove('visores-menu-abierto');
+                botonMenuVisores.setAttribute('aria-expanded', 'false');
+                botonMenuVisores.setAttribute('aria-label', 'Abrir menú de visores');
+            }
+
+            function ubicarMenuVisores() {
+                if (!menuVisores || !botonMenuVisores) return;
+                if (!window.matchMedia('(max-width: 896px)').matches) {
+                    menuVisores.style.removeProperty('top');
+                    menuVisores.style.removeProperty('right');
+                    menuVisores.style.removeProperty('width');
+                    botonMenuVisores.style.removeProperty('width');
+                    botonMenuVisores.style.removeProperty('height');
+                    return;
+                }
+                var brujula = document.getElementById('brujula-movil');
+                var botonDetalle = document.getElementById('boton-detalle-movil');
+                if (brujula) {
+                    var dimensiones = brujula.getBoundingClientRect();
+                    menuVisores.style.top = Math.round(dimensiones.bottom + 14) + 'px';
+                    menuVisores.style.right = Math.max(0, Math.round(window.innerWidth - dimensiones.right)) + 'px';
+                    var dimensionesDetalle = botonDetalle ? botonDetalle.getBoundingClientRect() : dimensiones;
+                    var ladoBoton = Math.round(Math.max(dimensiones.width, dimensiones.height, dimensionesDetalle.width, dimensionesDetalle.height));
+                    menuVisores.style.width = ladoBoton + 'px';
+                    botonMenuVisores.style.width = ladoBoton + 'px';
+                    botonMenuVisores.style.height = ladoBoton + 'px';
+                }
+            }
+
+            if (menuVisores && botonMenuVisores) {
+                ubicarMenuVisores();
+                window.addEventListener('load', ubicarMenuVisores);
+                botonMenuVisores.addEventListener('click', function() {
+                    var abierto = menuVisores.classList.toggle('visores-menu-abierto');
+                    botonMenuVisores.setAttribute('aria-expanded', String(abierto));
+                    botonMenuVisores.setAttribute('aria-label', abierto ? 'Cerrar menú de visores' : 'Abrir menú de visores');
+                });
+                document.addEventListener('pointerdown', function(evento) {
+                    if (menuVisores.classList.contains('visores-menu-abierto') && !menuVisores.contains(evento.target)) cerrarMenuVisores();
+                });
+                window.addEventListener('resize', function() {
+                    ubicarMenuVisores();
+                    if (!window.matchMedia('(max-width: 896px)').matches) cerrarMenuVisores();
+                });
+            }
 
             if (!modal) return;
 
@@ -118,7 +168,10 @@
             if (abrirRetiros) abrirRetiros.addEventListener('click', abrirVisorRetiros);
             if (volverRetiros) volverRetiros.addEventListener('click', cerrarVisorRetiros);
             botonesVisores.forEach(function(boton) {
-                boton.addEventListener('click', function() { seleccionarVisor(boton.dataset.visor); });
+                boton.addEventListener('click', function() {
+                    cerrarMenuVisores();
+                    seleccionarVisor(boton.dataset.visor);
+                });
             });
             if (abrirConsultaCiiu) abrirConsultaCiiu.addEventListener('click', function() {
                 if (window.cerrarPanelesMapa) window.cerrarPanelesMapa();
@@ -152,5 +205,6 @@
                     else if (!pantallaProximamente.hidden) regresarOpciones();
                 }
                 if (e.key === 'Escape' && document.body.classList.contains('modo-retiros')) cerrarVisorRetiros();
+                if (e.key === 'Escape') cerrarMenuVisores();
             });
         })();

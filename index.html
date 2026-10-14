@@ -8,11 +8,11 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20261013-visor3-sin-menu1">
+        <link rel="stylesheet" href="css/app.css?v=20261014-desktop-visores-alineados1">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js?v=20260917-sin-actividades-excluidas1"></script>
         <script src="js/app/preservar-usos-anteriores.js?v=20260930-restricciones-complemento1"></script>
-        <script src="js/restricciones.js?v=20261001-reglamento-propuesto1"></script>
+        <script src="js/restricciones.js?v=20261014-residencial-exclusivo-nota1"></script>
         <script src="js/indice_distrital_actual.js?v=20261013-indice-distrital-final1"></script>
         <script src="js/actividades_zre.js?v=20261013-indice-zre-revision1"></script>
         <script src="data/vias.js"></script>
@@ -32,9 +32,12 @@
         </header>
 
         <nav class="navegacion-visores" aria-label="Seleccionar visor">
-            <button type="button" data-visor="1" aria-label="Abrir visor 1: Giros permitidos" aria-pressed="true" title="Giros permitidos">1</button>
-            <button type="button" data-visor="2" aria-label="Visor 2 próximamente" title="Próximamente" disabled>2</button>
-            <button type="button" data-visor="3" aria-label="Abrir visor 3: Retiros normativos" aria-pressed="false" title="Retiros normativos">3</button>
+            <button type="button" class="navegacion-visores-toggle" aria-label="Abrir menú de visores" aria-expanded="false" aria-controls="navegacion-visores-opciones" title="Cambiar visor"><i class="fas fa-map" aria-hidden="true"></i></button>
+            <div class="navegacion-visores-opciones" id="navegacion-visores-opciones">
+                <button type="button" data-visor="1" aria-label="Abrir visor 1: Giros permitidos" aria-pressed="true" title="Giros permitidos"><i class="fas fa-store" aria-hidden="true"></i></button>
+                <button type="button" data-visor="2" aria-label="Visor 2 próximamente" title="Próximamente" disabled><i class="fas fa-building" aria-hidden="true"></i></button>
+                <button type="button" data-visor="3" aria-label="Abrir visor 3: Retiros normativos" aria-pressed="false" title="Retiros normativos"><i class="fas fa-road" aria-hidden="true"></i></button>
+            </div>
         </nav>
 
         <div id="map"></div>
@@ -264,10 +267,10 @@
         <script src="js/app/layers.js?v=20261001-poligono-parques1"></script>
         <script src="js/app/controls.js?v=20261002-consulta-ciiu1"></script>
         <script src="js/app/visor-retiros.js?v=20261013-retiros-poligonos-completos1"></script>
-        <script src="js/app/panel.js?v=20261013-reset-visores1"></script>
+        <script src="js/app/panel.js?v=20261014-mapeo-notas-usos1"></script>
         <script src="data/equivalencias_2851.js?v=20261002-consulta-ciiu1"></script>
         <script src="js/app/consulta-ciiu.js?v=20261005-consulta-simple1"></script>
-        <script src="js/app/welcome-modal.js?v=20261009-navegacion-visores1"></script>
+        <script src="js/app/welcome-modal.js?v=20261014-mobile-menu-visores5"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>
         <script src="js/app/map-opacity.js?v=20260824-toolbar2"></script>
         <script src="js/app/vias-search.js?v=20261009-retiros-vias1"></script>

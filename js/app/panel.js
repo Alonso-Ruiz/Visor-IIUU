@@ -38,6 +38,20 @@
             return loteActual && (loteActual.AREA_M2 || loteActual['ÁREA_M2'] || loteActual['�REA_M2'] || loteActual.Area_ha || loteActual.AREA);
         }
 
+        function numerosNotasPorZona(zona) {
+            var notas = {
+                'Uso Residencial Exclusivo': [1],
+                'Uso Residencial Preferente': [2],
+                'Uso Residencial Especial': [3],
+                'Uso Mixto Especializado': [4],
+                'Uso de Recreación Pública': [5],
+                'Usos Específicos - Hospital': [6],
+                'Usos Específicos - Educación': [6],
+                'Usos Específicos - Otros Usos': [6]
+            };
+            return notas[zona] || [];
+        }
+
         function escaparHtml(valor) {
             return String(valor === null || valor === undefined ? '' : valor)
                 .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -83,13 +97,6 @@
                 '<div class="titulo-restricciones-giro"><i class="fas fa-clipboard-check"></i> ' + escaparHtml(titulo || 'Restricciones del giro') + '</div>' +
                 (regla.grupo ? '<div class="grupo-restriccion">Clase agrupada: ' + escaparHtml(regla.grupo) + '</div>' : '') +
                 '<ul>' + items + '</ul></div>';
-        }
-
-        function renderizarRestriccionGiroZre(regla) {
-            if (!regla || regla.sinRestriccion || !regla.condiciones || !regla.condiciones.length) return '';
-            return '<div class="restriccion-giro-zre">' + regla.condiciones.map(function(c) {
-                return '<div><strong>' + escaparHtml(c.etiqueta) + ':</strong> ' + escaparHtml(c.valor) + '</div>';
-            }).join('') + '</div>';
         }
 
         function tokensNombreVia(nombre) {
@@ -682,9 +689,22 @@
                 var textoGeneral = '<details class="disposiciones-generales"><summary>Disposiciones generales y licencias existentes</summary>' +
                     generales.map(function (texto) { return '<p>' + escaparHtml(texto) + '</p>'; }).join('') + '</details>';
                 var notasIndice = window.datosNotasIndiceDistrital || [];
-                if (notasIndice.length) {
-                    textoGeneral += '<details class="disposiciones-generales"><summary>Notas del Índice distrital</summary>' +
-                        notasIndice.map(function (nota) {
+                var numerosAplicables = numerosNotasPorZona(zonaActual);
+                var notasAplicables = notasIndice.filter(function(nota) {
+                    return numerosAplicables.indexOf(Number(nota.numero)) !== -1;
+                });
+                if (notasAplicables.length) {
+                    var referenciaNotas = notasAplicables.map(function(nota) { return nota.numero; }).join(', ');
+                    textoGeneral += '<details class="disposiciones-generales"><summary>Nota aplicable a ' +
+                        escaparHtml(zonaActual) + ' (' + escaparHtml(referenciaNotas) + ')</summary>' +
+                        notasAplicables.map(function(nota) {
+                            return '<p><strong>' + escaparHtml(nota.numero) + '.</strong> ' + escaparHtml(nota.texto) + '</p>';
+                        }).join('') + '</details>';
+                }
+                var otrasNotas = notasIndice.filter(function(nota) { return Number(nota.numero) > 6; });
+                if (otrasNotas.length) {
+                    textoGeneral += '<details class="disposiciones-generales"><summary>Otras notas generales del índice</summary>' +
+                        otrasNotas.map(function(nota) {
                             return '<p><strong>' + escaparHtml(nota.numero) + '.</strong> ' + escaparHtml(nota.texto) + '</p>';
                         }).join('') + '</details>';
                 }
@@ -783,9 +803,6 @@
                     c.giros.forEach(function(g) {
                         var autorizacion = poligonoRayadoActual() ? 'R' : 'X';
                         var col = colorAuth(autorizacion);
-                        var reglaGiro = motorRestricciones && motorRestricciones.obtenerZRE
-                            ? motorRestricciones.obtenerZRE(g, zreId, matrizZre)
-                            : null;
                         girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;flex-wrap:wrap;">' +
                             '<span>' + escaparHtml(g.ACTIVIDAD) +
                             (g.EQUIVALENCIA_REV3 || g.NOMBRE_GIRO_EQUIVALENTE_REV3
@@ -796,7 +813,6 @@
                                 : '') + '</span>' +
                             '<span style="background:' + col.bg + ';color:' + col.txt + ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>' +
                             (g.OBSERVACIONES ? '<small class="nota-actividad-zre">' + escaparHtml(g.OBSERVACIONES) + '</small>' : '') +
-                            (autorizacion === 'R' ? renderizarRestriccionGiroZre(reglaGiro) : '') +
                             '</li>';
                     });
                     girosHtml += '</ul>';
@@ -895,13 +911,6 @@
                 });
             }
 
-            var reglasActuales = new Map();
-            obtenerActividadesIndice().forEach(function (g) {
-                var auth = g.ZONAS && g.ZONAS[zonaKeyAct];
-                if (!tipoAutorizacion(auth) || !window.RESTRICCIONES_IIUU) return;
-                reglasActuales.set(g, window.RESTRICCIONES_IIUU.obtener(zonaActual, g.CLASE,
-                    contextoRestricciones(loteActual, zonificacionReglasActual, auth, zonaActual, g.CLASE)));
-            });
             var poligonoRayado = poligonoRayadoActual();
             resultados = resultados.map(function (item) {
                 return Object.assign({}, item, {
@@ -935,25 +944,16 @@
                 var girosHtml = '';
                 if (girosDeEstaClase.length > 0) {
                     girosHtml = '<ul class="lista-actividades">';
-                    var restriccionesGirosHtml = '';
                     girosDeEstaClase.forEach(function(g) {
                         var authGiro = poligonoRayado ? 'R' : 'X';
-                        var reglaGiro = reglasActuales.get(g);
                         var col = colorAuth(authGiro);
                         var badge = '<span style="background:' + col.bg + ';color:' + col.txt +
                             ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>';
                         var codigoGiro = g.COD_GIRO ? '<small style="color:#666;margin-right:auto;">' + escaparHtml(g.COD_GIRO) + '</small>' : '';
                         girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;">' +
                             '<span>' + escaparHtml(g.ACTIVIDAD) + htmlEquivalenciaRev3(g) + '</span>' + codigoGiro + badge + '</li>';
-                        if (reglaGiro && reglaGiro.condiciones.length) {
-                            restriccionesGirosHtml += renderizarRestriccionesGiro(
-                                reglaGiro,
-                                'Restricciones del giro ' + (g.COD_GIRO || ('CIIU ' + g.CLASE))
-                            );
-                        }
                     });
                     girosHtml += '</ul>';
-                    girosHtml += restriccionesGirosHtml;
                     if (girosDeEstaClase[0].OBSERVACIONES) {
                         girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#666;font-style:italic;">' + girosDeEstaClase[0].OBSERVACIONES + '</p>';
                     }
