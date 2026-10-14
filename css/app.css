@@ -4646,6 +4646,10 @@ body.panel-abierto .leaflet-bottom {
 .modo-retiros #panel-capas-auxiliares > :not(#panel-capas-retiros) { display: none !important; }
 
 .modo-retiros .leaflet-bottom.leaflet-left {
+    display: none !important;
+}
+
+.modo-retiros .leaflet-bottom.leaflet-left {
     width: 200px !important;
     min-width: 200px !important;
     max-width: 200px !important;

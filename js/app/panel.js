@@ -45,12 +45,8 @@
         }
 
         function htmlEquivalenciaRev3(giro) {
-            if (!giro || (!giro.EQUIVALENCIA_REV3 && !giro.NOMBRE_GIRO_EQUIVALENTE_REV3)) return '';
-            return '<small class="nota-actividad-zre">Equivalencia CIIU Rev. 3: ' +
-                escaparHtml(giro.EQUIVALENCIA_REV3 || '—') +
-                (giro.NOMBRE_GIRO_EQUIVALENTE_REV3
-                    ? ' · ' + escaparHtml(giro.NOMBRE_GIRO_EQUIVALENTE_REV3).replace(/\n/g, '<br>')
-                    : '') + '</small>';
+            // Las equivalencias Rev. 3 no forman parte de la ficha de consulta.
+            return '';
         }
 
         function obtenerPropiedad(obj, nombres) {
@@ -65,6 +61,12 @@
         function obtenerRestriccionPoligono() {
             return obtenerPropiedad(loteActual,
                 ['RESTRICCIÓN', 'RESTRICCIÓ', 'RESTRICCI�', 'RESTRICCION']);
+        }
+
+        function poligonoRayadoActual() {
+            var categoria = String(loteActual && loteActual.USOS_COMPA || '');
+            if (window.normalizarCategoriaUso) categoria = window.normalizarCategoriaUso(categoria);
+            return categoria.indexOf('Planes Especiales') === 0;
         }
 
         function renderizarRestriccionesGiro(regla, titulo) {
@@ -437,11 +439,12 @@
             clases.forEach(function(item) {
                 var usosHtml = '<div class="usos-globales">';
                 item.usos.forEach(function(uso) {
-                    var esRestringido = String(uso['Autorización']).includes('restricción');
+                    var esRestringido = /restricci[oó]n/i.test(String(uso['Autorización'] || ''));
                     var badgeColor = esRestringido ? '#ffca28' : '#4CAF50';
                     var badgeTexto = esRestringido ? '#1d1d1d' : '#fff';
+                    var badgeLabel = esRestringido ? 'Permitido con restricción' : 'Permitido';
                     usosHtml += '<span class="uso-global-badge" style="background:' + badgeColor + ';color:' + badgeTexto + ';">' +
-                        escaparHtml(uso['Uso Compatible']) + '</span>';
+                        escaparHtml(badgeLabel) + '</span>';
                 });
                 usosHtml += '</div>';
 
@@ -482,6 +485,38 @@
 
             sincronizarAlturaPanel();
         }
+
+        window.limpiarEstadoPanelVisor = function() {
+            if (capaLoteResaltado && map.hasLayer(capaLoteResaltado)) map.removeLayer(capaLoteResaltado);
+            capaLoteResaltado = null;
+            window.capaLoteResaltado = null;
+            if (window.limpiarBordeBloqueSeleccionado) window.limpiarBordeBloqueSeleccionado();
+            if (window.limpiarRetiroResaltado) window.limpiarRetiroResaltado();
+            if (capaResaltadoVia && map.hasLayer(capaResaltadoVia)) map.removeLayer(capaResaltadoVia);
+            capaResaltadoVia = null;
+            map.closePopup();
+
+            zonaActual = '';
+            zonVigActual = '';
+            zreUsocomActual = '';
+            loteActual = {};
+            resumenRestriccionesViaActual = null;
+            zonificacionReglasActual = '';
+            panel.classList.add('minimizado');
+            panel.classList.remove('panel-expandido');
+            document.body.classList.remove('panel-abierto');
+            document.getElementById('nombre-uso-titulo').textContent = 'Seleccione un polígono';
+            document.getElementById('ayuda-panel').style.display = '';
+            document.getElementById('conteo-resumen').textContent = 'Haz clic en un polígono del mapa para consultar...';
+            document.getElementById('lista-clases-container').innerHTML = '';
+            document.getElementById('buscador-actividad').value = '';
+            var restricciones = document.getElementById('ventana-restricciones');
+            var observaciones = document.getElementById('ventana-observaciones');
+            if (restricciones) restricciones.style.display = 'none';
+            if (observaciones) observaciones.style.display = 'none';
+            if (window.sincronizarBotonDetalleMovil) window.sincronizarBotonDetalleMovil();
+            sincronizarAlturaPanel();
+        };
 
         function sincronizarAlturaPanel() {
             if (!botonAlturaPanel) return;
@@ -746,7 +781,7 @@
                     // Cada giro conserva la autorización y, si corresponde, su restricción específica.
                     var girosHtml = '<ul class="lista-actividades">';
                     c.giros.forEach(function(g) {
-                        var autorizacion = g._autorizacionSeleccionada;
+                        var autorizacion = poligonoRayadoActual() ? 'R' : 'X';
                         var col = colorAuth(autorizacion);
                         var reglaGiro = motorRestricciones && motorRestricciones.obtenerZRE
                             ? motorRestricciones.obtenerZRE(g, zreId, matrizZre)
@@ -867,15 +902,14 @@
                 reglasActuales.set(g, window.RESTRICCIONES_IIUU.obtener(zonaActual, g.CLASE,
                     contextoRestricciones(loteActual, zonificacionReglasActual, auth, zonaActual, g.CLASE)));
             });
+            var poligonoRayado = poligonoRayadoActual();
             resultados = resultados.map(function (item) {
-                var tieneCondicion = obtenerActividadesIndice().some(function (g) {
-                    var regla = reglasActuales.get(g);
-                    return String(g.CLASE) === String(item.Clase) && regla && regla.condiciones.length;
+                return Object.assign({}, item, {
+                    'Autorización': poligonoRayado ? 'Permitidas con restricción' : 'Permitidas'
                 });
-                return tieneCondicion ? Object.assign({}, item, { 'Autorización': 'Permitidas con restricción' }) : item;
             });
-            var permitidos    = resultados.filter(r => String(r['Autorización']).includes('Permitidas') && !String(r['Autorización']).includes('restricción')).length;
-            var restringidos  = resultados.filter(r => String(r['Autorización']).includes('restricción')).length;
+            var permitidos    = resultados.filter(r => !/restricci[oó]n/i.test(String(r['Autorización'] || ''))).length;
+            var restringidos  = resultados.filter(r => /restricci[oó]n/i.test(String(r['Autorización'] || ''))).length;
             document.getElementById('conteo-resumen').innerHTML =
                 'Mostrando: <strong>' + resultados.length + '</strong> clases CIIU.<br>' +
                 '<span style="color:#66bb6a;">● ' + permitidos + ' Permitidas</span> | ' +
@@ -883,10 +917,10 @@
 
             var htmlContenido = '';
             resultados.forEach(function(item) {
-                var esRestringido = String(item['Autorización']).includes('restricción');
+                var esRestringido = poligonoRayado;
                 var cCaja  = esRestringido ? '#ffca28' : '#4CAF50';
                 var cTexto = esRestringido ? '#000' : '#fff';
-                var tAviso = esRestringido ? 'Condiciones detalladas' : 'Permitidas';
+                var tAviso = esRestringido ? 'Permitido con restricción' : 'Permitido';
 
                 // Giros para esta clase CON su autorización individual en la zona
                 var girosDeEstaClase = obtenerActividadesIndice().filter(function(g) {
@@ -903,9 +937,8 @@
                     girosHtml = '<ul class="lista-actividades">';
                     var restriccionesGirosHtml = '';
                     girosDeEstaClase.forEach(function(g) {
-                        var authGiro = g.ZONAS && g.ZONAS[zonaKeyAct];
+                        var authGiro = poligonoRayado ? 'R' : 'X';
                         var reglaGiro = reglasActuales.get(g);
-                        if (reglaGiro && reglaGiro.condiciones.length) authGiro = 'R';
                         var col = colorAuth(authGiro);
                         var badge = '<span style="background:' + col.bg + ';color:' + col.txt +
                             ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>';

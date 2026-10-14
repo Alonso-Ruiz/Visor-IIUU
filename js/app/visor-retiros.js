@@ -30,6 +30,7 @@
     var activo = false;
     var sesion = 0;
     var indiceClicPoligonos = Object.create(null);
+    var informacionLinealPorArea = new WeakMap();
     var tamanoCeldaClic = 0.001;
     var ultimoClicDeCapa = null;
     var ultimoCursorRetiros = 0;
@@ -50,10 +51,9 @@
 
     function cargarDatosBase() {
         if (cargaBase) return cargaBase;
-        if (window.geojsonRetirosContexto && window.geojsonRetirosPoligonos && window.geojsonRetirosLineas) return Promise.resolve();
+        if (window.geojsonRetirosContexto && window.json_Polgono_retiros_concdigos_0 && window.geojsonRetirosLineas) return Promise.resolve();
         cargaBase = Promise.all([
             agregarScript('data/retiros_contexto.js?v=20261009-1'),
-            agregarScript('data/retiros_poligonos.js?v=20261009-1'),
             agregarScript('data/retiros_lineas.js?v=20261009-1')
         ]).catch(function(error) {
             cargaBase = null;
@@ -184,7 +184,11 @@
         var candidato = poligonoBajoPunto([e.latlng.lng, e.latlng.lat]);
         if (!candidato) return;
         map.closePopup();
-        mostrarDetalle(candidato.titulo, candidato.feature.properties, candidato.feature, e.latlng);
+        var propiedades = candidato.feature.properties;
+        if (candidato.titulo === 'Área de retiro') {
+            propiedades = informacionLinealPorArea.get(candidato.feature) || {};
+        }
+        mostrarDetalle(candidato.titulo, propiedades, candidato.feature, e.latlng);
     }
 
     function actualizarCursorRetiros(e) {
@@ -216,7 +220,7 @@
             }
             html += '<div class="retiros-dato"><span>' + textoSeguro(clave.replace(/_/g, ' ')) + '</span><strong>' + textoSeguro(valor) + '</strong></div>';
         });
-        if (feature && feature.geometry && /Polygon/.test(feature.geometry.type)) {
+        if (titulo !== 'Área de retiro' && feature && feature.geometry && /Polygon/.test(feature.geometry.type)) {
             var area = areaGeometriaM2(feature.geometry);
             if (area > 0 && !Object.keys(propiedades).some(function(k) {
                 return /area/i.test(k) && propiedades[k] !== null && propiedades[k] !== undefined && String(propiedades[k]).trim() !== '';
@@ -224,7 +228,12 @@
                 html += '<div class="retiros-dato"><span>Área calculada</span><strong>' + area.toLocaleString('es-PE', { maximumFractionDigits: 1 }) + ' m²</strong></div>';
             }
         }
-        if (!html) html = '<p class="retiros-sin-datos">Este elemento no tiene atributos asociados; se muestra su geometría de referencia.</p>';
+        if (!html) {
+            var mensajeSinDatos = titulo === 'Área de retiro'
+                ? 'No se encontró una línea cercana con datos de ancho y compatibilidad suficientemente confiables.'
+                : 'Este elemento no tiene atributos asociados; se muestra su geometría de referencia.';
+            html = '<p class="retiros-sin-datos">' + textoSeguro(mensajeSinDatos) + '</p>';
+        }
         var contenido = '<div class="retiros-popup-ficha"><strong class="retiros-popup-titulo">' +
             textoSeguro(titulo) + '</strong><div class="retiros-popup-campos">' + html + '</div></div>';
         L.popup({
@@ -277,6 +286,106 @@
         };
     }
 
+    function asociarDatosLinealesAreas(areas, lineas) {
+        informacionLinealPorArea = new WeakMap();
+        if (!areas || !areas.features || !lineas || !lineas.features) return;
+
+        var tamanoCelda = 0.0002;
+        var segmentos = [];
+        var celdas = Object.create(null);
+        var grupos = [];
+        function claveCelda(x, y) { return Math.floor(x / tamanoCelda) + ':' + Math.floor(y / tamanoCelda); }
+
+        lineas.features.forEach(function(feature, grupo) {
+            var props = feature.properties || {};
+            grupos[grupo] = { 'ANCHO': props.ANCHO, 'USOS COMPA': props['USOS COMPA'] };
+            var geometria = feature.geometry || {};
+            var lineasCoordenadas = geometria.type === 'LineString'
+                ? [geometria.coordinates]
+                : geometria.type === 'MultiLineString' ? geometria.coordinates : [];
+            lineasCoordenadas.forEach(function(linea) {
+                for (var i = 1; i < linea.length; i++) {
+                    var segmento = { a: linea[i - 1], b: linea[i], grupo: grupo };
+                    var indice = segmentos.push(segmento) - 1;
+                    var minX = Math.floor(Math.min(segmento.a[0], segmento.b[0]) / tamanoCelda);
+                    var maxX = Math.floor(Math.max(segmento.a[0], segmento.b[0]) / tamanoCelda);
+                    var minY = Math.floor(Math.min(segmento.a[1], segmento.b[1]) / tamanoCelda);
+                    var maxY = Math.floor(Math.max(segmento.a[1], segmento.b[1]) / tamanoCelda);
+                    for (var x = minX; x <= maxX; x++) {
+                        for (var y = minY; y <= maxY; y++) {
+                            var llave = x + ':' + y;
+                            if (!celdas[llave]) celdas[llave] = [];
+                            celdas[llave].push(indice);
+                        }
+                    }
+                }
+            });
+        });
+
+        function centroideAnillo(anillo) {
+            var areaDoble = 0, cx = 0, cy = 0;
+            var origenX = anillo[0][0], origenY = anillo[0][1];
+            for (var i = 0, j = anillo.length - 1; i < anillo.length; j = i++) {
+                var xj = anillo[j][0] - origenX, yj = anillo[j][1] - origenY;
+                var xi = anillo[i][0] - origenX, yi = anillo[i][1] - origenY;
+                var cruz = xj * yi - xi * yj;
+                areaDoble += cruz;
+                cx += (xj + xi) * cruz;
+                cy += (yj + yi) * cruz;
+            }
+            if (Math.abs(areaDoble) < 1e-15) return null;
+            return {
+                punto: [origenX + cx / (3 * areaDoble), origenY + cy / (3 * areaDoble)],
+                area: Math.abs(areaDoble / 2)
+            };
+        }
+
+        function distanciaSegmentoMetros(punto, segmento) {
+            var escalaX = Math.cos(punto[1] * Math.PI / 180) * 111320;
+            var ax = segmento.a[0] * escalaX, ay = segmento.a[1] * 111320;
+            var bx = segmento.b[0] * escalaX, by = segmento.b[1] * 111320;
+            var px = punto[0] * escalaX, py = punto[1] * 111320;
+            var dx = bx - ax, dy = by - ay;
+            var t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy || 1)));
+            return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+        }
+
+        areas.features.forEach(function(feature) {
+            var geometria = feature.geometry || {};
+            var poligonos = geometria.type === 'Polygon' ? [geometria.coordinates]
+                : geometria.type === 'MultiPolygon' ? geometria.coordinates : [];
+            var componenteMayor = null;
+            poligonos.forEach(function(poligono) {
+                if (!poligono || !poligono[0]) return;
+                var centro = centroideAnillo(poligono[0]);
+                if (centro && (!componenteMayor || centro.area > componenteMayor.area)) componenteMayor = centro;
+            });
+            if (!componenteMayor) return;
+
+            var punto = componenteMayor.punto;
+            var centroX = Math.floor(punto[0] / tamanoCelda), centroY = Math.floor(punto[1] / tamanoCelda);
+            var candidatos = Object.create(null);
+            for (var x = centroX - 2; x <= centroX + 2; x++) {
+                for (var y = centroY - 2; y <= centroY + 2; y++) {
+                    (celdas[x + ':' + y] || []).forEach(function(indice) { candidatos[indice] = true; });
+                }
+            }
+            var distancias = grupos.map(function() { return Infinity; });
+            Object.keys(candidatos).forEach(function(indice) {
+                var segmento = segmentos[indice];
+                var distancia = distanciaSegmentoMetros(punto, segmento);
+                if (distancia < distancias[segmento.grupo]) distancias[segmento.grupo] = distancia;
+            });
+            var orden = distancias.map(function(distancia, grupo) { return { distancia: distancia, grupo: grupo }; })
+                .sort(function(a, b) { return a.distancia - b.distancia; });
+            var mejor = orden[0], siguiente = orden[1];
+            // Solo se muestran atributos cuando una línea está cerca y su tipo destaca claramente.
+            if (mejor && mejor.distancia <= 10 && (!siguiente || siguiente.distancia - mejor.distancia >= 3)) {
+                informacionLinealPorArea.set(feature, grupos[mejor.grupo]);
+            }
+        });
+    }
+
     function crearPanes() {
         [
             ['pane_retiros_contexto', 410],
@@ -287,9 +396,20 @@
         ].forEach(function(definicion) {
             if (!map.getPane(definicion[0])) {
                 map.createPane(definicion[0]);
-                map.getPane(definicion[0]).style.zIndex = definicion[1];
-                map.getPane(definicion[0]).style.pointerEvents = 'auto';
             }
+            var pane = map.getPane(definicion[0]);
+            pane.style.zIndex = definicion[1];
+            pane.style.pointerEvents = 'auto';
+        });
+    }
+
+    function establecerInteraccionPanes(activa) {
+        [
+            'pane_retiros_contexto', 'pane_retiros_lotes', 'pane_retiros_compatibles',
+            'pane_retiros_nuevos_poligonos', 'pane_retiros_nuevas_lineas'
+        ].forEach(function(nombre) {
+            var pane = map.getPane(nombre);
+            if (pane) pane.style.pointerEvents = activa ? 'auto' : 'none';
         });
     }
 
@@ -302,7 +422,10 @@
     function crearCapasBase() {
         if (capaRetirosPoligonos) return;
         indiceClicPoligonos = Object.create(null);
-        indexarPoligonos(window.geojsonRetirosPoligonos, 'Área de retiro', 3);
+        var datosAreasRetiro = window.json_Polgono_retiros_concdigos_0;
+        if (!datosAreasRetiro) throw new Error('No se encontró la capa completa de áreas de retiro.');
+        asociarDatosLinealesAreas(datosAreasRetiro, window.geojsonRetirosLineas);
+        indexarPoligonos(datosAreasRetiro, 'Área de retiro', 3);
         ordenarIndiceClicPoligonos();
         crearPanes();
 
@@ -320,7 +443,7 @@
         capaRetirosContexto = capaPoligonal(window.geojsonRetirosContexto, 'pane_retiros_contexto', {
             color: '#cccccc', weight: 0, fillColor: '#e6e6e6', fillOpacity: 1
         }, 'Área urbana', true);
-        capaRetirosPoligonos = L.geoJSON(window.geojsonRetirosPoligonos, {
+        capaRetirosPoligonos = L.geoJSON(datosAreasRetiro, {
             pane: 'pane_retiros_nuevos_poligonos',
             interactive: false,
             renderer: L.canvas({ pane: 'pane_retiros_nuevos_poligonos', padding: 0.1, tolerance: 6 }),
@@ -504,6 +627,8 @@
         if (activo) return;
         activo = true;
         map.getContainer().classList.remove('retiros-cursor-clicable');
+        establecerInteraccionPanes(false);
+        if (window.limpiarEstadoPanelVisor) window.limpiarEstadoPanelVisor();
         var sesionActual = ++sesion;
         estadoAnterior = {
             centro: map.getCenter(),
@@ -531,7 +656,6 @@
             panelDetalle.classList.add('panel-expandido');
         }
         if (window.cerrarPanelesMapa) window.cerrarPanelesMapa();
-        if (window.cerrarPanelDetalle) window.cerrarPanelDetalle();
         ocultarCapasPrincipales();
         if (window.limpiarRetiroResaltado) window.limpiarRetiroResaltado();
         map.closePopup();
@@ -542,6 +666,7 @@
         cargarDatosBase().then(function() {
             if (!activo || sesionActual !== sesion) return;
             crearCapasBase();
+            establecerInteraccionPanes(true);
             habilitarControlesCapas(['contexto', 'poligonos', 'lineas3', 'lineas5']);
             agregarCapasMarcadas(['contexto', 'poligonos', 'lineas3', 'lineas5']);
             var viasControl = panelCapas && panelCapas.querySelector('[data-retiro-capa="vias"]');
@@ -588,6 +713,7 @@
             capaRetirosPoligonos, capaRetirosLineas3m, capaRetirosLineas5m].forEach(function(capa) {
             if (capa) map.removeLayer(capa);
         });
+        establecerInteraccionPanes(false);
         var viasVisiblesAntes = estadoAnterior ? estadoAnterior.viasVisibles : true;
         restaurarCapasPrincipales();
         if (window.establecerVisibilidadVias) window.establecerVisibilidadVias(viasVisiblesAntes);
@@ -597,6 +723,7 @@
         if (tituloDetalle) tituloDetalle.textContent = 'Seleccione un polígono';
         if (ayudaDetalle) ayudaDetalle.textContent = 'Haz clic en un lote del mapa para consultar usos compatibles.';
         if (detalleRetiros) detalleRetiros.hidden = true;
+        if (window.limpiarEstadoPanelVisor) window.limpiarEstadoPanelVisor();
         if (panelDetalle) {
             panelDetalle.classList.add('minimizado');
             panelDetalle.classList.remove('panel-expandido');
