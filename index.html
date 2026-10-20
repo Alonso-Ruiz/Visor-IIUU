@@ -8,19 +8,20 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20261014-desktop-visores-alineados1">
+        <link rel="stylesheet" href="css/app.css?v=20261020-vis3-mobile-layout1">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js?v=20260917-sin-actividades-excluidas1"></script>
         <script src="js/app/preservar-usos-anteriores.js?v=20260930-restricciones-complemento1"></script>
         <script src="js/restricciones.js?v=20261014-residencial-exclusivo-nota1"></script>
         <script src="js/indice_distrital_actual.js?v=20261013-indice-distrital-final1"></script>
+        <script src="js/nombres_comunes_giros.js?v=20261019-nombres-comunes1"></script>
         <script src="js/actividades_zre.js?v=20261013-indice-zre-revision1"></script>
         <script src="data/vias.js"></script>
     </head>
     <body>
         <header id="encabezado-institucional" class="encabezado-institucional" aria-label="Municipalidad de San Borja — Ordenanza número 2851-MML que aprueba el Índice de Usos para la ubicación de actividades urbanas del distrito de San Borja — Visor de índice de uso">
             <div class="encabezado-marca">
-                <img src="assets/Escudo_de_San_Borja.png" alt="Escudo de San Borja">
+                <span class="logo-escudo-encabezado" aria-hidden="true"><img src="assets/Logo-institucional.png?v=20261015" alt=""></span>
                 <span class="encabezado-municipalidad">Municipalidad<br>de San Borja</span>
             </div>
             <span class="encabezado-separador" aria-hidden="true"></span>
@@ -72,7 +73,7 @@
 
                 <div id="portada-opciones">
                     <div class="portada-encabezado">
-                        <img class="modal-logo" src="assets/Escudo_de_San_Borja.png" alt="Escudo de San Borja">
+                        <span class="modal-logo-recorte"><img class="modal-logo" src="assets/Logo-institucional.png?v=20261015" alt="Escudo de San Borja"></span>
                         <p class="portada-municipalidad">Municipalidad de San Borja</p>
                         <h2 id="welcome-title">¿Qué deseas consultar?</h2>
                         <p class="portada-bajada">Selecciona una opción para ingresar al visor</p>
@@ -225,7 +226,24 @@
                     <h3 id="nombre-uso-titulo">Seleccione un polígono</h3>
                     <p id="ayuda-panel">Haz clic en un lote del mapa para consultar usos compatibles.</p>
                 </div>
-                <input type="text" id="buscador-actividad" placeholder="Buscar actividad o codigo" aria-label="Buscar actividad compatible">
+                <div id="meta-lote-zonificacion" class="meta-lote-zonificacion" hidden>
+                    <span id="chip-zonificacion-vigente" class="chip-lote chip-zonificacion"></span>
+                    <span id="chip-identificacion-lote" class="chip-lote"></span>
+                    <span id="chip-area-lote" class="chip-lote"></span>
+                </div>
+                <div id="selector-edificacion" class="selector-edificacion" hidden aria-label="Escenario de edificación">
+                    <span class="selector-edificacion-titulo">Edificación</span>
+                    <div class="selector-edificacion-opciones">
+                        <button type="button" id="escenario-existente" aria-pressed="true">Existente</button>
+                        <button type="button" id="escenario-con-obra" aria-pressed="false">Con obra</button>
+                    </div>
+                </div>
+                <div class="buscador-actividad-wrap">
+                    <input type="text" id="buscador-actividad" placeholder="Buscar actividad o codigo" aria-label="Buscar actividad compatible">
+                    <button type="button" id="limpiar-busqueda-actividad" aria-label="Borrar búsqueda" title="Borrar búsqueda" hidden>
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
 
             <div id="contenido-scrollable">
@@ -235,12 +253,16 @@
                 </div>
                 <div id="ventanas-zona">
                     <div id="ventana-observaciones">
-                        <h5>Observaciones</h5>
-                        <span id="texto-observaciones"></span>
+                        <details class="panel-seccion-acordeon">
+                            <summary>Observaciones</summary>
+                            <span id="texto-observaciones"></span>
+                        </details>
                     </div>
                     <div id="ventana-restricciones">
-                        <h5>Restricciones</h5>
-                        <span id="texto-restricciones"></span>
+                        <details class="panel-seccion-acordeon">
+                            <summary>Restricciones y notas</summary>
+                            <span id="texto-restricciones"></span>
+                        </details>
                     </div>
                 </div>
                 <p id="conteo-resumen">
@@ -257,17 +279,17 @@
 
         <script src="data/usos_compatibles_0.js?v=20261001-poligono-faltante1"></script>
         <script src="data/parques_alineados_20261001.js?v=20261001-parques1"></script>
-        <script src="data/zonificacion_auxiliar.js?v=20261001-poligono-faltante1"></script>
-        <script src="js/app/zonificacion.js?v=20260930-revisadas1"></script>
+        <script defer src="data/zonificacion_auxiliar.js?v=20261001-poligono-faltante1"></script>
+        <script defer src="js/app/zonificacion.js?v=20260930-revisadas1"></script>
         <script src="data/Bordes_1.js?v=20260924-bordes1"></script>
-        <script src="data/retiros_poligonos_completos_20261013.js?v=20261013-retiros-capa-completa1"></script>
+        <script src="data/poligono_retiros_con_codigos_2.js?v=20261019-retiro-normativo1"></script>
 
         <script src="js/app/core.js?v=20260928-permitido-restriccion1"></script>
         <script src="js/app/legend-filters.js?v=20261001-parques1"></script>
-        <script src="js/app/layers.js?v=20261001-poligono-parques1"></script>
-        <script src="js/app/controls.js?v=20261002-consulta-ciiu1"></script>
-        <script src="js/app/visor-retiros.js?v=20261013-retiros-poligonos-completos1"></script>
-        <script src="js/app/panel.js?v=20261014-mapeo-notas-usos1"></script>
+        <script src="js/app/layers.js?v=20261020-auditoria1"></script>
+        <script src="js/app/controls.js?v=20261020-auditoria1"></script>
+        <script src="js/app/visor-retiros.js?v=20261020-auditoria1"></script>
+        <script src="js/app/panel.js?v=20261020-auditoria1"></script>
         <script src="data/equivalencias_2851.js?v=20261002-consulta-ciiu1"></script>
         <script src="js/app/consulta-ciiu.js?v=20261005-consulta-simple1"></script>
         <script src="js/app/welcome-modal.js?v=20261014-mobile-menu-visores5"></script>
@@ -276,5 +298,8 @@
         <script src="js/app/vias-search.js?v=20261009-retiros-vias1"></script>
         <script src="js/app/geoapify-config.js?v=20260928-geoapify-demo1"></script>
         <script src="js/app/address-search.js?v=20260928-geoapify-lotes2"></script>
+        <script src="js/app/evaluacion-lote.js?v=20261019-escenario-con-obra1"></script>
+        <script src="js/app/zonificacion-vigente.js?v=20261020-auditoria1"></script>
+        <script src="js/app/capa-zonificacion-vigente.js?v=20261020-auditoria1"></script>
     </body>
 </html>

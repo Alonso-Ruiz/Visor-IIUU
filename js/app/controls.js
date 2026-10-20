@@ -186,7 +186,7 @@
             L.DomEvent.disableClickPropagation(div);
             L.DomEvent.disableScrollPropagation(div);
             div.innerHTML += '<button type="button" id="leyenda-header" class="leyenda-header" aria-label="Abrir leyenda de usos" aria-expanded="false">' +
-                             '<span class="leyenda-boton-icon" aria-hidden="true"><img src="assets/icon_leyenda.png" alt=""></span>' +
+                             '<span class="leyenda-boton-icon" aria-hidden="true"></span>' +
                              '<span><strong>Leyenda de usos</strong><small>Colores del mapa</small></span>' +
                              '<span id="leyenda-arrow" class="leyenda-arrow">▼</span></button>';
 
@@ -306,7 +306,7 @@
                     '<i class="fas fa-clone" aria-hidden="true"></i>' +
                 '</button>' +
                 '<div id="panel-capas-auxiliares" class="panel-capas-auxiliares mobile-tool-panel mobile-tool-panel--compact" aria-hidden="true">' +
-                    '<button type="button" id="panel-capas-titulo" class="panel-capas-titulo" aria-label="Cerrar capas adicionales"><i class="fas fa-clone" aria-hidden="true"></i><span>Área de retiro normativo mínimo</span></button>' +
+                    '<button type="button" id="panel-capas-titulo" class="panel-capas-titulo" aria-label="Cerrar capas adicionales"><i class="fas fa-clone" aria-hidden="true"></i><span>Capas del mapa</span></button>' +
                     '<div class="capa-opacidad-grupo">' +
                         '<label class="capa-auxiliar-item" for="capa-retiro-visible">' +
                             '<input type="checkbox" id="capa-retiro-visible" checked>' +
@@ -317,6 +317,21 @@
                         '<div class="capa-opacidad-control">' +
                             '<label for="opacidad-capa-retiro"><span>Transparencia</span><output>0%</output></label>' +
                             '<input type="range" class="opacidad-capa-range" id="opacidad-capa-retiro" data-capa-opacidad="retiros" min="0" max="100" step="5" value="0" aria-label="Transparencia del retiro normativo">' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="capa-opacidad-grupo">' +
+                        '<label class="capa-auxiliar-item" for="capa-zonificacion-vigente">' +
+                            '<input type="checkbox" id="capa-zonificacion-vigente">' +
+                            '<span class="capa-auxiliar-check" aria-hidden="true"></span>' +
+                            '<i class="muestra-capa muestra-zonificacion-vigente" aria-hidden="true"></i>' +
+                            '<span>Zonificación vigente</span>' +
+                        '</label>' +
+                        '<div id="leyenda-zonificacion-vigente" class="leyenda-zonificacion-vigente" hidden>' +
+                            '<span><i class="zv-muestra zv-rdb"></i>RDB</span><span><i class="zv-muestra zv-rdm"></i>RDM</span><span><i class="zv-muestra zv-rda"></i>RDA</span>' +
+                            '<span><i class="zv-muestra zv-cv"></i>CV</span><span><i class="zv-muestra zv-cz"></i>CZ</span><span><i class="zv-muestra zv-zrp"></i>ZRP</span>' +
+                            '<span><i class="zv-muestra zv-e1"></i>E1</span><span><i class="zv-muestra zv-e2"></i>E2</span><span><i class="zv-muestra zv-e3"></i>E3</span>' +
+                            '<span><i class="zv-muestra zv-h2"></i>H2</span><span><i class="zv-muestra zv-h3"></i>H3</span><span><i class="zv-muestra zv-ou"></i>OU</span>' +
+                            '<span><i class="zv-muestra zv-zre"></i>ZRE</span><span><i class="zv-muestra zv-otros"></i>Sin código</span>' +
                         '</div>' +
                     '</div>' +
                     '<div class="capa-zre-grupo">' +

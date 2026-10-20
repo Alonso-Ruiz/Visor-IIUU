@@ -157,6 +157,7 @@
             if (esMovil) map.closePopup();
 
             window.setTimeout(function() {
+                if (document.body.classList.contains('modo-retiros')) return;
                 if (!esMovil) {
                     var panelDetalle = document.getElementById('panel-usos');
                     var anchoPanel = panelDetalle && !panelDetalle.classList.contains('minimizado')
@@ -244,6 +245,8 @@
         pattern_usos_compatibles_0_0.addTo(map);
 
         // Retiro normativo: oscurece con suavidad el color real del uso que queda debajo.
+        // Mantiene la detección de clic original de Leaflet para que esta
+        // superposición no interfiera con la selección de los lotes.
         var rendererRetirosSvg = L.svg({ pane: 'pane_retiros', padding: 0.35 });
         function styleBaseUsosCompatibles(feature) {
             var categoriaEstilo = window.normalizarCategoriaUso
@@ -362,30 +365,24 @@
         bounds_group.addLayer(layer_usos_compatibles_on); map.addLayer(layer_usos_compatibles_on);
 
         var capaRetiros = typeof json_Polgono_retiros_concdigos_2 !== 'undefined'
-            ? new L.geoJson(json_Polgono_retiros_concdigos_2, {
+            ? new L.geoJson(null, {
                 pane: 'pane_retiros',
                 renderer: rendererRetirosSvg,
+                // SVG captura solo la geometría del retiro, dejando accesibles
+                // los lotes situados fuera de ella.
                 interactive: true,
                 onEachFeature: function(feature, layer) {
-                    var area = Number(feature.properties && feature.properties.AREA);
+                    var valorArea = feature.properties && feature.properties.AREA;
+                    var area = valorArea === null || valorArea === undefined || valorArea === '' ? NaN : Number(valorArea);
                     var areaTexto = Number.isFinite(area)
                         ? area.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m²'
                         : 'Área no disponible';
-                    layer.bindPopup(
-                        '<div class="popup-retiro-contenido">' +
-                            '<strong>Área de retiro mínimo normativo</strong>' +
-                            '<span>' + areaTexto + '</span>' +
-                        '</div>',
-                        {
-                            className: 'popup-retiro',
-                            closeButton: false,
-                            autoPanPaddingTopLeft: [14, 62],
-                            autoPanPaddingBottomRight: [14, window.innerWidth <= 896 ? Math.round(window.innerHeight * 0.55) : 24]
-                        }
-                    );
-                    layer.on('click', function() {
-                        resaltarRetiro(feature);
+                    layer.bindPopup('<div class="popup-retiro-contenido"><strong>Área de retiro mínimo normativo</strong><span>' + areaTexto + '</span></div>', {
+                        className: 'popup-retiro', closeButton: false,
+                        autoPanPaddingTopLeft: [14, 62],
+                        autoPanPaddingBottomRight: [14, window.innerWidth <= 896 ? Math.round(window.innerHeight * 0.55) : 24]
                     });
+                    layer.on('click', function() { resaltarRetiro(feature); });
                 },
                 style: function() {
                     return {
@@ -393,11 +390,27 @@
                         stroke: false,
                         fill: true,
                         fillColor: '#111111',
-                        fillOpacity: 0.28,
-                        interactive: true
+                        fillOpacity: 0.28
                     };
                 }
             })
             : null;
         window.capaRetiros = capaRetiros;
-        if (capaRetiros) map.addLayer(capaRetiros);
+        if (capaRetiros) {
+            map.addLayer(capaRetiros);
+            // Añade los polígonos en tandas cortas: el mapa y sus controles
+            // quedan interactivos mientras termina de dibujarse la capa.
+            var featuresRetirosNormativos = json_Polgono_retiros_concdigos_2.features || [];
+            var indiceRetiroNormativo = 0;
+            function agregarTandaRetirosNormativos() {
+                var limite = Math.min(indiceRetiroNormativo + 240, featuresRetirosNormativos.length);
+                if (limite > indiceRetiroNormativo) {
+                    capaRetiros.addData(featuresRetirosNormativos.slice(indiceRetiroNormativo, limite));
+                    indiceRetiroNormativo = limite;
+                }
+                if (indiceRetiroNormativo < featuresRetirosNormativos.length) {
+                    window.requestAnimationFrame(agregarTandaRetirosNormativos);
+                }
+            }
+            window.requestAnimationFrame(agregarTandaRetirosNormativos);
+        }

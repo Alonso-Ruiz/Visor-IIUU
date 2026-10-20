@@ -13,6 +13,9 @@
     var capaRetirosLineas5m = null;
     var panelCapas = document.getElementById('panel-capas-retiros');
     var panelDetalle = document.getElementById('panel-usos');
+    var botonDetalleMovil = document.getElementById('boton-detalle-movil');
+    var estiloBotonDetalleMovil = botonDetalleMovil ? botonDetalleMovil.style.display : '';
+    var botonDetalleMovilOculto = botonDetalleMovil ? botonDetalleMovil.hidden : false;
     var tituloDetalle = document.getElementById('nombre-uso-titulo');
     var ayudaDetalle = document.getElementById('ayuda-panel');
     var detalleRetiros = document.getElementById('retiros-detalle');
@@ -34,6 +37,7 @@
     var tamanoCeldaClic = 0.001;
     var ultimoClicDeCapa = null;
     var ultimoCursorRetiros = 0;
+    var mapaArrastrandose = false;
 
     function agregarScript(ruta) {
         return new Promise(function(resolve, reject) {
@@ -53,8 +57,9 @@
         if (cargaBase) return cargaBase;
         if (window.geojsonRetirosContexto && window.json_Polgono_retiros_concdigos_0 && window.geojsonRetirosLineas) return Promise.resolve();
         cargaBase = Promise.all([
-            agregarScript('data/retiros_contexto.js?v=20261009-1'),
-            agregarScript('data/retiros_lineas.js?v=20261009-1')
+            window.geojsonRetirosContexto || agregarScript('data/retiros_contexto.js?v=20261009-1'),
+            window.geojsonRetirosLineas || agregarScript('data/retiros_lineas.js?v=20261009-1'),
+            window.json_Polgono_retiros_concdigos_0 || agregarScript('data/retiros_poligonos_completos_20261013.js?v=20261013-retiros-capa-completa1')
         ]).catch(function(error) {
             cargaBase = null;
             throw error;
@@ -192,14 +197,19 @@
     }
 
     function actualizarCursorRetiros(e) {
-        if (!activo || !e || !e.latlng) return;
+        if (!activo || mapaArrastrandose || !e || !e.latlng) return;
         var ahora = Date.now();
-        if (ahora - ultimoCursorRetiros < 45) return;
+        if (ahora - ultimoCursorRetiros < 80) return;
         ultimoCursorRetiros = ahora;
         var candidato = poligonoBajoPunto([e.latlng.lng, e.latlng.lat]);
         map.getContainer().classList.toggle('retiros-cursor-clicable', Boolean(candidato));
     }
 
+    map.on('dragstart', function() { mapaArrastrandose = true; });
+    map.on('dragend', function() {
+        mapaArrastrandose = false;
+        map.getContainer().classList.remove('retiros-cursor-clicable');
+    });
     map.on('click', buscarPoligonoPorClic);
     map.on('mousemove', actualizarCursorRetiros);
     map.on('mouseout', function() {
@@ -399,7 +409,7 @@
             }
             var pane = map.getPane(definicion[0]);
             pane.style.zIndex = definicion[1];
-            pane.style.pointerEvents = 'auto';
+            pane.style.pointerEvents = activo ? 'auto' : 'none';
         });
     }
 
@@ -450,6 +460,9 @@
             smoothFactor: 1,
             style: estiloPoligono
         });
+        // Un único canvas permite seleccionar ambas clases de línea sin
+        // que el lienzo superior intercepte los clics del inferior.
+        var rendererLineas = L.canvas({ pane: 'pane_retiros_nuevas_lineas', padding: 0.1, tolerance: 7 });
         function crearLineas(ancho) {
             var features = window.geojsonRetirosLineas.features.filter(function(feature) {
                 return String(feature.properties && feature.properties.ANCHO || '').indexOf(ancho) === 0;
@@ -457,7 +470,7 @@
             return L.geoJSON({ type: 'FeatureCollection', features: features }, {
                 pane: 'pane_retiros_nuevas_lineas',
                 interactive: true,
-                renderer: L.canvas({ pane: 'pane_retiros_nuevas_lineas', padding: 0.1, tolerance: 7 }),
+                renderer: rendererLineas,
                 smoothFactor: 1,
                 style: estiloLinea,
                 onEachFeature: function(feature, layer) { hacerClicable(feature, layer, 'Línea de retiro'); }
@@ -641,8 +654,15 @@
                 })
         };
         document.body.classList.add('modo-retiros');
+        map.stop();
+        if (window.actualizarCapaZonificacionVigente) window.actualizarCapaZonificacionVigente();
+        if (botonDetalleMovil) {
+            botonDetalleMovil.hidden = true;
+            botonDetalleMovil.style.display = 'none';
+            botonDetalleMovil.setAttribute('aria-hidden', 'true');
+        }
         if (cabecera) cabecera.hidden = false;
-        mostrarPanelCapas(true);
+        mostrarPanelCapas(false);
         if (botonCapasAuxiliares) botonCapasAuxiliares.setAttribute('aria-label', 'Abrir capas de retiros y vías');
         if (botonCapasAuxiliares) botonCapasAuxiliares.innerHTML = '<svg class="icono-capas-retiros" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 4.5-9 4.5-9-4.5L12 3Z"></path><path d="m3 12 9 4.5 9-4.5M3 16.5 12 21l9-4.5"></path></svg>';
         if (tituloPrincipal) tituloPrincipal.textContent = 'Visor de retiros normativos del distrito de San Borja';
@@ -662,6 +682,9 @@
         mostrarProgresoCarga('Cargando mapa…');
         map.invalidateSize({ pan: false });
 
+        // Descargar en paralelo; la geometría se prepara después por tandas.
+        // La promesa conserva el resultado para cambios posteriores de visor.
+        cargarDatosPredios().catch(function() {});
         var etapaCarga = 'mapa';
         cargarDatosBase().then(function() {
             if (!activo || sesionActual !== sesion) return;
@@ -705,6 +728,13 @@
         map.getContainer().classList.remove('retiros-cursor-clicable');
         sesion += 1;
         document.body.classList.remove('modo-retiros');
+        map.stop();
+        if (window.actualizarCapaZonificacionVigente) window.actualizarCapaZonificacionVigente();
+        if (botonDetalleMovil) {
+            botonDetalleMovil.hidden = botonDetalleMovilOculto;
+            botonDetalleMovil.style.display = estiloBotonDetalleMovil;
+            botonDetalleMovil.removeAttribute('aria-hidden');
+        }
         if (cabecera) cabecera.hidden = true;
         mostrarPanelCapas(false);
         if (botonCapasAuxiliares) botonCapasAuxiliares.setAttribute('aria-label', etiquetaBotonCapasOriginal || 'Abrir capas adicionales');

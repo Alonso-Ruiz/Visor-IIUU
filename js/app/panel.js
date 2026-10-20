@@ -3,7 +3,28 @@
         const botonArrastre = document.getElementById('boton-arrastre');
         const botonAlturaPanel = document.getElementById('boton-altura-panel');
         var resumenRestriccionesViaActual = null;
-        var zonificacionReglasActual = '';
+        var zonificacionVigenteActual = '';
+        var escenarioConObra = false;
+        var consultaLoteVigente = 0;
+
+        function mostrarSelectorEdificacion(mostrar) {
+            var selector = document.getElementById('selector-edificacion');
+            if (!selector) return;
+            selector.hidden = !mostrar;
+            escenarioConObra = false;
+            document.getElementById('escenario-existente').setAttribute('aria-pressed', 'true');
+            document.getElementById('escenario-con-obra').setAttribute('aria-pressed', 'false');
+        }
+
+        document.getElementById('lista-clases-container').addEventListener('click', function (evento) {
+            var resumen = evento.target.closest('summary');
+            if (!resumen || !this.contains(resumen)) return;
+            var giro = resumen.closest('details.giro-fila');
+            if (!giro || giro.open) return;
+            this.querySelectorAll('details.giro-fila[open]').forEach(function (abierto) {
+                if (abierto !== giro) abierto.open = false;
+            });
+        });
 
         function restriccionAnterior(zona, clase) {
             var normalizar = function (valor) {
@@ -36,6 +57,25 @@
 
         function obtenerAreaLote() {
             return loteActual && (loteActual.AREA_M2 || loteActual['ÁREA_M2'] || loteActual['�REA_M2'] || loteActual.Area_ha || loteActual.AREA);
+        }
+
+        function actualizarMetaLoteZonificacion() {
+            var contenedor = document.getElementById('meta-lote-zonificacion');
+            if (!contenedor) return;
+            var props = loteActual || {};
+            var identificador = obtenerPropiedad(props, ['CÓDIGO', 'C�DIGO', 'CODIGO', 'COD_LOTE', 'CUC']);
+            var area = Number(obtenerAreaLote());
+            var zona = zonificacionVigenteActual;
+            document.getElementById('chip-zonificacion-vigente').textContent = zona
+                ? 'Zonificación vigente ' + zona
+                : 'Zonificación por verificar';
+            document.getElementById('chip-identificacion-lote').textContent = identificador
+                ? 'Lote ' + identificador
+                : 'Lote seleccionado';
+            document.getElementById('chip-area-lote').textContent = Number.isFinite(area) && area > 0
+                ? new Intl.NumberFormat('es-PE', { maximumFractionDigits: 2 }).format(area) + ' m²'
+                : 'Área por verificar';
+            contenedor.hidden = !Object.keys(props).length;
         }
 
         function numerosNotasPorZona(zona) {
@@ -307,14 +347,16 @@
                 (busqueda ? ' (filtradas por la búsqueda).' : '.');
 
             var contenido = restricciones.map(function(item) {
-                var titulo = item.zona + ' · ' + item.codigo;
-                return '<article class="bloque-restricciones-giro" style="margin-bottom:12px;">' +
-                    '<div class="titulo-restricciones-giro">' + escaparHtml(titulo) + '</div>' +
-                    '<div style="font-size:12px;margin:5px 0;">' + escaparHtml(item.actividad) + '</div>' +
-                    renderizarRestriccionesGiro(item.regla, 'Restricciones del giro') + '</article>';
+                var giro = { ACTIVIDAD: item.actividad, COD_GIRO: item.codigo, CLASE: item.clase };
+                var detalle = '<p class="giro-recordatorio">Zona: ' + escaparHtml(item.zona) + '</p>' +
+                    renderizarRestriccionesGiro(item.regla, 'Restricciones del giro');
+                return renderizarFilaGiro(giro, {
+                    estado: 'Con condiciones', restringido: true,
+                    extraHtml: detalle
+                });
             }).join('');
-            document.getElementById('lista-clases-container').innerHTML = contenido ||
-                "<p class='mensaje-vacio'>No se encontraron giros restringidos registrados para esta vía.</p>";
+            actualizarListaAlfabetica(contenido ||
+                "<p class='mensaje-vacio'>No se encontraron giros restringidos registrados para esta vía.</p>");
         }
 
         window.mostrarRestriccionesPorVia = function(nombreVia, segmentos) {
@@ -323,11 +365,14 @@
             zonVigActual = '';
             zreUsocomActual = '';
             loteActual = {};
+            actualizarMetaLoteZonificacion();
+            mostrarSelectorEdificacion(false);
             panel.classList.remove('panel-expandido', 'minimizado');
             document.body.classList.add('panel-abierto');
             sincronizarAlturaPanel();
             if (window.sincronizarBotonDetalleMovil) window.sincronizarBotonDetalleMovil();
             document.getElementById('buscador-actividad').value = '';
+            actualizarBotonLimpiarBusqueda();
             document.getElementById('contenido-scrollable').scrollTop = 0;
             renderizarRestriccionesDeVia('');
         };
@@ -356,22 +401,27 @@
             return partes.length > 1 ? partes.slice(1).join(' - ') : '';
         }
 
-        function coincideCatalogoGiros(busqueda, clase) {
-            var catalogo = window.datosBuscadorGiros && window.datosBuscadorGiros.giros;
-            if (!busqueda || !Array.isArray(catalogo)) return false;
-            return catalogo.some(function(giro) {
-                if (String(giro.clase || '').trim() !== String(clase || '').trim()) return false;
-                var terminos = [giro.giro].concat(giro.buscar || [], giro.nombres_comunes || []);
-                return terminos.some(function(termino) {
-                    return coincideBusquedaTexto(busqueda, termino);
-                });
-            });
-        }
-
         function obtenerActividadesIndice() {
             return Array.isArray(window.datosActividadesIndice) && datosActividadesIndice.length
                 ? datosActividadesIndice
                 : datosActividades;
+        }
+
+        function actualizarListaAlfabetica(html) {
+            var lista = document.getElementById('lista-clases-container');
+            lista.innerHTML = html;
+            var collator = new Intl.Collator('es', { sensitivity: 'base', numeric: true });
+            Array.prototype.slice.call(lista.children).sort(function(a, b) {
+                var nombreA = a.querySelector('.giro-nombre');
+                var nombreB = b.querySelector('.giro-nombre');
+                return collator.compare(nombreA ? nombreA.textContent : a.textContent,
+                    nombreB ? nombreB.textContent : b.textContent);
+            }).forEach(function(elemento) { lista.appendChild(elemento); });
+        }
+
+        function actualizarBotonLimpiarBusqueda() {
+            var campo = document.getElementById('buscador-actividad');
+            document.getElementById('limpiar-busqueda-actividad').hidden = campo.value.length === 0;
         }
 
         function coincideActividadIndice(busqueda, giro) {
@@ -380,6 +430,29 @@
             return terminos.some(function(termino) {
                 return coincideBusquedaTexto(busqueda, termino);
             });
+        }
+
+        function renderizarFilaGiro(giro, opciones) {
+            opciones = opciones || {};
+            var codigo = String(giro.COD_GIRO || '');
+            var nombreComun = giro.NOMBRE_COMUN || (window.nombresComunesGiros && nombresComunesGiros[codigo]) || giro.ACTIVIDAD || '';
+            var nombreTecnico = String(giro.ACTIVIDAD || '');
+            var detalleTecnico = nombreTecnico && nombreTecnico !== nombreComun
+                ? '<div class="giro-tecnico"><span>Giro técnico</span>' + escaparHtml(nombreTecnico) + '</div>'
+                : '';
+            var clase = String(giro.CLASE || opciones.clase || '');
+            var descripcionClase = String(giro['DESCRIPCIÓN DE LA CLASE'] || opciones.descripcionClase || '');
+            var detalleClase = '<div class="giro-codigo">CIIU ' + escaparHtml(clase) +
+                (codigo ? ' · ' + escaparHtml(codigo) : '') + '</div>' +
+                (descripcionClase ? '<div class="giro-descripcion-clase">' + escaparHtml(descripcionClase) + '</div>' : '');
+            var estado = opciones.estado ? '<span class="giro-estado' + (opciones.restringido ? ' giro-estado-restringido' : '') + (opciones.obra ? ' giro-estado-obra' : '') + '">' +
+                escaparHtml(opciones.estado) + '</span>' : '';
+            var extra = opciones.extraHtml || '';
+            var observacion = giro.OBSERVACIONES ? '<p class="giro-observacion">' + escaparHtml(giro.OBSERVACIONES) + '</p>' : '';
+            return '<details class="giro-fila"' + (opciones.open ? ' open' : '') + '>' +
+                '<summary><span class="giro-nombre">' + escaparHtml(nombreComun) + '</span>' + estado +
+                '<span class="giro-chevron" aria-hidden="true"></span></summary>' +
+                '<div class="giro-detalle">' + detalleTecnico + detalleClase + observacion + extra + '</div></details>';
         }
 
         function renderizarBusquedaGlobal(busqueda) {
@@ -439,8 +512,9 @@
                 return item;
             });
 
+            var totalGirosGlobal = clases.reduce(function(total, item) { return total + item.giros.length; }, 0);
             document.getElementById('conteo-resumen').innerHTML =
-                'Consulta general: <strong>' + clases.length + '</strong> clases CIIU encontradas.';
+                'Consulta general: <strong>' + totalGirosGlobal + '</strong> actividades encontradas.';
 
             var htmlContenido = '';
             clases.forEach(function(item) {
@@ -457,25 +531,21 @@
 
                 var girosHtml = '';
                 if (item.giros.length > 0) {
-                    girosHtml = '<ul class="lista-actividades">';
                     item.giros.forEach(function(g) {
-                        var codigoGiro = g.COD_GIRO ? '<small style="color:#666;margin-left:8px;">' + escaparHtml(g.COD_GIRO) + '</small>' : '';
-                        girosHtml += '<li><span>' + escaparHtml(g.ACTIVIDAD) + htmlEquivalenciaRev3(g) + '</span>' + codigoGiro + '</li>';
+                        htmlContenido += renderizarFilaGiro(g, {
+                            estado: 'Consulta general',
+                            extraHtml: usosHtml + htmlEquivalenciaRev3(g)
+                        });
                     });
-                    girosHtml += '</ul>';
                 } else {
                     girosHtml = "<p class='mensaje-vacio mensaje-vacio-compacto'>No hay giros específicos detallados para esta clase.</p>";
+                    htmlContenido += '<div class="sin-giros-clase"><strong>CIIU: ' + escaparHtml(item.clase) + '</strong>' +
+                        '<span>' + escaparHtml(item.descripcion) + '</span>' + girosHtml + usosHtml + '</div>';
                 }
-
-                htmlContenido += '<div class="tarjeta-clase tarjeta-global">' +
-                    '<div class="cabecera-clase"><span class="badge-ciiu">CIIU: ' + escaparHtml(item.clase) + '</span>' +
-                    '<span class="etiqueta-transitoria">Consulta general</span></div>' +
-                    '<strong class="descripcion-clase">' + escaparHtml(item.descripcion) + '</strong>' +
-                    usosHtml + girosHtml + '</div>';
             });
 
-            document.getElementById('lista-clases-container').innerHTML = htmlContenido ||
-                "<p class='mensaje-vacio'>No se encontraron clases CIIU o actividades para la búsqueda ingresada.</p>";
+            actualizarListaAlfabetica(htmlContenido ||
+                "<p class='mensaje-vacio'>No se encontraron clases CIIU o actividades para la búsqueda ingresada.</p>");
         }
 
         function alternarPanel() {
@@ -508,7 +578,10 @@
             zreUsocomActual = '';
             loteActual = {};
             resumenRestriccionesViaActual = null;
-            zonificacionReglasActual = '';
+            zonificacionVigenteActual = '';
+            consultaLoteVigente += 1;
+            mostrarSelectorEdificacion(false);
+            actualizarMetaLoteZonificacion();
             panel.classList.add('minimizado');
             panel.classList.remove('panel-expandido');
             document.body.classList.remove('panel-abierto');
@@ -517,6 +590,8 @@
             document.getElementById('conteo-resumen').textContent = 'Haz clic en un polígono del mapa para consultar...';
             document.getElementById('lista-clases-container').innerHTML = '';
             document.getElementById('buscador-actividad').value = '';
+            actualizarBotonLimpiarBusqueda();
+            actualizarMetaLoteZonificacion();
             var restricciones = document.getElementById('ventana-restricciones');
             var observaciones = document.getElementById('ventana-observaciones');
             if (restricciones) restricciones.style.display = 'none';
@@ -554,6 +629,7 @@
             window.sincronizarBotonDetalleMovil = sincronizarBotonDetalle;
 
             botonDetalle.addEventListener('click', function() {
+                if (document.body.classList.contains('modo-retiros')) return;
                 if (window.cerrarPanelesMapa) window.cerrarPanelesMapa();
                 alternarPanel();
                 sincronizarBotonDetalle();
@@ -608,7 +684,23 @@
             zonVigActual    = String(zonVig  || '').trim();
             zreUsocomActual = String(zreUsocom || '').trim();
             loteActual      = propiedadesLote || {};
-            zonificacionReglasActual = window.ZONIFICACION_IIUU ? window.ZONIFICACION_IIUU.obtener(loteActual, puntoConsulta) : '';
+            zonificacionVigenteActual = window.ZONIFICACION_VIGENTE
+                ? window.ZONIFICACION_VIGENTE.obtener(loteActual, puntoConsulta)
+                : '';
+            var numeroConsulta = ++consultaLoteVigente;
+            var loteConsultado = loteActual;
+            var puntoConsultado = puntoConsulta;
+            if (!zonificacionVigenteActual && window.ZONIFICACION_VIGENTE && window.ZONIFICACION_VIGENTE.cargar) {
+                window.ZONIFICACION_VIGENTE.cargar().then(function() {
+                    if (numeroConsulta !== consultaLoteVigente || loteActual !== loteConsultado) return;
+                    zonificacionVigenteActual = window.ZONIFICACION_VIGENTE.obtener(loteConsultado, puntoConsultado);
+                    actualizarMetaLoteZonificacion();
+                    if (escenarioConObra) renderizarResultados();
+                }).catch(function(error) { console.warn('Zonificación vigente no disponible.', error); });
+            }
+            actualizarMetaLoteZonificacion();
+            mostrarSelectorEdificacion(!esZonaReglamentacionEspecial(zonaActual, zonVigActual) &&
+                zonaActual !== 'Uso Residencial Exclusivo');
 
             panel.classList.remove('panel-expandido');
             panel.classList.remove('minimizado');
@@ -625,6 +717,7 @@
             }
             document.getElementById('nombre-uso-titulo').innerHTML = tituloPanel;
             document.getElementById('buscador-actividad').value = '';
+            actualizarBotonLimpiarBusqueda();
 
             // Obs / Restricciones del Uso Compatible (solo para zonas normales)
             var contVentanas = document.getElementById('ventanas-zona');
@@ -717,9 +810,51 @@
             renderizarResultados();
         }
 
+        function renderizarEscenarioConObra(busqueda, zonaKeyAct) {
+            var motor = window.EVALUACION_LOTE;
+            var evaluacion = motor && motor.evaluar ? motor.evaluar({
+                categoria: zonaActual,
+                zonificacion: zonificacionVigenteActual,
+                conObra: true,
+                indice: obtenerActividadesIndice(),
+                areaM2: obtenerAreaLote()
+            }) : { actividades: [], motivo: 'No se pudo cargar la evaluación del escenario.' };
+            var actividades = evaluacion.actividades.filter(function(item) {
+                return !busqueda || coincideActividadIndice(busqueda, item.giro) ||
+                    coincideBusquedaTexto(busqueda, item.giro.CLASE) ||
+                    coincideBusquedaTexto(busqueda, item.giro['DESCRIPCIÓN DE LA CLASE']);
+            });
+            var html = '';
+            actividades.forEach(function(item) {
+                var giro = item.giro;
+                var autorizacion = giro.ZONAS && tipoAutorizacion(giro.ZONAS[zonaKeyAct]);
+                var estado = item.ampliado ? 'Con obra' : colorAuth(autorizacion).label;
+                var extra = '';
+                if (item.precision) extra += '<p class="giro-recordatorio">' + escaparHtml(item.precision) + '</p>';
+                if (item.ampliado) extra += '<p class="giro-recordatorio">Aplicable con obra nueva, remodelación, ampliación u obra menor.</p>';
+                html += renderizarFilaGiro(giro, {
+                    estado: estado,
+                    restringido: !item.ampliado && autorizacion === 'R',
+                    obra: item.ampliado,
+                    extraHtml: extra
+                });
+            });
+            var conteo = document.getElementById('conteo-resumen');
+            conteo.hidden = false;
+            conteo.innerHTML = actividades.length
+                ? '<strong>' + actividades.length + '</strong> actividades para el escenario Con obra' +
+                    (evaluacion.ampliadas ? ' · <strong>' + evaluacion.ampliadas + '</strong> habilitadas con obra.' : '.')
+                : '';
+            actualizarListaAlfabetica(html || "<p class='mensaje-vacio'>" +
+                escaparHtml(evaluacion.motivo || 'No se encontraron actividades para este escenario.') + '</p>');
+        }
+
         // Colores por tipo de autorización
 
         function renderizarResultados() {
+            actualizarBotonLimpiarBusqueda();
+            var conteoResumen = document.getElementById('conteo-resumen');
+            conteoResumen.hidden = false;
             var busqueda = estandarizarTexto(document.getElementById('buscador-actividad').value);
             if (resumenRestriccionesViaActual) {
                 renderizarRestriccionesDeVia(busqueda);
@@ -772,8 +907,7 @@
                             coincideBusquedaTexto(busqueda, c.clase);
                         if (!coincideClase) {
                             c.giros = c.giros.filter(function(giro) {
-                                return coincideBusquedaTexto(busqueda, giro.ACTIVIDAD) ||
-                                    coincideCatalogoGiros(busqueda, giro.CLASE);
+                                return coincideBusquedaTexto(busqueda, giro.ACTIVIDAD);
                             });
                         }
                         return c;
@@ -781,55 +915,33 @@
                 }
 
                 // Conteos
-                var nPerm = 0, nRest = 0;
+                var totalGirosZre = 0;
                 clases.forEach(function(c) {
-                    if (c.giros.some(function(g) { return g._autorizacionSeleccionada === 'X'; })) nPerm++;
-                    if (c.giros.some(function(g) { return g._autorizacionSeleccionada === 'R'; })) nRest++;
+                    totalGirosZre += c.giros.length;
                 });
                 document.getElementById('conteo-resumen').innerHTML =
                     '<strong>Ubicación:</strong> ' + escaparHtml(matrizZre) + '<br>' +
-                    'Mostrando: <strong>' + clases.length + '</strong> clases CIIU.<br>' +
-                    '<span style="color:#66bb6a;">● ' + nPerm + ' Permitidas</span> | ' +
-                    '<span style="color:#d89d00;">● ' + nRest + ' Sujetos a condiciones</span>';
+                    'Mostrando: <strong>' + totalGirosZre + '</strong> actividades compatibles.';
 
-                // Renderiza tarjetas ZRE
+                // Presenta cada actividad por su nombre común, con su referencia técnica dentro.
                 var htmlContenido = '';
                 clases.forEach(function(c) {
-                    var tieneRestriccion = c.giros.some(function(g) { return g._autorizacionSeleccionada === 'R'; });
-                    var c_borde = tieneRestriccion ? '#ffca28' : '#4CAF50';
-
-                    // Cada giro conserva la autorización y, si corresponde, su restricción específica.
-                    var girosHtml = '<ul class="lista-actividades">';
                     c.giros.forEach(function(g) {
                         var autorizacion = poligonoRayadoActual() ? 'R' : 'X';
                         var col = colorAuth(autorizacion);
-                        girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;flex-wrap:wrap;">' +
-                            '<span>' + escaparHtml(g.ACTIVIDAD) +
-                            (g.EQUIVALENCIA_REV3 || g.NOMBRE_GIRO_EQUIVALENTE_REV3
-                                ? '<small class="nota-actividad-zre">Equivalencia CIIU Rev. 3: ' +
-                                    escaparHtml(g.EQUIVALENCIA_REV3 || '—') +
-                                    (g.NOMBRE_GIRO_EQUIVALENTE_REV3 ? ' · ' + escaparHtml(g.NOMBRE_GIRO_EQUIVALENTE_REV3).replace(/\n/g, '<br>') : '') +
-                                    '</small>'
-                                : '') + '</span>' +
-                            '<span style="background:' + col.bg + ';color:' + col.txt + ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>' +
-                            (g.OBSERVACIONES ? '<small class="nota-actividad-zre">' + escaparHtml(g.OBSERVACIONES) + '</small>' : '') +
-                            '</li>';
+                        var equivalencia = g.EQUIVALENCIA_REV3 || g.NOMBRE_GIRO_EQUIVALENTE_REV3
+                            ? '<small class="nota-actividad-zre">Equivalencia CIIU Rev. 3: ' + escaparHtml(g.EQUIVALENCIA_REV3 || '—') +
+                                (g.NOMBRE_GIRO_EQUIVALENTE_REV3 ? ' · ' + escaparHtml(g.NOMBRE_GIRO_EQUIVALENTE_REV3).replace(/\n/g, '<br>') : '') + '</small>'
+                            : '';
+                        htmlContenido += renderizarFilaGiro(g, {
+                            estado: col.label, restringido: autorizacion === 'R',
+                            extraHtml: equivalencia
+                        });
                     });
-                    girosHtml += '</ul>';
-
-                    htmlContenido +=
-                        '<div style="background:#fff;border:1px solid #e8e8e8;border-left:5px solid ' + c_borde + ';padding:12px;margin-bottom:12px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">' +
-                        '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">' +
-                        '<span style="background:' + c_borde + ';color:' + (tieneRestriccion?'#000':'#fff') + ';padding:2px 6px;border-radius:3px;font-size:11px;font-weight:bold;">CIIU: ' + escaparHtml(c.clase) + '</span>' +
-                        '<span style="font-size:10px;font-weight:bold;color:' + c_borde + ';">' + zreId + '</span>' +
-                        '</div>' +
-                        '<strong style="font-size:13px;color:#222;display:block;margin-bottom:5px;">' + escaparHtml(c.desc) + '</strong>' +
-                        girosHtml +
-                        '</div>';
                 });
 
-                document.getElementById('lista-clases-container').innerHTML = htmlContenido ||
-                    "<p style='color:#666;text-align:center;padding:20px;font-style:italic;'>No hay actividades compatibles para este ZRE.</p>";
+                actualizarListaAlfabetica(htmlContenido ||
+                    "<p style='color:#666;text-align:center;padding:20px;font-style:italic;'>No hay actividades compatibles para este ZRE.</p>");
                 return;
             }
 
@@ -867,31 +979,31 @@
                             Clase: g.CLASE,
                             'Descripción': g['DESCRIPCIÓN DE LA CLASE'],
                             'Uso Compatible': 'Uso Residencial Exclusivo',
-                            'Autorización': 'Régimen exclusivo',
                             girosFiltrados: []
                         };
                     }
                     clasesTransitorias[g.CLASE].girosFiltrados.push(g);
                 });
                 var resultadosTransitorios = Object.values(clasesTransitorias);
-                document.getElementById('conteo-resumen').innerHTML =
-                    'Régimen exclusivo: <strong>' + resultadosTransitorios.length + '</strong> clases CIIU y <strong>' +
-                    resultadosTransitorios.reduce(function(total, c) { return total + c.girosFiltrados.length; }, 0) +
-                    '</strong> giros sujetos al cumplimiento conjunto de todas las condiciones.';
+                conteoResumen.innerHTML = '';
+                conteoResumen.hidden = true;
 
                 var htmlTransitorio = '';
                 resultadosTransitorios.forEach(function(item) {
-                    var giros = '<ul class="lista-actividades">' + item.girosFiltrados.map(function(g) {
-                        return '<li class="actividad-compatible"><span>' + escaparHtml(g.ACTIVIDAD) + '</span>' +
-                            '<span class="badge-condicion">Régimen exclusivo</span></li>';
-                    }).join('') + '</ul>';
-                    htmlTransitorio += '<div class="tarjeta-clase tarjeta-transitoria">' +
-                        '<div class="cabecera-clase"><span class="badge-ciiu">CIIU: ' + escaparHtml(item.Clase) + '</span>' +
-                        '<span class="etiqueta-transitoria">Referencia: Uso Mixto Vecinal (R)</span></div>' +
-                        '<strong class="descripcion-clase">' + escaparHtml(item['Descripción']) + '</strong>' + giros + '</div>';
+                    item.girosFiltrados.forEach(function(g) {
+                        htmlTransitorio += renderizarFilaGiro(g, {
+                            estado: 'Permitido con restricción', restringido: true,
+                            extraHtml: '<p class="giro-recordatorio">Referencia: Uso Mixto Vecinal (R)</p>'
+                        });
+                    });
                 });
-                document.getElementById('lista-clases-container').innerHTML = htmlTransitorio ||
-                    "<p class='mensaje-vacio'>No se encontraron giros dentro del régimen exclusivo.</p>";
+                actualizarListaAlfabetica(htmlTransitorio ||
+                    "<p class='mensaje-vacio'>No se encontraron giros dentro del régimen exclusivo.</p>");
+                return;
+            }
+
+            if (escenarioConObra && window.EVALUACION_LOTE) {
+                renderizarEscenarioConObra(busqueda, zonaKeyAct);
                 return;
             }
 
@@ -917,20 +1029,10 @@
                     'Autorización': poligonoRayado ? 'Permitidas con restricción' : 'Permitidas'
                 });
             });
-            var permitidos    = resultados.filter(r => !/restricci[oó]n/i.test(String(r['Autorización'] || ''))).length;
-            var restringidos  = resultados.filter(r => /restricci[oó]n/i.test(String(r['Autorización'] || ''))).length;
-            document.getElementById('conteo-resumen').innerHTML =
-                'Mostrando: <strong>' + resultados.length + '</strong> clases CIIU.<br>' +
-                '<span style="color:#66bb6a;">● ' + permitidos + ' Permitidas</span> | ' +
-                '<span style="color:#d89d00;">● ' + restringidos + ' Con condiciones específicas</span>';
 
             var htmlContenido = '';
+            var totalGirosVisibles = 0;
             resultados.forEach(function(item) {
-                var esRestringido = poligonoRayado;
-                var cCaja  = esRestringido ? '#ffca28' : '#4CAF50';
-                var cTexto = esRestringido ? '#000' : '#fff';
-                var tAviso = esRestringido ? 'Permitido con restricción' : 'Permitido';
-
                 // Giros para esta clase CON su autorización individual en la zona
                 var girosDeEstaClase = obtenerActividadesIndice().filter(function(g) {
                     if (String(g.CLASE) !== String(item.Clase)) return false;
@@ -940,43 +1042,57 @@
                     var coincideClase = coincideBusquedaTexto(busqueda, item['Descripción']) || coincideBusquedaTexto(busqueda, item['Clase']);
                     return coincideClase || coincideActividadIndice(busqueda, g);
                 });
-
-                var girosHtml = '';
+                totalGirosVisibles += girosDeEstaClase.length;
                 if (girosDeEstaClase.length > 0) {
-                    girosHtml = '<ul class="lista-actividades">';
                     girosDeEstaClase.forEach(function(g) {
                         var authGiro = poligonoRayado ? 'R' : 'X';
                         var col = colorAuth(authGiro);
-                        var badge = '<span style="background:' + col.bg + ';color:' + col.txt +
-                            ';padding:1px 5px;border-radius:3px;font-size:10px;flex-shrink:0;">' + col.label + '</span>';
-                        var codigoGiro = g.COD_GIRO ? '<small style="color:#666;margin-right:auto;">' + escaparHtml(g.COD_GIRO) + '</small>' : '';
-                        girosHtml += '<li style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;">' +
-                            '<span>' + escaparHtml(g.ACTIVIDAD) + htmlEquivalenciaRev3(g) + '</span>' + codigoGiro + badge + '</li>';
+                        htmlContenido += renderizarFilaGiro(g, {
+                            estado: col.label,
+                            restringido: authGiro === 'R',
+                            open: false
+                        });
                     });
-                    girosHtml += '</ul>';
-                    if (girosDeEstaClase[0].OBSERVACIONES) {
-                        girosHtml += '<p style="margin:6px 0 0;font-size:10px;color:#666;font-style:italic;">' + girosDeEstaClase[0].OBSERVACIONES + '</p>';
-                    }
                 } else {
-                    girosHtml = "<p style='margin:8px 0 0;font-size:11px;color:#666;font-style:italic;'>* No hay giros específicos detallados.</p>";
+                    htmlContenido += '<p class="sin-giros-clase">No hay giros específicos detallados para la clase ' +
+                        escaparHtml(item.Clase) + ' · ' + escaparHtml(item['Descripción']) + '.</p>';
                 }
-
-                htmlContenido +=
-                    '<div style="background:#fff;border:1px solid #e8e8e8;border-left:5px solid ' + cCaja + ';padding:12px;margin-bottom:12px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">' +
-                    '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">' +
-                    '<span style="background:' + cCaja + ';color:' + cTexto + ';padding:2px 6px;border-radius:3px;font-size:11px;font-weight:bold;">CIIU: ' + item['Clase'] + '</span>' +
-                    '<span style="font-size:10px;font-weight:bold;color:' + cCaja + ';">' + tAviso + '</span>' +
-                    '</div>' +
-                    '<strong style="font-size:13px;color:#222;display:block;margin-bottom:5px;">' + item['Descripción'] + '</strong>' +
-                    girosHtml +
-                    '</div>';
             });
 
-            document.getElementById('lista-clases-container').innerHTML = htmlContenido ||
-                "<p style='color:#666;text-align:center;padding:20px;font-style:italic;'>No se encontraron actividades.</p>";
+            document.getElementById('conteo-resumen').innerHTML =
+                '<strong>' + totalGirosVisibles + '</strong> actividades compatibles' +
+                (busqueda ? ' encontradas.' : '.');
+
+            actualizarListaAlfabetica(htmlContenido ||
+                "<p style='color:#666;text-align:center;padding:20px;font-style:italic;'>No se encontraron actividades.</p>");
         }
 
         var buscadorActividad = document.getElementById('buscador-actividad');
-        buscadorActividad.addEventListener('input', renderizarResultados);
-        buscadorActividad.addEventListener('keyup', renderizarResultados);
-        buscadorActividad.addEventListener('change', renderizarResultados);
+        var botonLimpiarBusqueda = document.getElementById('limpiar-busqueda-actividad');
+        botonLimpiarBusqueda.addEventListener('click', function() {
+            buscadorActividad.value = '';
+            actualizarBotonLimpiarBusqueda();
+            renderizarResultados();
+            buscadorActividad.focus();
+        });
+        var renderBusquedaPendiente = null;
+        buscadorActividad.addEventListener('input', function() {
+            actualizarBotonLimpiarBusqueda();
+            if (renderBusquedaPendiente !== null) cancelAnimationFrame(renderBusquedaPendiente);
+            renderBusquedaPendiente = requestAnimationFrame(function() {
+                renderBusquedaPendiente = null;
+                renderizarResultados();
+            });
+        });
+        document.getElementById('escenario-existente').addEventListener('click', function() {
+            escenarioConObra = false;
+            this.setAttribute('aria-pressed', 'true');
+            document.getElementById('escenario-con-obra').setAttribute('aria-pressed', 'false');
+            renderizarResultados();
+        });
+        document.getElementById('escenario-con-obra').addEventListener('click', function() {
+            escenarioConObra = true;
+            this.setAttribute('aria-pressed', 'true');
+            document.getElementById('escenario-existente').setAttribute('aria-pressed', 'false');
+            renderizarResultados();
+        });

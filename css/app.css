@@ -615,6 +615,38 @@
     background: rgba(20, 20, 20, 0.38);
 }
 
+.muestra-capa.muestra-zonificacion-vigente {
+    border: 1px solid #357e9f;
+    background: linear-gradient(135deg, #78aeca 0 45%, #5796b4 45% 75%, #357e9f 75%);
+}
+
+.leyenda-zonificacion-vigente {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px 8px;
+    padding: 2px 8px 6px 34px;
+    color: #52675e;
+    font-size: 10px;
+}
+
+.leyenda-zonificacion-vigente[hidden] { display: none !important; }
+.leyenda-zonificacion-vigente > span { display: flex; align-items: center; gap: 5px; }
+.zv-muestra { width: 10px; height: 10px; flex: 0 0 10px; border-radius: 2px; }
+.zv-rdb { background: #78aeca; }
+.zv-rdm { background: #5796b4; }
+.zv-rda { background: #357e9f; }
+.zv-cv { background: #d9a84b; }
+.zv-cz { background: #ba8737; }
+.zv-zre { background: #d8bd76; }
+.zv-zrp { background: #73ad7a; }
+.zv-e1 { background: #7d9b61; }
+.zv-e2 { background: #6d8752; }
+.zv-e3 { background: #5d7548; }
+.zv-h2 { background: #a77ca4; }
+.zv-h3 { background: #93648f; }
+.zv-ou { background: #868d8a; }
+.zv-otros { background: #aab5ad; }
+
 .capa-zre-principal {
     display: flex;
     align-items: center;
@@ -1708,6 +1740,10 @@ body {
     border: 1px solid #e8e8e8;
 }
 
+#conteo-resumen[hidden] {
+    display: none !important;
+}
+
 .lista-actividades {
     margin: 10px 0 0 0;
     padding: 8px 10px;
@@ -1893,6 +1929,126 @@ body {
 .regimen-lista {
     margin: 8px 0;
     padding-left: 20px;
+}
+
+/* Presentación compacta de resultados: cada clase se abre cuando se necesita. */
+.tarjeta-acordeon {
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.resumen-clase {
+    display: block;
+    position: relative;
+    padding: 12px 38px 12px 13px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.resumen-clase::-webkit-details-marker { display: none; }
+.resumen-clase::marker { content: ""; }
+.resumen-clase::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    color: #527068;
+    font-size: 20px;
+    font-weight: 400;
+}
+.tarjeta-acordeon[open] > .resumen-clase::after { content: "−"; }
+.resumen-clase:focus-visible,
+.panel-seccion-acordeon > summary:focus-visible {
+    outline: 2px solid #008b70;
+    outline-offset: -2px;
+}
+
+.resumen-clase-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.resumen-clase .descripcion-clase {
+    margin: 0;
+    padding-right: 4px;
+    line-height: 1.35;
+}
+
+.estado-clase {
+    color: #65766f;
+    font-size: 10px;
+    text-align: right;
+}
+
+.detalle-clase {
+    padding: 0 13px 12px;
+    border-top: 1px solid #edf1ef;
+}
+
+.detalle-clase .lista-actividades {
+    margin-top: 9px;
+}
+
+.tarjeta-restriccion-via .detalle-clase { padding-top: 2px; }
+.tarjeta-restriccion-via .bloque-restricciones-giro { margin-bottom: 0; }
+
+#ventana-observaciones,
+#ventana-restricciones {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    border-left: 0;
+}
+
+.panel-seccion-acordeon {
+    overflow: hidden;
+    border: 1px solid #e4ebe7;
+    border-radius: 9px;
+    background: #fff;
+}
+
+.panel-seccion-acordeon > summary {
+    position: relative;
+    padding: 11px 36px 11px 13px;
+    color: #35574d;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    list-style: none;
+}
+
+.panel-seccion-acordeon > summary::-webkit-details-marker { display: none; }
+.panel-seccion-acordeon > summary::marker { content: ""; }
+.panel-seccion-acordeon > summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid #075448;
+    border-bottom: 1.5px solid #075448;
+    transform: translateY(-70%) rotate(45deg);
+    transition: transform .18s ease;
+}
+.panel-seccion-acordeon[open] > summary::after {
+    transform: translateY(-30%) rotate(225deg);
+}
+.panel-seccion-acordeon > span {
+    display: block;
+    padding: 0 13px 12px;
+    line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+    .resumen-clase { padding: 11px 34px 11px 12px; }
+    .detalle-clase { padding: 0 12px 11px; }
+    .resumen-clase-meta { align-items: flex-start; }
+    .estado-clase { max-width: 52%; }
 }
 
 .regimen-lista li {
@@ -2441,6 +2597,74 @@ body {
 
 #panel-usos:not(.minimizado) #ayuda-panel {
     display: block;
+}
+
+.meta-lote-zonificacion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0 10px;
+}
+
+.meta-lote-zonificacion[hidden] { display: none !important; }
+
+.chip-lote {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 4px 9px;
+    border-radius: 8px;
+    background: #f0f4f1;
+    color: #65766d;
+    font-size: 11px;
+    line-height: 1.25;
+}
+
+.chip-zonificacion {
+    color: #075448;
+    font-weight: 600;
+}
+
+.selector-edificacion {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 2px 0 11px;
+    color: #65766d;
+    font-size: 11px;
+}
+
+.selector-edificacion[hidden] { display: none !important; }
+
+.selector-edificacion-titulo { flex: 0 0 auto; }
+
+.selector-edificacion-opciones {
+    display: flex;
+    flex: 1;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid #dce6e1;
+    border-radius: 12px;
+    background: #f2f6f4;
+}
+
+.selector-edificacion-opciones button {
+    flex: 1;
+    min-height: 30px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #65766d;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+.selector-edificacion-opciones button[aria-pressed="true"] {
+    background: #fff;
+    color: #075448;
+    box-shadow: 0 1px 5px rgba(24, 55, 44, .12);
 }
 
 #buscador-actividad {
@@ -4622,6 +4846,10 @@ body.panel-abierto .leaflet-bottom {
 
 .modo-retiros #panel-capas-auxiliares > :not(#panel-capas-retiros) { display: none !important; }
 
+/* En el visor 3 no se utiliza la barra de capas; se oculta en todos los tamaños. */
+.modo-retiros #control-capas-auxiliares { display: none !important; }
+.modo-retiros #boton-detalle-movil { display: none !important; }
+
 .modo-retiros .leaflet-bottom.leaflet-left {
     display: none !important;
 }
@@ -4692,6 +4920,20 @@ body.panel-abierto .leaflet-bottom {
         width: min(320px, calc(100vw - 24px));
         max-height: calc(100dvh - 125px);
         padding: 15px;
+    }
+}
+
+/* Ajustes solo móviles para el visor de retiros: aprovecha el hueco del menú
+   retirado y ancla la escala al borde inferior del mapa. */
+@media (max-width: 896px) {
+    .modo-retiros #bloque-superior-izquierdo {
+        right: 14px !important;
+    }
+
+    .modo-retiros .leaflet-bottom.leaflet-right .leaflet-control-scale,
+    .modo-retiros .leaflet-bottom.leaflet-right .leaflet-control-scale.leaflet-control {
+        right: 12px !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 12px) !important;
     }
 }
 
@@ -4822,3 +5064,235 @@ body.panel-abierto .leaflet-bottom {
         pointer-events: none;
     }
 }
+
+/* Recorta el nombre del archivo de marca y conserva el tamaño del escudo. */
+.logo-escudo-encabezado {
+    position: relative;
+    display: block;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 42px;
+    overflow: hidden;
+}
+
+.logo-escudo-encabezado img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 84px !important;
+    max-width: none;
+    height: auto !important;
+    transform: translateX(-50%);
+}
+
+.modal-logo-recorte {
+    position: relative;
+    display: block;
+    width: 62px;
+    height: 74px;
+    overflow: hidden;
+    margin: 0 auto 8px;
+}
+
+.modal-logo-recorte .modal-logo {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 154px !important;
+    max-width: none;
+    height: auto !important;
+    margin: 0;
+    transform: translateX(-50%);
+}
+
+@media (min-width: 897px) and (max-width: 1180px) {
+    .logo-escudo-encabezado { flex-basis: 32px; width: 32px; height: 40px; }
+    .logo-escudo-encabezado img { width: 80px !important; }
+}
+
+@media (min-width: 768px) and (max-width: 896px) and (min-height: 600px) {
+    .logo-escudo-encabezado { flex-basis: 30px; width: 30px; height: 38px; }
+    .logo-escudo-encabezado img { width: 76px !important; }
+}
+
+@media (max-width: 896px) {
+    .modal-logo-recorte { width: 54px; height: 65px; margin-bottom: 7px; }
+    .modal-logo-recorte .modal-logo { width: 134px !important; }
+}
+
+#ventanas-zona > #ventana-observaciones,
+#ventanas-zona > #ventana-restricciones {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* Cada actividad se presenta por su nombre común; los datos técnicos quedan al desplegarla. */
+#panel-usos .giro-fila {
+    margin: 0;
+    border-bottom: 1px solid #dfe8e4;
+    background: transparent;
+    transition: background-color .16s ease;
+}
+
+#panel-usos .giro-fila:hover,
+#panel-usos .giro-fila[open] {
+    margin-right: -14px;
+    margin-left: -14px;
+    padding-right: 14px;
+    padding-left: 14px;
+    background: rgba(0, 143, 99, 0.045);
+}
+
+#panel-usos #conteo-resumen {
+    margin: 0 0 8px;
+    padding: 2px 3px 8px;
+    border: 0;
+    border-bottom: 1px solid #dfe8e4;
+    border-radius: 0;
+    background: transparent;
+    color: #587068;
+    box-shadow: none;
+}
+
+#panel-usos .giro-fila summary {
+    display: flex;
+    min-height: 55px;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 3px;
+    cursor: pointer;
+    list-style: none;
+}
+
+#panel-usos .giro-fila summary::-webkit-details-marker { display: none; }
+#panel-usos .giro-fila summary:hover .giro-nombre,
+#panel-usos .giro-fila[open] .giro-nombre { color: #008f63; }
+#panel-usos .giro-nombre {
+    flex: 1;
+    color: #213337;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+#panel-usos .giro-estado {
+    flex: 0 0 auto;
+    border-radius: 5px;
+    padding: 3px 7px;
+    background: rgba(0, 139, 112, 0.11);
+    color: #075448;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+#panel-usos .giro-estado-restringido {
+    background: rgba(255, 202, 40, 0.2);
+    color: #725900;
+}
+
+#panel-usos .giro-estado-obra {
+    background: rgba(0, 139, 112, 0.14);
+    color: #075448;
+}
+
+#panel-usos .giro-chevron {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    margin: 0 4px 3px 3px;
+    border-right: 1.5px solid #075448;
+    border-bottom: 1.5px solid #075448;
+    transform: rotate(45deg);
+    transition: transform .18s;
+}
+
+#panel-usos .giro-fila[open] .giro-chevron {
+    margin: 3px 4px 0 3px;
+    transform: rotate(225deg);
+}
+
+#panel-usos .giro-detalle {
+    padding: 0 16px 16px 3px;
+    color: #53676a;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#panel-usos .giro-tecnico { margin-bottom: 10px; }
+#panel-usos .giro-tecnico > span {
+    display: block;
+    margin-bottom: 3px;
+    color: #111;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+#panel-usos .giro-codigo {
+    display: inline-flex;
+    margin: 2px 0 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(0, 139, 112, 0.09);
+    color: #075448;
+    font-size: 10px;
+    font-weight: 650;
+}
+
+#panel-usos .giro-descripcion-clase,
+#panel-usos .giro-observacion,
+#panel-usos .giro-recordatorio {
+    margin: 3px 0 8px;
+    color: #718184;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+#panel-usos .sin-giros-clase {
+    margin: 8px 0;
+    padding: 12px;
+    border-bottom: 1px solid #edf0f0;
+    color: #5e6e71;
+    font-size: 12px;
+}
+
+#panel-usos .sin-giros-clase > * { display: block; margin-bottom: 5px; }
+
+@media (max-width: 767px) {
+    #panel-usos .giro-fila summary { gap: 8px; }
+    #panel-usos .giro-nombre { font-size: 12px; }
+    #panel-usos .giro-estado { font-size: 9px; }
+}
+
+.buscador-actividad-wrap {
+    position: relative;
+    width: 100%;
+    margin-top: 5px;
+}
+#panel-usos #buscador-actividad {
+    display: block;
+    margin-top: 0;
+    padding-right: 42px;
+}
+#limpiar-busqueda-actividad {
+    position: absolute;
+    top: 50%;
+    right: 9px;
+    display: inline-flex;
+    width: 25px;
+    height: 25px;
+    line-height: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #075448;
+    cursor: pointer;
+}
+#limpiar-busqueda-actividad:hover { background: rgba(0, 143, 99, 0.1); }
+#limpiar-busqueda-actividad[hidden] { display: none !important; }
