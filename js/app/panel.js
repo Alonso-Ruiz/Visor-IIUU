@@ -434,13 +434,14 @@
 
         function renderizarFilaGiro(giro, opciones) {
             opciones = opciones || {};
-            var codigo = String(giro.COD_GIRO || '');
+            var clase = String(giro.CLASE || opciones.clase || '');
+            var numero = String(giro['N°'] || '').trim();
+            var codigo = String(giro.COD_GIRO || (clase && numero ? clase + '-' + numero : ''));
             var nombreComun = giro.NOMBRE_COMUN || (window.nombresComunesGiros && nombresComunesGiros[codigo]) || giro.ACTIVIDAD || '';
             var nombreTecnico = String(giro.ACTIVIDAD || '');
             var detalleTecnico = nombreTecnico && nombreTecnico !== nombreComun
                 ? '<div class="giro-tecnico"><span>Giro técnico</span>' + escaparHtml(nombreTecnico) + '</div>'
                 : '';
-            var clase = String(giro.CLASE || opciones.clase || '');
             var descripcionClase = String(giro['DESCRIPCIÓN DE LA CLASE'] || opciones.descripcionClase || '');
             var detalleClase = '<div class="giro-codigo">CIIU ' + escaparHtml(clase) +
                 (codigo ? ' · ' + escaparHtml(codigo) : '') + '</div>' +
