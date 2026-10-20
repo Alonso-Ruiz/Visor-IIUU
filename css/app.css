@@ -4633,9 +4633,16 @@ body.panel-abierto .leaflet-bottom {
     gap: 4px;
     margin-bottom: 9px;
     padding: 11px 12px;
-    border: 1px solid #e4ebe7;
+    border: 1px solid #cfe4d7;
     border-radius: 10px;
     background: #fff;
+    transition: border-color .16s ease, background-color .16s ease, box-shadow .16s ease;
+}
+
+.retiros-dato:hover {
+    border-color: #178a58;
+    background: #f4fbf6;
+    box-shadow: 0 2px 8px rgba(23, 138, 88, .12);
 }
 
 .retiros-dato span {
@@ -4650,17 +4657,17 @@ body.panel-abierto .leaflet-bottom {
 .retiros-sin-datos { margin: 0; color: #68766f; font-size: 13px; line-height: 1.5; }
 
 .popup-retiros-ficha .leaflet-popup-content-wrapper {
-    border: 1px solid rgba(0, 92, 72, .2);
-    border-radius: 12px;
+    border: 1px solid rgba(23, 138, 88, .35);
+    border-radius: 16px;
     background: rgba(255, 255, 255, .98);
-    box-shadow: 0 8px 24px rgba(20, 48, 38, .22);
+    box-shadow: 0 12px 30px rgba(20, 48, 38, .24);
 }
 .popup-retiros-ficha .leaflet-popup-tip { background: #fff; }
 .popup-retiros-ficha .leaflet-popup-content { margin: 14px; }
 .retiros-popup-ficha { display: grid; gap: 9px; color: #263b33; }
-.retiros-popup-titulo { padding-bottom: 8px; border-bottom: 1px solid #e3ece7; font-size: 13px; line-height: 1.3; }
+.retiros-popup-titulo { padding: 0 28px 8px 0; border-bottom: 1px solid #cfe4d7; color: #234a38; font-size: 14px; line-height: 1.3; }
 .retiros-popup-campos { max-height: min(42vh, 280px); overflow: auto; }
-.popup-retiros-ficha .retiros-dato { gap: 2px; margin: 0 0 6px; padding: 7px 9px; border-radius: 8px; }
+.popup-retiros-ficha .retiros-dato { gap: 3px; margin: 0 0 7px; padding: 9px 11px; border-color: #cfe4d7; border-radius: 10px; }
 .popup-retiros-ficha .retiros-dato span { font-size: 9px; }
 .popup-retiros-ficha .retiros-dato strong { font-size: 12px; }
 .popup-retiros-ficha .retiros-sin-datos { max-width: 230px; font-size: 12px; }
@@ -4790,8 +4797,8 @@ body.panel-abierto .leaflet-bottom {
 .muestra-retiros-poligono {
     width: 14px;
     height: 12px;
-    border: 1px solid #555;
-    background: rgba(120, 225, 216, .65);
+    border: 1px solid rgba(92,99,106,0.72);
+    background: rgba(174,180,186,.72);
 }
 
 .muestra-retiros-contexto,
@@ -4804,17 +4811,17 @@ body.panel-abierto .leaflet-bottom {
 }
 
 .muestra-retiros-poligono-gris { background: #f2f2f2; }
-.muestra-retiros-poligono-azul { border-color: #fff; background: #3368a0; }
+.muestra-retiros-poligono-azul { border-color: #b8b8b8; background: #d5d5d5; }
 
 .muestra-retiros-linea,
 .leyenda-retiros i {
     width: 18px;
     height: 0;
-    border-top: 3px solid #d31d13;
+    border-top: 3px solid #d71920;
 }
 
-.muestra-retiros-linea-3 { border-top-width: 2px; }
-.muestra-retiros-linea-5 { border-top-width: 4px; }
+.muestra-retiros-linea-3 { border-top: 2px solid #1769c2; }
+.muestra-retiros-linea-5 { border-top: 4px solid #d71920; }
 
 .leyenda-retiros {
     display: grid;
@@ -4839,6 +4846,14 @@ body.panel-abierto .leaflet-bottom {
 
 .leyenda-retiros i {
     display: inline-block;
+}
+
+.leyenda-retiros .muestra-retiros-poligono {
+    flex: 0 0 14px;
+    width: 14px;
+    height: 12px;
+    border: 1px solid rgba(92,99,106,0.72);
+    background: rgba(174,180,186,.72);
 }
 
 .leyenda-retiros .muestra-retiros-obra { border-color: #db1e2a; }

@@ -965,41 +965,29 @@
             };
             var zonaKeyAct = zonaKeyMap[zonaActual] || zonaActual;
 
-            // En Uso Residencial Exclusivo se aplica exclusivamente la columna
-            // Uso Mixto Vecinal y solo a los giros marcados con "R".
+            // En Uso Residencial Exclusivo se muestran las actividades
+            // compatibles con Uso Residencial Preferente.
             if (zonaActual === 'Uso Residencial Exclusivo') {
-                zonaKeyAct = 'Uso Mixto Vecinal';
-                var clasesTransitorias = {};
-                obtenerActividadesIndice().forEach(function(g) {
-                    if (!g.ZONAS || tipoAutorizacion(g.ZONAS[zonaKeyAct]) !== 'R') return;
-                    if (busqueda && !coincideActividadIndice(busqueda, g) &&
-                        !coincideBusquedaTexto(busqueda, g.CLASE) &&
-                        !coincideBusquedaTexto(busqueda, g['DESCRIPCIÓN DE LA CLASE'])) return;
-                    if (!clasesTransitorias[g.CLASE]) {
-                        clasesTransitorias[g.CLASE] = {
-                            Clase: g.CLASE,
-                            'Descripción': g['DESCRIPCIÓN DE LA CLASE'],
-                            'Uso Compatible': 'Uso Residencial Exclusivo',
-                            girosFiltrados: []
-                        };
-                    }
-                    clasesTransitorias[g.CLASE].girosFiltrados.push(g);
+                zonaKeyAct = 'Uso Residencial Preferente';
+                var actividadesResidencialPreferente = obtenerActividadesIndice().filter(function(g) {
+                    if (!g.ZONAS || tipoAutorizacion(g.ZONAS[zonaKeyAct]) !== 'X') return false;
+                    return !busqueda || coincideActividadIndice(busqueda, g) ||
+                        coincideBusquedaTexto(busqueda, g.CLASE) ||
+                        coincideBusquedaTexto(busqueda, g['DESCRIPCIÓN DE LA CLASE']);
                 });
-                var resultadosTransitorios = Object.values(clasesTransitorias);
-                conteoResumen.innerHTML = '';
-                conteoResumen.hidden = true;
+                conteoResumen.innerHTML = '<strong>' + actividadesResidencialPreferente.length +
+                    '</strong> actividades compatibles con Uso Residencial Preferente.';
+                conteoResumen.hidden = false;
 
-                var htmlTransitorio = '';
-                resultadosTransitorios.forEach(function(item) {
-                    item.girosFiltrados.forEach(function(g) {
-                        htmlTransitorio += renderizarFilaGiro(g, {
-                            estado: 'Permitido con restricción', restringido: true,
-                            extraHtml: '<p class="giro-recordatorio">Referencia: Uso Mixto Vecinal (R)</p>'
-                        });
+                var htmlResidencialPreferente = '';
+                actividadesResidencialPreferente.forEach(function(g) {
+                    htmlResidencialPreferente += renderizarFilaGiro(g, {
+                        estado: 'Compatible',
+                        extraHtml: '<p class="giro-recordatorio">Compatible con Uso Residencial Preferente.</p>'
                     });
                 });
-                actualizarListaAlfabetica(htmlTransitorio ||
-                    "<p class='mensaje-vacio'>No se encontraron giros dentro del régimen exclusivo.</p>");
+                actualizarListaAlfabetica(htmlResidencialPreferente ||
+                    "<p class='mensaje-vacio'>No hay actividades que coincidan con la búsqueda en Uso Residencial Preferente.</p>");
                 return;
             }
 
