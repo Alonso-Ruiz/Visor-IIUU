@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f4f4">
+    <title>Visor 3 · Retiros normativos | San Borja</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #f4f4f4;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        #visor-compartido {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        #estado-carga {
+            position: fixed;
+            z-index: 1;
+            inset: 0;
+            display: grid;
+            place-content: center;
+            gap: 12px;
+            color: #344a40;
+            background: #f4f4f4;
+            text-align: center;
+        }
+
+        #estado-carga[hidden] { display: none; }
+
+        #estado-carga a {
+            color: #1769c2;
+            font-size: 14px;
+        }
+
+        .indicador-carga {
+            width: 28px;
+            height: 28px;
+            margin: 0 auto;
+            border: 3px solid #dce5df;
+            border-top-color: #1769c2;
+            border-radius: 50%;
+            animation: girar .8s linear infinite;
+        }
+
+        @keyframes girar { to { transform: rotate(360deg); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .indicador-carga { animation: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="estado-carga" role="status" aria-live="polite">
+        <span class="indicador-carga" aria-hidden="true"></span>
+        <span>Abriendo el visor 3…</span>
+    </div>
+
+    <iframe id="visor-compartido" title="Visor de retiros normativos de San Borja"></iframe>
+
+    <noscript>
+        JavaScript es necesario para abrir el visor. <a href="../">Ir al visor principal</a>.
+    </noscript>
+
+    <script>
+        (function () {
+            var frame = document.getElementById('visor-compartido');
+            var estado = document.getElementById('estado-carga');
+            var intentos = 0;
+
+            function abrirVisorRetiros() {
+                var documento;
+                try {
+                    documento = frame.contentDocument;
+                } catch (error) {
+                    documento = null;
+                }
+
+                var botonRetiros = documento && documento.querySelector('[data-open-retiros]');
+                if (botonRetiros) {
+                    botonRetiros.click();
+                    estado.hidden = true;
+                    return;
+                }
+
+                intentos += 1;
+                if (intentos < 30) {
+                    window.setTimeout(abrirVisorRetiros, 100);
+                    return;
+                }
+
+                estado.innerHTML = 'No se pudo abrir el visor automáticamente.<a href="../">Abrir el visor principal</a>';
+            }
+
+            frame.addEventListener('load', abrirVisorRetiros);
+            frame.addEventListener('error', function () {
+                estado.innerHTML = 'No se pudo cargar el visor.<a href="../">Abrir el visor principal</a>';
+            });
+            frame.src = '../index.html';
+        })();
+    </script>
+</body>
+</html>
