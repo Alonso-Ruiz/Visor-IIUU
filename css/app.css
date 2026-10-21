@@ -2105,6 +2105,10 @@ body {
     display: none;
 }
 
+html.inicio-retiros #welcome-modal {
+    display: none;
+}
+
 .modal-content {
     position: relative;
     box-sizing: border-box;

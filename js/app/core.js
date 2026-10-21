@@ -7,7 +7,6 @@
             wheelPxPerZoomLevel: 90
         }).fitBounds([[-12.094993710275856,-77.0100891034669],[-12.085400753536042,-76.99586998020054]]);
         window.map = map;
-        var hash = new L.Hash(map);
         var mapaSatelital = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
             maxNativeZoom: 22,
             maxZoom: 28,

@@ -91,6 +91,7 @@
             }
 
             function abrirVisorRetiros() {
+                window.rutasVisores.navegar('3');
                 opcionActiva = abrirRetiros;
                 marcarVisorActivo('3');
                 modal.classList.add('oculto');
@@ -106,11 +107,13 @@
                     return;
                 }
                 if (document.body.classList.contains('modo-retiros') && window.visorRetiros) window.visorRetiros.salir();
+                window.rutasVisores.navegar('1');
                 marcarVisorActivo('1');
                 if (window.cerrarPanelesMapa) window.cerrarPanelesMapa();
             }
 
             function cerrarVisorRetiros() {
+                window.rutasVisores.navegar('1');
                 if (window.visorRetiros) window.visorRetiros.salir();
                 marcarVisorActivo('1');
                 modal.classList.remove('oculto');
@@ -180,6 +183,7 @@
             if (volverConsultaCiiu) volverConsultaCiiu.addEventListener('click', cerrarConsultaCiiu);
             opciones.forEach(function(opcion) {
                 opcion.addEventListener('click', function() {
+                    window.rutasVisores.navegar('1');
                     marcarVisorActivo('1');
                     cerrarModal();
                 });
@@ -207,4 +211,16 @@
                 if (e.key === 'Escape' && document.body.classList.contains('modo-retiros')) cerrarVisorRetiros();
                 if (e.key === 'Escape') cerrarMenuVisores();
             });
+            function aplicarRuta() {
+                if (window.rutasVisores.esRetiros()) abrirVisorRetiros();
+                else if (document.body.classList.contains('modo-retiros')) cerrarVisorRetiros();
+                document.documentElement.classList.remove('inicio-retiros');
+            }
+            window.addEventListener('popstate', aplicarRuta);
+            // Esperar a que los controles, las vías y los scripts defer estén listos.
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', aplicarRuta, { once: true });
+            } else {
+                aplicarRuta();
+            }
         })();
