@@ -995,6 +995,20 @@ body {
     z-index: 1001;
 }
 
+.sugerencia-nota-lotes {
+    padding: 10px 15px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #526b70;
+    background: #edf8fa;
+}
+
+.sugerencia-item small {
+    margin-top: 4px;
+    line-height: 1.4;
+    font-weight: normal;
+}
+
 .sugerencia-item {
     padding: 12px 15px;
     font-size: 12px;

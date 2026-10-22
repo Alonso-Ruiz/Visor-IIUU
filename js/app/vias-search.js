@@ -226,6 +226,7 @@
         }
 
         function ejecutarBusquedaActual() {
+            if (window.BUSQUEDA_LOTES_URBANOS && window.BUSQUEDA_LOTES_URBANOS.ejecutar()) return;
             const textoOriginal = inputBuscadorVias.value.trim();
             const texto = estandarizarTexto(textoOriginal);
             if (texto.length < 2) return;
@@ -246,6 +247,7 @@
             cerrarSugerenciasVias();
             ultimoResultadoVias = {};
             actualizarBotonLimpiarVias();
+            if (window.BUSQUEDA_LOTES_URBANOS && window.BUSQUEDA_LOTES_URBANOS.buscar(this.value)) return;
             if (txt.length < 2) {
                 cerrarSugerenciasVias();
                 if (!txt && capaResaltadoVia) {
@@ -293,7 +295,7 @@
             }
             if (e.key === 'ArrowUp' && sugerenciasVisibles) {
                 e.preventDefault();
-                actualizarSugerenciaViaActiva(indiceSugerenciaViaActiva < 0 ? sugerenciasVias.children.length - 1 : indiceSugerenciaViaActiva - 1);
+                actualizarSugerenciaViaActiva(indiceSugerenciaViaActiva < 0 ? sugerenciasVias.querySelectorAll('.sugerencia-item').length - 1 : indiceSugerenciaViaActiva - 1);
                 return;
             }
             if (e.key === 'Enter') {

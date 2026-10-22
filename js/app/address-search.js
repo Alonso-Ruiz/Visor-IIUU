@@ -409,6 +409,7 @@
 
     document.addEventListener('keydown', function(event) {
         if (event.target !== input) return;
+        if (window.BUSQUEDA_LOTES_URBANOS && window.BUSQUEDA_LOTES_URBANOS.interpretar(input.value)) return;
         if (event.key === 'ArrowDown' && (lotesCercanos.length || resultadosDireccion.length)) {
             event.preventDefault();
             event.stopImmediatePropagation();

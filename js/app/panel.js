@@ -72,6 +72,16 @@
             document.getElementById('chip-identificacion-lote').textContent = identificador
                 ? 'Lote ' + identificador
                 : 'Lote seleccionado';
+            var codigoCatastral = String(obtenerPropiedad(props, ['COD_LOTE']) || '').trim();
+            var identificacionUrbana = window.LOTES_URBANOS_2024 && window.LOTES_URBANOS_2024[codigoCatastral];
+            var chipManzanaUrbana = document.getElementById('chip-manzana-urbana');
+            var chipLoteUrbano = document.getElementById('chip-lote-urbano');
+            var manzanaUrbana = identificacionUrbana && identificacionUrbana.manzana;
+            var loteUrbano = identificacionUrbana && identificacionUrbana.lote;
+            chipManzanaUrbana.textContent = manzanaUrbana ? 'Manzana ' + manzanaUrbana : '';
+            chipManzanaUrbana.hidden = !manzanaUrbana;
+            chipLoteUrbano.textContent = loteUrbano ? 'Lote urbano ' + loteUrbano : '';
+            chipLoteUrbano.hidden = !loteUrbano;
             document.getElementById('chip-area-lote').textContent = Number.isFinite(area) && area > 0
                 ? new Intl.NumberFormat('es-PE', { maximumFractionDigits: 2 }).format(area) + ' m²'
                 : 'Área por verificar';
