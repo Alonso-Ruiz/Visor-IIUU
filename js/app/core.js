@@ -52,6 +52,7 @@ function estandarizarTexto(t) {
     return String(t === null || t === undefined ? '' : t)
         .normalize('NFKD')
         .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[ñ]/g, 'n')
         .toLocaleLowerCase('es')
         .replace(/&/g, ' y ')
         .replace(/[^a-z0-9]+/g, ' ')

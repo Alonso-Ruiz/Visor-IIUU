@@ -378,20 +378,28 @@
     }
 
     function abrirLote(feature) {
-        var props = feature.properties || {};
+        var geometriaConsulta = feature && feature.type === 'FeatureCollection'
+            ? feature
+            : { type: 'FeatureCollection', features: [feature] };
+        var featurePrincipal = geometriaConsulta.features[0] || feature;
+        var props = featurePrincipal.properties || {};
         var uso = props['USOS_COMPA'] || '';
         if (uso === 'Usos Específicos' || uso === 'Otros Usos') uso = 'Usos Específicos - Otros Usos';
         if (window.normalizarCategoriaUso) uso = window.normalizarCategoriaUso(uso);
 
-        if (window.limpiarRetiroResaltado) window.limpiarRetiroResaltado();
-        if (window.capaLoteResaltado && map.hasLayer(window.capaLoteResaltado)) map.removeLayer(window.capaLoteResaltado);
-        window.capaLoteResaltado = L.geoJson(feature, {
-            interactive: false,
-            style: { color: '#00D9FF', weight: 5, opacity: 1, dashArray: '9 6', fillColor: '#00D9FF', fillOpacity: 0.22 }
-        }).addTo(map);
+        if (window.resaltarLotePorBusqueda) {
+            window.resaltarLotePorBusqueda(geometriaConsulta);
+        } else {
+            if (window.limpiarRetiroResaltado) window.limpiarRetiroResaltado();
+            if (window.capaLoteResaltado && map.hasLayer(window.capaLoteResaltado)) map.removeLayer(window.capaLoteResaltado);
+            window.capaLoteResaltado = L.geoJson(geometriaConsulta, {
+                interactive: false,
+                style: { color: '#00D9FF', weight: 5, opacity: 1, dashArray: '9 6', fillColor: '#00D9FF', fillOpacity: 0.22 }
+            }).addTo(map);
+        }
         if (window.actualizarLista) window.actualizarLista(uso, props['ZON_VIG'] || '', props['ZRE_USOCOM'] || '', props);
 
-        var limites = L.geoJson(feature).getBounds();
+        var limites = L.geoJson(geometriaConsulta).getBounds();
         var panel = document.getElementById('panel-usos');
         var movil = window.innerWidth <= 896;
         var anchoPanel = panel && !panel.classList.contains('minimizado') && !movil
@@ -407,9 +415,11 @@
         input.setAttribute('aria-activedescendant', '');
     }
 
+    window.abrirLotePorDireccion = abrirLote;
+
     document.addEventListener('keydown', function(event) {
         if (event.target !== input) return;
-        if (window.BUSQUEDA_LOTES_URBANOS && window.BUSQUEDA_LOTES_URBANOS.interpretar(input.value)) return;
+        if (event.key === 'Enter' && window.BUSQUEDA_DIRECCIONES_MUNICIPAL && window.BUSQUEDA_DIRECCIONES_MUNICIPAL.ejecutar(event)) return;
         if (event.key === 'ArrowDown' && (lotesCercanos.length || resultadosDireccion.length)) {
             event.preventDefault();
             event.stopImmediatePropagation();

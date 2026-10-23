@@ -10,7 +10,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/app.css?v=20261022-busqueda1">
+        <link rel="stylesheet" href="css/app.css?v=20261023-6">
         <title>Plano de Usos - San Borja</title>
         <script src="js/usos.js?v=20260917-sin-actividades-excluidas1"></script>
         <script src="js/app/preservar-usos-anteriores.js?v=20260930-restricciones-complemento1"></script>
@@ -51,12 +51,19 @@
                     <i class="fas fa-search"></i>
                 </button>
                 <i class="fas fa-search icono-lupa"></i>
-                <input type="text" id="buscador-vias" placeholder="Buscar vía, manzana o lote..." autocomplete="off" aria-label="Buscar vía, dirección o manzana y lote">
+                <input type="text" id="buscador-vias" placeholder="Vía y número, dirección completa o código de lote..." autocomplete="off" aria-label="Buscar vía, número de puerta, dirección o código de lote">
                 <button type="button" id="boton-limpiar-vias" aria-label="Limpiar búsqueda de vía" title="Limpiar búsqueda" hidden>
                     <i class="fas fa-times" aria-hidden="true"></i>
                 </button>
                 <div id="sugerencias-vias"></div>
             </div>
+            <section id="direcciones-lote-panel" class="direcciones-lote-panel" hidden aria-labelledby="titulo-direcciones-lote">
+                <div class="direcciones-lote-cabecera">
+                    <h3 id="titulo-direcciones-lote">Direcciones vinculadas</h3>
+                    <span id="conteo-direcciones-lote"></span>
+                </div>
+                <ul id="lista-direcciones-lote"></ul>
+            </section>
         </div>
 
         <button type="button" id="boton-detalle-movil" aria-label="Abrir detalle del lote" aria-expanded="false">
@@ -230,8 +237,6 @@
                 <div id="meta-lote-zonificacion" class="meta-lote-zonificacion" hidden>
                     <span id="chip-zonificacion-vigente" class="chip-lote chip-zonificacion"></span>
                     <span id="chip-identificacion-lote" class="chip-lote"></span>
-                    <span id="chip-manzana-urbana" class="chip-lote" hidden></span>
-                    <span id="chip-lote-urbano" class="chip-lote" hidden></span>
                     <span id="chip-area-lote" class="chip-lote"></span>
                 </div>
                 <div id="selector-edificacion" class="selector-edificacion" hidden aria-label="Escenario de edificación">
@@ -280,28 +285,29 @@
         <script src="js/leaflet.pattern.js"></script>
 
         <script src="data/usos_compatibles_0.js?v=20261001-poligono-faltante1"></script>
-        <script src="data/lotes_urbanos_2024.js?v=20261022-lotes-urbanos1"></script>
         <script src="data/parques_alineados_20261001.js?v=20261001-parques1"></script>
         <script defer src="data/zonificacion_auxiliar.js?v=20261001-poligono-faltante1"></script>
         <script defer src="js/app/zonificacion.js?v=20260930-revisadas1"></script>
         <script src="data/Bordes_1.js?v=20260924-bordes1"></script>
         <script src="data/poligono_retiros_con_codigos_2.js?v=20261019-retiro-normativo1"></script>
 
-        <script src="js/app/core.js?v=20261021-rutas1"></script>
+        <script src="js/app/core.js?v=20261023-n-1"></script>
         <script src="js/app/legend-filters.js?v=20261001-parques1"></script>
-        <script src="js/app/layers.js?v=20261020-auditoria1"></script>
+        <script src="js/app/layers.js?v=20261023-resaltado-busqueda1"></script>
         <script src="js/app/controls.js?v=20261020-auditoria1"></script>
         <script src="js/app/visor-retiros.js?v=20261020-vis3-modal-seleccion3"></script>
-        <script src="js/app/panel.js?v=20261022-lotes-urbanos1"></script>
+        <script src="js/app/panel.js?v=20261023-2"></script>
         <script src="data/equivalencias_2851.js?v=20261002-consulta-ciiu1"></script>
         <script src="js/app/consulta-ciiu.js?v=20261005-consulta-simple1"></script>
         <script src="js/app/welcome-modal.js?v=20261021-rutas1"></script>
         <script src="js/app/ui-guard.js?v=20260805-legend2"></script>
         <script src="js/app/map-opacity.js?v=20260824-toolbar2"></script>
-        <script src="js/app/lotes-search.js?v=20261022-busqueda3"></script>
-        <script src="js/app/vias-search.js?v=20261022-busqueda2"></script>
+        <script src="js/app/vias-search.js?v=20261023-2"></script>
         <script src="js/app/geoapify-config.js?v=20260928-geoapify-demo1"></script>
-        <script src="js/app/address-search.js?v=20261022-busqueda1"></script>
+        <script src="js/app/address-search.js?v=20261023-4"></script>
+        <script src="js/app/engine-direcciones.js?v=20261023-directorio5"></script>
+        <script src="data/directorio_direcciones.js?v=20261023-directorio3"></script>
+        <script src="js/app/direcciones-search.js?v=20261023-directorio7"></script>
         <script src="js/app/evaluacion-lote.js?v=20261019-escenario-con-obra1"></script>
         <script src="js/app/zonificacion-vigente.js?v=20261020-auditoria1"></script>
         <script src="js/app/capa-zonificacion-vigente.js?v=20261020-auditoria1"></script>

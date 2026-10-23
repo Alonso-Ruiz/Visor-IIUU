@@ -834,6 +834,10 @@ body {
     width: min(360px, calc(100vw - 32px));
 }
 
+#bloque-superior-izquierdo.buscador-con-direcciones {
+    gap: 0;
+}
+
 #tarjeta-titulo {
     background-color: rgba(255, 255, 255, 0.96);
     border-radius: 8px;
@@ -995,26 +999,87 @@ body {
     z-index: 1001;
 }
 
-.sugerencia-nota-lotes {
-    padding: 10px 15px;
-    font-size: 12px;
-    line-height: 1.4;
-    color: #526b70;
-    background: #edf8fa;
-}
-
-.sugerencia-item small {
-    margin-top: 4px;
-    line-height: 1.4;
-    font-weight: normal;
-}
-
 .sugerencia-item {
     padding: 12px 15px;
     font-size: 12px;
     cursor: pointer;
     border-bottom: 1px solid #f0f0f0;
     color: #333;
+}
+
+.sugerencia-item small {
+    display: block;
+    margin-top: 4px;
+    color: #65766d;
+    font-size: 11px;
+    line-height: 1.35;
+    font-weight: normal;
+}
+
+.resultado-direccion-mensaje {
+    padding: 10px 14px;
+    color: #526b70;
+    background: #f2f7f5;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.direcciones-lote-panel {
+    width: 100%;
+    max-height: min(42vh, 320px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    margin: 8px 0 0;
+    padding: 13px 14px;
+    border: 1px solid rgba(204, 222, 215, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.83);
+    box-shadow: 0 8px 22px rgba(20, 43, 35, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(12px) saturate(1.18);
+    -webkit-backdrop-filter: blur(12px) saturate(1.18);
+}
+
+.direcciones-lote-panel[hidden] {
+    display: none;
+}
+
+.direcciones-lote-cabecera {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.direcciones-lote-cabecera h3 {
+    margin: 0;
+    color: #244b3d;
+    font-size: 13px;
+}
+
+.direcciones-lote-cabecera span {
+    color: #71847b;
+    font-size: 11px;
+}
+
+.direcciones-lote-panel ul {
+    display: grid;
+    gap: 7px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.direcciones-lote-panel li {
+    display: grid;
+    gap: 2px;
+    color: #596a61;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.direcciones-lote-panel li strong {
+    color: #263d33;
 }
 
 .sugerencia-item:hover {

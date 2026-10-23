@@ -118,6 +118,33 @@
             window.capaBloqueSeleccionado = capaBloqueSeleccionado;
         }
 
+        window.resaltarLotePorBusqueda = function(feature) {
+            window.limpiarRetiroResaltado();
+            if (capaLoteResaltado && map.hasLayer(capaLoteResaltado)) map.removeLayer(capaLoteResaltado);
+            capaLoteResaltado = null;
+            window.capaLoteResaltado = null;
+            window.limpiarBordeBloqueSeleccionado();
+            if (!feature) return;
+
+            if (!map.getPane('pane_lote_resaltado')) {
+                map.createPane('pane_lote_resaltado');
+                map.getPane('pane_lote_resaltado').style.zIndex = 650;
+                map.getPane('pane_lote_resaltado').style.pointerEvents = 'none';
+            }
+            capaLoteResaltado = L.geoJson(feature, {
+                pane: 'pane_lote_resaltado',
+                interactive: false,
+                style: {
+                    color: '#00D9FF', weight: 5, opacity: 1, dashArray: '9 6',
+                    lineCap: 'round', lineJoin: 'round', fill: true,
+                    fillColor: '#00D9FF', fillOpacity: 0.22,
+                    className: 'lote-resaltado-animacion'
+                }
+            }).addTo(map);
+            window.capaLoteResaltado = capaLoteResaltado;
+            if (capaLoteResaltado.bringToFront) capaLoteResaltado.bringToFront();
+        };
+
         function resaltarLote(feature, layer) {
             window.limpiarRetiroResaltado();
             if (capaLoteResaltado) map.removeLayer(capaLoteResaltado);
