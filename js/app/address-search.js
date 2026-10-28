@@ -397,7 +397,10 @@
                 style: { color: '#00D9FF', weight: 5, opacity: 1, dashArray: '9 6', fillColor: '#00D9FF', fillOpacity: 0.22 }
             }).addTo(map);
         }
-        if (window.actualizarLista) window.actualizarLista(uso, props['ZON_VIG'] || '', props['ZRE_USOCOM'] || '', props);
+        if (window.actualizarLista) {
+            var puntoConsulta = L.geoJson(geometriaConsulta).getBounds().getCenter();
+            window.actualizarLista(uso, props['ZON_VIG'] || '', props['ZRE_USOCOM'] || '', props, puntoConsulta);
+        }
 
         var limites = L.geoJson(geometriaConsulta).getBounds();
         var panel = document.getElementById('panel-usos');

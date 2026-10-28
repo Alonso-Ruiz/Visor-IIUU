@@ -6,6 +6,8 @@
         var zonificacionVigenteActual = '';
         var escenarioConObra = false;
         var consultaLoteVigente = 0;
+        var contextoATDActual = null;
+        var propiedadesLoteATDPorId = null;
 
         function mostrarSelectorEdificacion(mostrar) {
             var selector = document.getElementById('selector-edificacion');
@@ -110,6 +112,153 @@
                 if (valor !== null && valor !== undefined && String(valor).trim() !== '') return valor;
             }
             return '';
+        }
+
+        function puntoEnAnilloATD(punto, anillo) {
+            var dentro = false;
+            for (var i = 0, j = anillo.length - 1; i < anillo.length; j = i++) {
+                var xi = Number(anillo[i][0]), yi = Number(anillo[i][1]);
+                var xj = Number(anillo[j][0]), yj = Number(anillo[j][1]);
+                var cruza = ((yi > punto.lat) !== (yj > punto.lat)) &&
+                    (punto.lng < (xj - xi) * (punto.lat - yi) / (yj - yi) + xi);
+                if (cruza) dentro = !dentro;
+            }
+            return dentro;
+        }
+
+        function puntoEnPoligonoATD(punto, poligono) {
+            if (!poligono || !poligono.length || !puntoEnAnilloATD(punto, poligono[0])) return false;
+            for (var i = 1; i < poligono.length; i++) {
+                if (puntoEnAnilloATD(punto, poligono[i])) return false;
+            }
+            return true;
+        }
+
+        function resolverATD(punto) {
+            if (!punto || !Number.isFinite(Number(punto.lat)) || !Number.isFinite(Number(punto.lng))) return '';
+            var features = window.json_areas_tratamiento_diferenciado &&
+                window.json_areas_tratamiento_diferenciado.features || [];
+            for (var i = 0; i < features.length; i++) {
+                var feature = features[i];
+                var geometria = feature.geometry || {};
+                if (geometria.type !== 'MultiPolygon') continue;
+                if (geometria.coordinates.some(function(poligono) { return puntoEnPoligonoATD(punto, poligono); })) {
+                    return String(feature.properties && feature.properties.ATD || '').trim().toUpperCase();
+                }
+            }
+            return '';
+        }
+
+        function esLoteEsquinaATD(propiedades) {
+            var configuracion = String(propiedades && propiedades.CONFIG_LOT || '').trim().toLowerCase();
+            return configuracion === 'doble frente lateral' || configuracion === 'triple frente' ||
+                configuracion === 'mas de tres frentes' || configuracion === 'más de tres frentes';
+        }
+
+        function completarPropiedadesUsoATD(propiedades) {
+            var resultado = Object.assign({}, propiedades || {});
+            var coleccion = window.json_usos_compatibles_0;
+            if (!coleccion) return resultado;
+            if (!propiedadesLoteATDPorId) {
+                propiedadesLoteATDPorId = new Map();
+                (coleccion.features || []).forEach(function(feature) {
+                    var props = feature.properties || {};
+                    ['CUC', 'COD_LOTE'].forEach(function(campo) {
+                        var id = String(props[campo] || '').trim();
+                        if (id && !propiedadesLoteATDPorId.has(campo + ':' + id)) {
+                            propiedadesLoteATDPorId.set(campo + ':' + id, props);
+                        }
+                    });
+                });
+            }
+            var fuente = null;
+            ['CUC', 'COD_LOTE'].some(function(campo) {
+                var id = String(resultado[campo] || '').trim();
+                if (!id) return false;
+                fuente = propiedadesLoteATDPorId.get(campo + ':' + id) || null;
+                return Boolean(fuente);
+            });
+            if (fuente) {
+                resultado = Object.assign({}, fuente, resultado);
+                Object.keys(propiedades || {}).forEach(function(campo) {
+                    var valor = propiedades[campo];
+                    if (valor === null || valor === undefined || String(valor).trim() === '') {
+                        resultado[campo] = fuente[campo];
+                    }
+                });
+            }
+            return resultado;
+        }
+
+        function esPoligonoONATD(propiedades) {
+            return String(obtenerPropiedad(propiedades, ['RESTRICCI�', 'RESTRICCIÓN', 'RESTRICCIÓ', 'RESTRICCION']))
+                .trim().toUpperCase() === 'O.N';
+        }
+
+        function actividadesEspecificasATD(busqueda) {
+            if (zonaActual !== 'Uso Residencial Preferente') return [];
+            var atd = contextoATDActual && contextoATDActual.codigo;
+            var esquina = contextoATDActual && contextoATDActual.esquina;
+            var ambito = '';
+            var especificas = [];
+            if (esPoligonoONATD(loteActual)) {
+                ambito = 'Todos lados';
+                especificas = [
+                    'Servicios públicos de regulación y facilitación de actividades económicas (Oficinas a puerta cerrada)'
+                ];
+            } else if ((atd === 'A' || atd === 'B') && esquina) {
+                ambito = 'ATD ' + atd + ' · esquina';
+                especificas = [
+                    'Servicios públicos de regulación y facilitación de actividades económicas (Oficinas a puerta cerrada)',
+                    'Bodega o tienda de abarrotes (local comercial individual)',
+                    'Minimarket (local comercial individual)',
+                    'Cafeterías dentro del giro: Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras'
+                ];
+            } else if (atd === 'C') {
+                ambito = 'ATD C';
+                especificas = [
+                    'Servicios públicos de regulación y facilitación de actividades económicas (Oficinas a puerta cerrada)',
+                    'Bodega o tienda de abarrotes (local comercial individual)',
+                    'Minimarket (local comercial individual)',
+                    'Tienda de Conveniencia',
+                    'Cafeterías dentro del giro: Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras',
+                    'Servicios de cuidado capilar, peluquería y barbería',
+                    'Venta al por menor de medicamentos y productos farmacéuticos'
+                ];
+            }
+            var items = especificas.map(function(nombre) {
+                return {
+                    nombre: nombre,
+                    ambito: ambito,
+                    condiciones: nombre.toLowerCase().indexOf('oficinas a puerta cerrada') !== -1 ? [
+                        'En vivienda unifamiliar, el área útil total destinada a la actividad, considerando la suma de todos los ambientes y niveles utilizados para dicho giro, no podrá exceder el 20 % del área del lote.',
+                        'En vivienda bifamiliar, multifamiliar o conjunto residencial, el área útil total destinada a la actividad no podrá exceder el 15 % del área de la unidad inmobiliaria declarada como vivienda.'
+                    ] : []
+                };
+            });
+            return items.filter(function(item) {
+                return !busqueda || coincideBusquedaTexto(busqueda, item.nombre) || coincideBusquedaTexto(busqueda, item.ambito);
+            });
+        }
+
+        function renderizarActividadesATD(busqueda) {
+            var items = actividadesEspecificasATD(busqueda);
+            var html = items.map(function(item) {
+                var condicion = item.condiciones.map(function(texto) {
+                    return '<p class="giro-recordatorio">' + escaparHtml(texto) + '</p>';
+                }).join('');
+                var notaAmbito = item.ambito === 'Todos lados'
+                    ? ''
+                    : 'Aplicable según ' + item.ambito + '.';
+                var abierto = esPoligonoONATD(loteActual) &&
+                    item.nombre.toLowerCase().indexOf('oficinas a puerta cerrada') !== -1 ? ' open' : '';
+                return '<details class="giro-fila giro-fila-atd"' + abierto + '><summary><span class="giro-nombre">' +
+                    escaparHtml(item.nombre) + '</span><span class="giro-estado">' + escaparHtml(item.ambito) +
+                    '</span><span class="giro-chevron" aria-hidden="true"></span></summary><div class="giro-detalle">' +
+                    (notaAmbito ? '<p class="giro-recordatorio">' + escaparHtml(notaAmbito) + '</p>' : '') + condicion +
+                    '</div></details>';
+            }).join('');
+            return { html: html, count: items.length };
         }
 
         function obtenerRestriccionPoligono() {
@@ -684,7 +833,11 @@
             zonaActual      = String(nombreZona).trim();
             zonVigActual    = String(zonVig  || '').trim();
             zreUsocomActual = String(zreUsocom || '').trim();
-            loteActual      = propiedadesLote || {};
+            loteActual      = completarPropiedadesUsoATD(propiedadesLote || {});
+            contextoATDActual = {
+                codigo: resolverATD(puntoConsulta),
+                esquina: esLoteEsquinaATD(loteActual)
+            };
             zonificacionVigenteActual = window.ZONIFICACION_VIGENTE
                 ? window.ZONIFICACION_VIGENTE.obtener(loteActual, puntoConsulta)
                 : '';
@@ -825,7 +978,8 @@
                     coincideBusquedaTexto(busqueda, item.giro.CLASE) ||
                     coincideBusquedaTexto(busqueda, item.giro['DESCRIPCIÓN DE LA CLASE']);
             });
-            var html = '';
+            var resumenATD = renderizarActividadesATD(busqueda);
+            var html = resumenATD.html;
             actividades.forEach(function(item) {
                 var giro = item.giro;
                 var autorizacion = giro.ZONAS && tipoAutorizacion(giro.ZONAS[zonaKeyAct]);
@@ -842,8 +996,10 @@
             });
             var conteo = document.getElementById('conteo-resumen');
             conteo.hidden = false;
-            conteo.innerHTML = actividades.length
-                ? '<strong>' + actividades.length + '</strong> actividades para el escenario Con obra' +
+            var totalActividades = actividades.length + resumenATD.count;
+            conteo.innerHTML = totalActividades
+                ? '<strong>' + totalActividades + '</strong> actividades para el escenario Con obra' +
+                    (resumenATD.count ? ' · ' + resumenATD.count + ' específicas por ATD' : '') +
                     (evaluacion.ampliadas ? ' · <strong>' + evaluacion.ampliadas + '</strong> habilitadas con obra.' : '.')
                 : '';
             actualizarListaAlfabetica(html || "<p class='mensaje-vacio'>" +
@@ -965,6 +1121,22 @@
             };
             var zonaKeyAct = zonaKeyMap[zonaActual] || zonaActual;
 
+            // En esquinas ATD A/B y en ATD C, el cuadro específico sustituye
+            // la lista general de compatibilidades de Residencial Preferente.
+            if (zonaActual === 'Uso Residencial Preferente' &&
+                (esPoligonoONATD(loteActual) ||
+                    (contextoATDActual && (contextoATDActual.codigo === 'A' || contextoATDActual.codigo === 'B') && contextoATDActual.esquina) ||
+                    (contextoATDActual && contextoATDActual.codigo === 'C'))) {
+                var listaATD = renderizarActividadesATD(busqueda);
+                conteoResumen.innerHTML = '<strong>' + listaATD.count + '</strong> actividades permitidas según ' +
+                    escaparHtml(esPoligonoONATD(loteActual) ? 'Todos lados' :
+                        (contextoATDActual.codigo === 'C' ? 'ATD C' : 'ATD ' + contextoATDActual.codigo + ' en esquina')) + '.';
+                conteoResumen.hidden = false;
+                actualizarListaAlfabetica(listaATD.html ||
+                    "<p class='mensaje-vacio'>No hay actividades que coincidan con la búsqueda en el cuadro aplicable.</p>");
+                return;
+            }
+
             // En Uso Residencial Exclusivo se muestran las actividades
             // compatibles con Uso Residencial Preferente.
             if (zonaActual === 'Uso Residencial Exclusivo') {
@@ -1019,8 +1191,9 @@
                 });
             });
 
-            var htmlContenido = '';
-            var totalGirosVisibles = 0;
+            var resumenATD = renderizarActividadesATD(busqueda);
+            var htmlContenido = resumenATD.html;
+            var totalGirosVisibles = resumenATD.count;
             resultados.forEach(function(item) {
                 // Giros para esta clase CON su autorización individual en la zona
                 var girosDeEstaClase = obtenerActividadesIndice().filter(function(g) {
