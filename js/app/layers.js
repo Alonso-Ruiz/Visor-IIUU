@@ -301,9 +301,7 @@
         }
 
         function style_usos_compatibles_0_0(feature) {
-            var estilo = styleBaseUsosCompatibles(feature);
-            if (esRestriccionON(feature)) estilo.fillOpacity = 0.55;
-            return estilo;
+            return styleBaseUsosCompatibles(feature);
         }
 
         function esPlanEspecialRayado(feature) {
@@ -311,12 +309,6 @@
                 ? window.normalizarCategoriaUso(feature.properties['USOS_COMPA'])
                 : String(feature.properties['USOS_COMPA']);
             return categoria.indexOf('Planes Especiales') === 0;
-        }
-
-        function esRestriccionON(feature) {
-            var propiedades = feature.properties || {};
-            return String(propiedades['RESTRICCI�'] || propiedades['RESTRICCIÓN'] ||
-                propiedades['RESTRICCIÓ'] || propiedades['RESTRICCION'] || '').trim() === 'O.N';
         }
 
         function style_tramado_planes_especiales() {
@@ -376,20 +368,6 @@
         });
         window.layer_usos_compatibles_planes = layer_usos_compatibles_planes;
         bounds_group.addLayer(layer_usos_compatibles_planes); map.addLayer(layer_usos_compatibles_planes);
-
-        // La trama O.N comparte el SVG transparente de los planes especiales;
-        // el color del uso compatible permanece en la capa base inferior.
-        var layer_usos_compatibles_on = new L.geoJson(json_usos_compatibles_0, {
-            attribution: '',
-            interactive: true,
-            pane: 'pane_tramado_planes_especiales',
-            renderer: rendererPlanesEspecialesSvg,
-            filter: esRestriccionON,
-            onEachFeature: pop_usos_compatibles_0,
-            style: style_tramado_planes_especiales,
-        });
-        window.layer_usos_compatibles_on = layer_usos_compatibles_on;
-        bounds_group.addLayer(layer_usos_compatibles_on); map.addLayer(layer_usos_compatibles_on);
 
         var capaRetiros = typeof json_Polgono_retiros_concdigos_2 !== 'undefined'
             ? new L.geoJson(null, {

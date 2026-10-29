@@ -201,20 +201,7 @@
             var esquina = contextoATDActual && contextoATDActual.esquina;
             var ambito = '';
             var especificas = [];
-            if (esPoligonoONATD(loteActual)) {
-                ambito = 'Todos lados';
-                especificas = [
-                    'Servicios públicos de regulación y facilitación de actividades económicas (Oficinas a puerta cerrada)'
-                ];
-            } else if ((atd === 'A' || atd === 'B') && esquina) {
-                ambito = 'ATD ' + atd + ' · esquina';
-                especificas = [
-                    'Servicios públicos de regulación y facilitación de actividades económicas (Oficinas a puerta cerrada)',
-                    'Bodega o tienda de abarrotes (local comercial individual)',
-                    'Minimarket (local comercial individual)',
-                    'Cafeterías dentro del giro: Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras'
-                ];
-            } else if (atd === 'C') {
+            if (atd === 'C') {
                 ambito = 'ATD C';
                 especificas = [
                     'Servicios públicos de regulación y facilitación de actividades económicas (Oficinas a puerta cerrada)',
@@ -224,6 +211,19 @@
                     'Cafeterías dentro del giro: Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras',
                     'Servicios de cuidado capilar, peluquería y barbería',
                     'Venta al por menor de medicamentos y productos farmacéuticos'
+                ];
+            } else if ((atd === 'A' || atd === 'B') && esquina) {
+                ambito = 'ATD ' + atd + ' · esquina';
+                especificas = [
+                    'Servicios públicos de regulación y facilitación de actividades económicas (Oficinas a puerta cerrada)',
+                    'Bodega o tienda de abarrotes (local comercial individual)',
+                    'Minimarket (local comercial individual)',
+                    'Cafeterías dentro del giro: Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras'
+                ];
+            } else if (esPoligonoONATD(loteActual)) {
+                ambito = 'Todos lados';
+                especificas = [
+                    'Servicios públicos de regulación y facilitación de actividades económicas (Oficinas a puerta cerrada)'
                 ];
             }
             var items = especificas.map(function(nombre) {
@@ -250,7 +250,7 @@
                 var notaAmbito = item.ambito === 'Todos lados'
                     ? ''
                     : 'Aplicable según ' + item.ambito + '.';
-                var abierto = esPoligonoONATD(loteActual) &&
+                var abierto = contextoATDActual.codigo !== 'C' && esPoligonoONATD(loteActual) &&
                     item.nombre.toLowerCase().indexOf('oficinas a puerta cerrada') !== -1 ? ' open' : '';
                 return '<details class="giro-fila giro-fila-atd"' + abierto + '><summary><span class="giro-nombre">' +
                     escaparHtml(item.nombre) + '</span><span class="giro-estado">' + escaparHtml(item.ambito) +
@@ -1128,9 +1128,11 @@
                     (contextoATDActual && (contextoATDActual.codigo === 'A' || contextoATDActual.codigo === 'B') && contextoATDActual.esquina) ||
                     (contextoATDActual && contextoATDActual.codigo === 'C'))) {
                 var listaATD = renderizarActividadesATD(busqueda);
+                var ambitoATD = contextoATDActual.codigo === 'C' ? 'ATD C' :
+                    (contextoATDActual.codigo === 'A' || contextoATDActual.codigo === 'B')
+                        ? 'ATD ' + contextoATDActual.codigo + ' en esquina' : 'Todos lados';
                 conteoResumen.innerHTML = '<strong>' + listaATD.count + '</strong> actividades permitidas según ' +
-                    escaparHtml(esPoligonoONATD(loteActual) ? 'Todos lados' :
-                        (contextoATDActual.codigo === 'C' ? 'ATD C' : 'ATD ' + contextoATDActual.codigo + ' en esquina')) + '.';
+                    escaparHtml(ambitoATD) + '.';
                 conteoResumen.hidden = false;
                 actualizarListaAlfabetica(listaATD.html ||
                     "<p class='mensaje-vacio'>No hay actividades que coincidan con la búsqueda en el cuadro aplicable.</p>");

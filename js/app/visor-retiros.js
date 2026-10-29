@@ -692,7 +692,7 @@
 
     function ocultarCapasPrincipales() {
         [window.layer_usos_compatibles_0, window.layer_usos_compatibles_planes,
-        window.layer_usos_compatibles_on, window.layer_parques_alineados,
+        window.layer_parques_alineados,
         window.capaRetiros].forEach(function (capa) {
             if (capa && map.hasLayer(capa)) map.removeLayer(capa);
         });
@@ -719,7 +719,7 @@
             zoom: map.getZoom(),
             viasVisibles: window.obtenerVisibilidadVias ? window.obtenerVisibilidadVias() : true,
             capas: [window.layer_usos_compatibles_0, window.layer_usos_compatibles_planes,
-            window.layer_usos_compatibles_on, window.layer_parques_alineados,
+            window.layer_parques_alineados,
             window.capaRetiros].filter(Boolean).map(function (capa) {
                 return { capa: capa, visible: map.hasLayer(capa) };
             })

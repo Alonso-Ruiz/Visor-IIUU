@@ -107,10 +107,6 @@
             actualizarCapa(window.layer_usos_compatibles_planes, style_tramado_planes_especiales);
         }
 
-        if (window.layer_usos_compatibles_on) {
-            actualizarCapa(window.layer_usos_compatibles_on, style_tramado_planes_especiales);
-        }
-
         if (limpiarSeleccion !== false && window.capaLoteResaltado) {
             map.removeLayer(window.capaLoteResaltado);
             window.capaLoteResaltado = null;
