@@ -261,6 +261,311 @@
             return { html: html, count: items.length };
         }
 
+        var actividadesMixtoVecinalResidencial = [
+            'Bodega o tienda de abarrotes (local comercial individual)',
+            'Tienda de conveniencia (local comercial individual)',
+            'Minimarket (local comercial individual)',
+            'Venta al por menor de medicamentos y productos farmacéuticos',
+            'Venta al por menor de perfumes, cosméticos y productos de cuidado personal',
+            'Servicio de estacionamiento vehicular',
+            'Consultorio de profesionales de la salud (excepto médicos cirujanos), sin internamiento',
+            'Consultorio médico (con médico cirujano, con o sin especialidad), sin internamiento',
+            'Centro odontológico sin internamiento',
+            'Sólo servicio de rehabilitación y medicina física en el giro: Servicios especializados o de subespecialidad: medicina nuclear, radioterapia, medicina física, rehabilitación, hemodiálisis, litotripsia, medicina hiperbárica, endoscopias y colposcopias',
+            'Servicios de oftalmología',
+            'Centros de medicina alternativa',
+            'Atención residencial para personas mayores o con discapacidad',
+            'Asistencia social diurna para personas mayores o con discapacidad',
+            'Asistencia social alimentaria y programas comunitarios',
+            'Cuidado diurno infantil'
+        ];
+
+        var actividadesMixtoVecinalComercial = [
+            'Bodega o tienda de abarrotes (local comercial individual)',
+            'Tienda de conveniencia (local comercial individual)',
+            'Minimarket (local comercial individual)',
+            'Venta al por menor de productos de panadería, confitería y alimentos envasados',
+            'Venta al por menor de medicamentos y productos farmacéuticos',
+            'Venta al por menor de perfumes, cosméticos y productos de cuidado personal',
+            'Venta al por menor de productos medicinales naturales y suplementos terapéuticos',
+            'Venta al por menor de productos ortopédicos, material e instrumental médico',
+            'Venta al por menor de artículos fotográficos, relojes y joyas',
+            'Venta al por menor de productos ópticos',
+            'Venta al por menor de animales de compañía, alimentos y accesorios para su cuidado',
+            'Servicio de estacionamiento vehicular',
+            'Servicios veterinarios ambulatorios',
+            'Consultorio de profesionales de la salud (excepto médicos cirujanos), sin internamiento',
+            'Consultorio médico (con médico cirujano, con o sin especialidad), sin internamiento',
+            'Centro odontológico sin internamiento',
+            'Sólo servicio de rehabilitación y medicina física en el giro: Servicios especializados o de subespecialidad: medicina nuclear, radioterapia, medicina física, rehabilitación, hemodiálisis, litotripsia, medicina hiperbárica, endoscopias y colposcopias',
+            'Servicios de oftalmología',
+            'Centros de medicina alternativa',
+            'Atención residencial para personas mayores o con discapacidad',
+            'Asistencia social diurna para personas mayores o con discapacidad',
+            'Asistencia social alimentaria y programas comunitarios',
+            'Cuidado diurno infantil'
+        ];
+
+        // Listas del cuadro ZONAL FINAL. Sustituyen el catálogo general solo
+        // cuando coinciden la zonificación vigente y el tramo/área aplicable.
+        var actividadesMixtoZonalPrimaveraSanLuis = [
+            'Elaboración de productos de panadería y pastelería para la venta en el establecimiento',
+            'Impresión y reproducción de documentos y material gráfico',
+            'Bodega o tienda de abarrotes (local comercial individual)',
+            'Tienda de conveniencia (local comercial individual)',
+            'Minimarket (local comercial individual)',
+            'Venta de artículos de bazar y regalos',
+            'Venta al por menor de productos de panadería, confitería y alimentos envasados',
+            'Venta al por menor de celulares, computadoras y accesorios',
+            'Venta al por menor de muebles, electrodomésticos, menaje y artículos de iluminación',
+            'Venta al por menor de libros, revistas y periódicos',
+            'Venta al por menor de artículos deportivos y bicicletas',
+            'Venta al por menor de prendas de vestir, calzado y artículos de cuero',
+            'Venta al por menor de medicamentos y productos farmacéuticos',
+            'Venta al por menor de perfumes, cosméticos y productos de cuidado personal',
+            'Venta al por menor de productos medicinales naturales y suplementos terapéuticos',
+            'Venta al por menor de artículos para celebraciones, decoración, artesanía, flores y plantas',
+            'Venta al por menor de artículos fotográficos, relojes y joyas',
+            'Venta al por menor de animales de compañía, alimentos y accesorios para su cuidado',
+            'Servicio de estacionamiento vehicular',
+            'Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras',
+            'Preparación y expendio de comidas y bebidas para consumo inmediato',
+            'Servicios de intermediación monetaria en agencias financieras',
+            'Servicios de intermediación monetaria mediante cajeros automáticos o agentes corresponsales',
+            'Servicios financieros no bancarios de arrendamiento, factoraje y crédito',
+            'Servicios notariales',
+            'Servicios de abogacía y asesoría jurídica',
+            'Servicios de contabilidad, auditoría y asesoría tributaria',
+            'Servicios de fotografía profesional',
+            'Servicios veterinarios ambulatorios',
+            'Consultorio de profesionales de la salud (excepto médicos cirujanos), sin internamiento',
+            'Consultorio médico (con médico cirujano, con o sin especialidad), sin internamiento',
+            'Centro odontológico sin internamiento',
+            'Servicios de atención psicológica y bienestar emocional',
+            'Servicios de oftalmología',
+            'Centros de medicina alternativa',
+            'Atención residencial para personas mayores o con discapacidad',
+            'Asistencia social diurna para personas mayores o con discapacidad',
+            'Servicios de acondicionamiento físico',
+            'Reparación de efectos personales y enseres domésticos, como bicicletas, joyas, relojes, artículos deportivos, libros, instrumentos musicales, juguetes y otros',
+            'Lavado y limpieza de prendas de vestir',
+            'Tratamientos de belleza y cuidado estético no médico',
+            'Sólo servicio de rehabilitación y medicina física en el giro: Servicios especializados o de subespecialidad: medicina nuclear, radioterapia, medicina física, rehabilitación, hemodiálisis, litotripsia, medicina hiperbárica, endoscopias y colposcopias'
+        ];
+
+        var actividadesMixtoZonalGalvez = [
+            'Elaboración de productos de panadería y pastelería para la venta en el establecimiento',
+            'Impresión y reproducción de documentos y material gráfico',
+            'Bodega o tienda de abarrotes (local comercial individual)',
+            'Tienda de conveniencia (local comercial individual)',
+            'Minimarket (local comercial individual)',
+            'Venta de artículos de bazar y regalos',
+            'Venta al por menor de alimentos frescos y envasados en comercios especializados',
+            'Venta al por menor de productos de panadería, confitería y alimentos envasados',
+            'Venta al por menor de celulares, computadoras y accesorios',
+            'Venta al por menor de alfombras, cortinas, tapices y revestimientos',
+            'Venta al por menor de muebles, electrodomésticos, menaje y artículos de iluminación',
+            'Venta al por menor de libros, revistas y periódicos',
+            'Venta al por menor de artículos de papelería, útiles de escritorio y artículos de oficina',
+            'Venta al por menor de artículos deportivos y bicicletas',
+            'Venta al por menor de juegos, juguetes y productos recreativos',
+            'Venta al por menor de prendas de vestir, calzado y artículos de cuero',
+            'Venta al por menor de medicamentos y productos farmacéuticos',
+            'Venta al por menor de perfumes, cosméticos y productos de cuidado personal',
+            'Venta al por menor de productos medicinales naturales y suplementos terapéuticos',
+            'Venta al por menor de artículos para celebraciones, decoración, artesanía, flores y plantas',
+            'Venta al por menor de artículos fotográficos, relojes y joyas',
+            'Venta al por menor de productos ópticos',
+            'Venta al por menor de animales de compañía, alimentos y accesorios para su cuidado',
+            'Servicio de estacionamiento vehicular',
+            'Servicios postales',
+            'Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras',
+            'Cambio de moneda',
+            'Servicios de fotografía profesional',
+            'Servicios veterinarios ambulatorios',
+            'Consultorio de profesionales de la salud (excepto médicos cirujanos), sin internamiento',
+            'Consultorio médico (con médico cirujano, con o sin especialidad), sin internamiento',
+            'Centro odontológico sin internamiento',
+            'Servicios de atención psicológica y bienestar emocional',
+            'Servicios de oftalmología',
+            'Centros de medicina alternativa',
+            'Atención residencial para personas mayores o con discapacidad',
+            'Asistencia social diurna para personas mayores o con discapacidad',
+            'Reparación de efectos personales y enseres domésticos, como bicicletas, joyas, relojes, artículos deportivos, libros, instrumentos musicales, juguetes y otros',
+            'Lavado y limpieza de prendas de vestir',
+            'Servicios de cuidado capilar, peluquería y barbería',
+            'Sólo servicio de rehabilitación y medicina física en el giro: Servicios especializados o de subespecialidad: medicina nuclear, radioterapia, medicina física, rehabilitación, hemodiálisis, litotripsia, medicina hiperbárica, endoscopias y colposcopias'
+        ];
+
+        var actividadesMixtoZonalComercial = [
+            'Elaboración de productos de panadería y pastelería para la venta en el establecimiento',
+            'Impresión y reproducción de documentos y material gráfico',
+            'Bodega o tienda de abarrotes (local comercial individual)',
+            'Tienda de conveniencia (local comercial individual)',
+            'Minimarket (local comercial individual)',
+            'Supermercado (tienda de autoservicio como local comercial individual)',
+            'Venta de alimentos para mascotas',
+            'Venta de artículos de bazar y regalos',
+            'Venta al por menor de alimentos frescos y envasados en comercios especializados',
+            'Venta al por menor de carnes, pescados y productos refrigerados',
+            'Venta al por menor de productos de panadería, confitería y alimentos envasados',
+            'Venta al por menor de celulares, computadoras y accesorios',
+            'Venta al por menor de telas, tejidos, artículos de mercería y productos textiles',
+            'Venta al por menor de alfombras, cortinas, tapices y revestimientos',
+            'Venta al por menor de muebles, electrodomésticos, menaje y artículos de iluminación',
+            'Venta al por menor de libros, revistas y periódicos',
+            'Venta al por menor de artículos de papelería, útiles de escritorio y artículos de oficina',
+            'Venta al por menor de artículos deportivos y bicicletas',
+            'Venta al por menor de juegos, juguetes y productos recreativos',
+            'Venta al por menor de prendas de vestir, calzado y artículos de cuero',
+            'Venta al por menor de medicamentos y productos farmacéuticos',
+            'Venta al por menor de perfumes, cosméticos y productos de cuidado personal',
+            'Venta al por menor de productos medicinales naturales y suplementos terapéuticos',
+            'Venta al por menor de productos ortopédicos, material e instrumental médico',
+            'Venta al por menor de artículos para celebraciones, decoración, artesanía, flores y plantas',
+            'Venta al por menor de artículos fotográficos, relojes y joyas',
+            'Venta al por menor de productos ópticos',
+            'Venta al por menor de otros productos nuevos en comercios especializados',
+            'Venta al por menor de animales de compañía, alimentos y accesorios para su cuidado',
+            'Venta al por menor de artículos de segunda mano, antigüedades y objetos de colección',
+            'Venta al por menor por internet o catálogo',
+            'Servicio de estacionamiento vehicular',
+            'Servicios postales',
+            'Hotel',
+            'Preparación y expendio de bebidas no alcohólicas, postres y comidas ligeras',
+            'Preparación y expendio de comidas y bebidas para consumo inmediato',
+            'Servicios de intermediación monetaria en agencias financieras',
+            'Servicios de intermediación monetaria mediante cajeros automáticos o agentes corresponsales',
+            'Servicios financieros no bancarios de arrendamiento, factoraje y crédito',
+            'Gestión de seguros de vida',
+            'Administración de fondos de pensiones',
+            'Administración de mercados de valores',
+            'Cambio de moneda',
+            'Corretaje de valores y contratos de productos financieros',
+            'Arrendamiento y operación de inmuebles propios o arrendados',
+            'Corretaje y administración de bienes inmuebles',
+            'Servicios notariales',
+            'Servicios de abogacía y asesoría jurídica',
+            'Servicios de contabilidad, auditoría y asesoría tributaria',
+            'Actividades de oficinas principales, sedes y oficinas administrativas',
+            'Publicidad y gestión de medios publicitarios',
+            'Servicios de fotografía profesional',
+            'Servicios veterinarios con cirugía, diagnóstico u hospitalización',
+            'Servicios veterinarios ambulatorios',
+            'Enseñanza técnico-productiva',
+            'Enseñanza cultural y artística',
+            'Capacitación profesional y enseñanza complementaria',
+            'Centro de salud sin internamiento',
+            'Centro médico sin internamiento',
+            'Centro médico especializado sin internamiento',
+            'Policlínico sin internamiento',
+            'Consultorio de profesionales de la salud (excepto médicos cirujanos), sin internamiento',
+            'Consultorio médico (con médico cirujano, con o sin especialidad), sin internamiento',
+            'Centro odontológico sin internamiento',
+            'Servicios de atención psicológica y bienestar emocional',
+            'Servicios de patología clínica, laboratorio clínico, diagnóstico por imágenes y toma de muestras',
+            'Servicios ambulatorios de enfermería, nutrición y otros similares',
+            'Servicios de oftalmología',
+            'Laboratorios de prótesis dental',
+            'Ortopedias y servicios de podología',
+            'Centros de medicina alternativa',
+            'Asistencia social diurna para personas mayores o con discapacidad',
+            'Servicios de acondicionamiento físico',
+            'Reparación de calzado y artículos de cuero',
+            'Reparación de efectos personales y enseres domésticos, como bicicletas, joyas, relojes, artículos deportivos, libros, instrumentos musicales, juguetes y otros',
+            'Lavado y limpieza de prendas de vestir',
+            'Servicios de cuidado capilar, peluquería y barbería',
+            'Tratamientos de belleza y cuidado estético no médico',
+            'Servicios personales de bienestar no médico y modificación corporal',
+            'Servicios especializados o de subespecialidad: medicina nuclear, radioterapia, medicina física, rehabilitación, hemodiálisis, litotripsia, medicina hiperbárica, endoscopias y colposcopias'
+        ];
+
+        function reglaEspecialMixtoZonal() {
+            if (zonaActual !== 'Uso Mixto Zonal') return null;
+            var codigo = String(zonificacionVigenteActual || '').trim().toUpperCase();
+            var codigoOrigen = String(obtenerPropiedad(loteActual, ['ZON_VIG']) || '').trim().toUpperCase();
+            var via = obtenerPropiedad(loteActual, ['VIA COLIND', 'VIA_COLIND', 'VÍA COLINDANTE', 'VIA COLINDANTE']);
+            // En San Luis y Primavera la regla especial del tramo tiene
+            // prioridad incluso si el lote está clasificado como comercial.
+            if (coincideNombreVia('Primavera', via) || coincideNombreVia('San Luis', via)) {
+                return { tipo: 'Residencial', ambito: 'Tramos Av. Primavera / Av. San Luis',
+                    nota: 'Esta lista aplica a los lotes de Uso Mixto Zonal ubicados en Av. Primavera o Av. San Luis, incluso si tienen característica comercial.',
+                    actividades: actividadesMixtoZonalPrimaveraSanLuis };
+            }
+            if (['CV', 'CZ'].indexOf(codigo) !== -1) {
+                return { tipo: 'Comercial', ambito: 'ÁREAS COMERCIALES',
+                    nota: 'Esta lista aplica a todas las áreas comerciales de Uso Mixto Zonal (CV y CZ).',
+                    actividades: actividadesMixtoZonalComercial };
+            }
+            // ZON_VIG del polígono de usos usa códigos anteriores (ZDB/ZDM/ZDA).
+            // Sirve como respaldo solo cuando aún no se resolvió la zonificación vigente.
+            var codigoResidencial = ['RDB', 'RDM', 'RDA'].indexOf(codigo) !== -1 ||
+                (!codigo && ['ZDB', 'ZDM', 'ZDA'].indexOf(codigoOrigen) !== -1);
+            if (codigoResidencial) {
+                if (coincideNombreVia('Gálvez Barrenechea', via)) {
+                    return { tipo: 'Residencial', ambito: 'Residencial · Av. Gálvez Barrenechea',
+                        nota: 'Esta lista aplica a los lotes residenciales de Uso Mixto Zonal ubicados en Av. Gálvez Barrenechea.',
+                        actividades: actividadesMixtoZonalGalvez };
+                }
+            }
+            return null;
+        }
+
+        function renderizarListaEspecialMixtoZonal(busqueda, regla) {
+            var actividades = regla.actividades.filter(function(nombre) {
+                return !busqueda || coincideBusquedaTexto(busqueda, nombre);
+            });
+            var html = actividades.map(function(nombre) {
+                return '<details class="giro-fila giro-fila-especial-mv"><summary><span class="giro-nombre">' +
+                    escaparHtml(nombre) + '</span><span class="giro-estado">' + escaparHtml(regla.tipo) +
+                    '</span><span class="giro-chevron" aria-hidden="true"></span></summary>' +
+                    '<div class="giro-detalle"><div class="giro-codigo">Uso Mixto Zonal · ' +
+                    escaparHtml(regla.tipo) + '</div><p class="giro-recordatorio">' + escaparHtml(regla.nota) +
+                    '</p></div></details>';
+            }).join('');
+            return { html: html, count: actividades.length };
+        }
+
+        function reglaEspecialMixtoVecinal() {
+            if (zonaActual !== 'Uso Mixto Vecinal') return null;
+            var codigo = String(zonificacionVigenteActual || '').trim().toUpperCase();
+            if (codigo === 'CV' || codigo === 'CZ') {
+                return {
+                    tipo: 'Comercial',
+                    ambito: 'ÁREAS COMERCIALES',
+                    nota: 'Esta lista aplica a todas las áreas comerciales de Uso Mixto Vecinal (CV y CZ).',
+                    actividades: actividadesMixtoVecinalComercial
+                };
+            }
+            if (['RDB', 'RDM', 'RDA'].indexOf(codigo) !== -1) {
+                var via = obtenerPropiedad(loteActual, ['VIA COLIND', 'VIA_COLIND', 'VÍA COLINDANTE', 'VIA COLINDANTE']);
+                if (coincideNombreVia('San Borja Norte', via) || coincideNombreVia('San Borja Sur', via)) {
+                    return {
+                        tipo: 'Residencial',
+                        ambito: 'En vías de carácter metropolitano (San Borja Norte y Sur)',
+                        nota: 'Esta lista aplica a los lotes residenciales de Uso Mixto Vecinal ubicados en esos tramos.',
+                        actividades: actividadesMixtoVecinalResidencial
+                    };
+                }
+            }
+            return null;
+        }
+
+        function renderizarListaEspecialMixtoVecinal(busqueda, regla) {
+            var actividades = regla.actividades.filter(function(nombre) {
+                return !busqueda || coincideBusquedaTexto(busqueda, nombre);
+            });
+            var html = actividades.map(function(nombre) {
+                return '<details class="giro-fila giro-fila-especial-mv"><summary><span class="giro-nombre">' +
+                    escaparHtml(nombre) + '</span><span class="giro-estado">' + escaparHtml(regla.tipo) +
+                    '</span><span class="giro-chevron" aria-hidden="true"></span></summary>' +
+                    '<div class="giro-detalle"><div class="giro-codigo">Uso Mixto Vecinal · ' +
+                    escaparHtml(regla.tipo) + '</div><p class="giro-recordatorio">' + escaparHtml(regla.nota) +
+                    '</p></div></details>';
+            }).join('');
+            return { html: html, count: actividades.length };
+        }
+
         function obtenerRestriccionPoligono() {
             return obtenerPropiedad(loteActual,
                 ['RESTRICCIÓN', 'RESTRICCIÓ', 'RESTRICCI�', 'RESTRICCION']);
@@ -849,7 +1154,7 @@
                     if (numeroConsulta !== consultaLoteVigente || loteActual !== loteConsultado) return;
                     zonificacionVigenteActual = window.ZONIFICACION_VIGENTE.obtener(loteConsultado, puntoConsultado);
                     actualizarMetaLoteZonificacion();
-                    if (escenarioConObra) renderizarResultados();
+                    if (escenarioConObra || zonaActual === 'Uso Mixto Vecinal' || zonaActual === 'Uso Mixto Zonal') renderizarResultados();
                 }).catch(function(error) { console.warn('Zonificación vigente no disponible.', error); });
             }
             actualizarMetaLoteZonificacion();
@@ -1120,6 +1425,32 @@
                 'Usos Específicos - Hospital':   'Hospitales',
             };
             var zonaKeyAct = zonaKeyMap[zonaActual] || zonaActual;
+
+            var reglaMixtoVecinal = reglaEspecialMixtoVecinal();
+            if (reglaMixtoVecinal) {
+                var listaMixtoVecinal = renderizarListaEspecialMixtoVecinal(busqueda, reglaMixtoVecinal);
+                conteoResumen.innerHTML = '<strong>' + listaMixtoVecinal.count +
+                    '</strong> actividades permitidas para Uso Mixto Vecinal · ' +
+                    escaparHtml(reglaMixtoVecinal.tipo) + '.<br><span class="giro-recordatorio">' +
+                    escaparHtml(reglaMixtoVecinal.ambito) + '</span>';
+                conteoResumen.hidden = false;
+                actualizarListaAlfabetica(listaMixtoVecinal.html ||
+                    "<p class='mensaje-vacio'>No hay actividades que coincidan con la búsqueda en la lista aplicable.</p>");
+                return;
+            }
+
+            var reglaMixtoZonal = reglaEspecialMixtoZonal();
+            if (reglaMixtoZonal) {
+                var listaMixtoZonal = renderizarListaEspecialMixtoZonal(busqueda, reglaMixtoZonal);
+                conteoResumen.innerHTML = '<strong>' + listaMixtoZonal.count +
+                    '</strong> actividades permitidas para Uso Mixto Zonal · ' +
+                    escaparHtml(reglaMixtoZonal.tipo) + '.<br><span class="giro-recordatorio">' +
+                    escaparHtml(reglaMixtoZonal.ambito) + '</span>';
+                conteoResumen.hidden = false;
+                actualizarListaAlfabetica(listaMixtoZonal.html ||
+                    "<p class='mensaje-vacio'>No hay actividades que coincidan con la búsqueda en la lista aplicable.</p>");
+                return;
+            }
 
             // En esquinas ATD A/B y en ATD C, el cuadro específico sustituye
             // la lista general de compatibilidades de Residencial Preferente.
