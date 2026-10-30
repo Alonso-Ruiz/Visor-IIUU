@@ -1,226 +1,49 @@
-        (function() {
-            var modal = document.getElementById('welcome-modal');
-            var cerrar = document.getElementById('btn-cerrar-portada');
-            var pantallaOpciones = document.getElementById('portada-opciones');
-            var pantallaProximamente = document.getElementById('portada-proximamente');
-            var pantallaConsultaCiiu = document.getElementById('portada-consulta-ciiu');
-            var abrirRetiros = modal ? modal.querySelector('[data-open-retiros]') : null;
-            var volverRetiros = document.getElementById('btn-volver-retiros');
-            var botonesVisores = document.querySelectorAll('.navegacion-visores [data-visor]');
-            var volver = document.getElementById('btn-volver-opciones');
-            var volverConsultaCiiu = document.getElementById('btn-volver-consulta-ciiu');
-            var abrirConsultaCiiu = document.getElementById('boton-consulta-ciiu');
-            var menuVisores = document.querySelector('.navegacion-visores');
-            var botonMenuVisores = menuVisores ? menuVisores.querySelector('.navegacion-visores-toggle') : null;
-            var opciones = modal ? modal.querySelectorAll('[data-open-visor]') : [];
-            var proximamente = modal ? modal.querySelectorAll('[data-coming-soon]') : [];
-            var tituloProximamente = document.getElementById('portada-proximamente-titulo');
-            var descripcionProximamente = document.getElementById('portada-proximamente-descripcion');
-            var opcionActiva = null;
-
-            function cerrarMenuVisores() {
-                if (!menuVisores || !botonMenuVisores) return;
-                menuVisores.classList.remove('visores-menu-abierto');
-                botonMenuVisores.setAttribute('aria-expanded', 'false');
-                botonMenuVisores.setAttribute('aria-label', 'Abrir menú de visores');
-            }
-
-            function ubicarMenuVisores() {
-                if (!menuVisores || !botonMenuVisores) return;
-                if (!window.matchMedia('(max-width: 896px)').matches) {
-                    menuVisores.style.removeProperty('top');
-                    menuVisores.style.removeProperty('right');
-                    menuVisores.style.removeProperty('width');
-                    botonMenuVisores.style.removeProperty('width');
-                    botonMenuVisores.style.removeProperty('height');
-                    return;
-                }
-                var brujula = document.getElementById('brujula-movil');
-                var botonDetalle = document.getElementById('boton-detalle-movil');
-                if (brujula) {
-                    var dimensiones = brujula.getBoundingClientRect();
-                    menuVisores.style.top = Math.round(dimensiones.bottom + 14) + 'px';
-                    menuVisores.style.right = Math.max(0, Math.round(window.innerWidth - dimensiones.right)) + 'px';
-                    var dimensionesDetalle = botonDetalle ? botonDetalle.getBoundingClientRect() : dimensiones;
-                    var ladoBoton = Math.round(Math.max(dimensiones.width, dimensiones.height, dimensionesDetalle.width, dimensionesDetalle.height));
-                    menuVisores.style.width = ladoBoton + 'px';
-                    botonMenuVisores.style.width = ladoBoton + 'px';
-                    botonMenuVisores.style.height = ladoBoton + 'px';
-                }
-            }
-
-            if (menuVisores && botonMenuVisores) {
-                ubicarMenuVisores();
-                window.addEventListener('load', ubicarMenuVisores);
-                botonMenuVisores.addEventListener('click', function() {
-                    var abierto = menuVisores.classList.toggle('visores-menu-abierto');
-                    botonMenuVisores.setAttribute('aria-expanded', String(abierto));
-                    botonMenuVisores.setAttribute('aria-label', abierto ? 'Cerrar menú de visores' : 'Abrir menú de visores');
-                });
-                document.addEventListener('pointerdown', function(evento) {
-                    if (menuVisores.classList.contains('visores-menu-abierto') && !menuVisores.contains(evento.target)) cerrarMenuVisores();
-                });
-                window.addEventListener('resize', function() {
-                    ubicarMenuVisores();
-                    if (!window.matchMedia('(max-width: 896px)').matches) cerrarMenuVisores();
-                });
-            }
-
-            if (!modal) return;
-
-            // Solo la tarjeta de Giros permitidos puede cerrar la portada.
-            // La X aparece únicamente en la pantalla secundaria y vuelve al menú.
-            if (cerrar) cerrar.hidden = true;
-
-            function marcarVisorActivo(numero) {
-                botonesVisores.forEach(function(boton) {
-                    if (boton.dataset.visor !== '2') boton.setAttribute('aria-pressed', String(boton.dataset.visor === numero));
-                });
-            }
-
-            function limpiarPantallasPortada() {
-                pantallaProximamente.hidden = true;
-                if (pantallaConsultaCiiu) pantallaConsultaCiiu.hidden = true;
-                pantallaOpciones.hidden = false;
-                modal.querySelector('.modal-content').classList.remove('consulta-ciiu-activa');
-                modal.setAttribute('aria-labelledby', 'welcome-title');
-            }
-
-            function cerrarModal() {
-                modal.classList.add('oculto');
-            }
-
-            function abrirVisorRetiros() {
-                window.rutasVisores.navegar('3');
-                opcionActiva = abrirRetiros;
-                marcarVisorActivo('3');
-                modal.classList.add('oculto');
-                if (window.visorRetiros) window.visorRetiros.entrar();
-            }
-
-            function seleccionarVisor(numero) {
-                if (numero === '2') return;
-                limpiarPantallasPortada();
-                modal.classList.add('oculto');
-                if (numero === '3') {
-                    abrirVisorRetiros();
-                    return;
-                }
-                if (document.body.classList.contains('modo-retiros') && window.visorRetiros) window.visorRetiros.salir();
-                window.rutasVisores.navegar('1');
-                marcarVisorActivo('1');
-                if (window.cerrarPanelesMapa) window.cerrarPanelesMapa();
-            }
-
-            function cerrarVisorRetiros() {
-                window.rutasVisores.navegar('1');
-                if (window.visorRetiros) window.visorRetiros.salir();
-                marcarVisorActivo('1');
-                modal.classList.remove('oculto');
-                regresarOpciones();
-            }
-
-            function regresarOpciones() {
-                pantallaProximamente.hidden = true;
-                if (pantallaConsultaCiiu) pantallaConsultaCiiu.hidden = true;
-                pantallaOpciones.hidden = false;
-                modal.querySelector('.modal-content').classList.remove('consulta-ciiu-activa');
-                modal.setAttribute('aria-labelledby', 'welcome-title');
-                if (cerrar) {
-                    cerrar.title = 'Volver a las opciones';
-                    cerrar.setAttribute('aria-label', 'Volver a las opciones');
-                }
-                if (cerrar) cerrar.hidden = true;
-                if (opcionActiva) opcionActiva.focus();
-            }
-
-            function abrirPantallaConsultaCiiu() {
-                opcionActiva = abrirConsultaCiiu;
-                pantallaOpciones.hidden = true;
-                pantallaProximamente.hidden = true;
-                pantallaConsultaCiiu.hidden = false;
-                modal.querySelector('.modal-content').classList.add('consulta-ciiu-activa');
-                modal.setAttribute('aria-labelledby', 'consulta-ciiu-titulo');
-                cerrar.hidden = false;
-                cerrar.title = 'Volver al mapa';
-                cerrar.setAttribute('aria-label', 'Cerrar consulta y volver al mapa');
-                modal.classList.remove('oculto');
-                pantallaConsultaCiiu.scrollTop = 0;
-                var busqueda = pantallaConsultaCiiu.querySelector('[data-ciiu-panel]:not([hidden]) input, [data-ciiu-panel]:not([hidden]) select');
-                if (busqueda) busqueda.focus();
-            }
-
-            function cerrarConsultaCiiu() {
-                pantallaConsultaCiiu.hidden = true;
-                pantallaOpciones.hidden = false;
-                modal.querySelector('.modal-content').classList.remove('consulta-ciiu-activa');
-                modal.setAttribute('aria-labelledby', 'welcome-title');
-                if (cerrar) {
-                    cerrar.title = 'Volver a las opciones';
-                    cerrar.setAttribute('aria-label', 'Volver a las opciones');
-                    cerrar.hidden = true;
-                }
-                modal.classList.add('oculto');
-                if (opcionActiva) opcionActiva.focus();
-            }
-
-            if (cerrar) cerrar.addEventListener('click', function() {
-                if (pantallaConsultaCiiu && !pantallaConsultaCiiu.hidden) cerrarConsultaCiiu();
-                else regresarOpciones();
-            });
-            if (abrirRetiros) abrirRetiros.addEventListener('click', abrirVisorRetiros);
-            if (volverRetiros) volverRetiros.addEventListener('click', cerrarVisorRetiros);
-            botonesVisores.forEach(function(boton) {
-                boton.addEventListener('click', function() {
-                    cerrarMenuVisores();
-                    seleccionarVisor(boton.dataset.visor);
-                });
-            });
-            if (abrirConsultaCiiu) abrirConsultaCiiu.addEventListener('click', function() {
-                if (window.cerrarPanelesMapa) window.cerrarPanelesMapa();
-                abrirPantallaConsultaCiiu();
-            });
-            if (volverConsultaCiiu) volverConsultaCiiu.addEventListener('click', cerrarConsultaCiiu);
-            opciones.forEach(function(opcion) {
-                opcion.addEventListener('click', function() {
-                    window.rutasVisores.navegar('1');
-                    marcarVisorActivo('1');
-                    cerrarModal();
-                });
-            });
-            proximamente.forEach(function(opcion) {
-                opcion.addEventListener('click', function() {
-                    opcionActiva = opcion;
-                    var titulo = opcion.querySelector('.portada-tarjeta-titulo');
-                    pantallaOpciones.hidden = true;
-                    pantallaProximamente.hidden = false;
-                    modal.setAttribute('aria-labelledby', 'portada-proximamente-titulo');
-                    cerrar.hidden = false;
-                    tituloProximamente.textContent = 'Estamos preparando este visor';
-                    descripcionProximamente.textContent = 'El módulo «' + (titulo ? titulo.textContent.trim() : 'seleccionado') + '» está en proceso de construcción. Estamos preparando este espacio para reunir su información y herramientas de consulta. Mientras tanto, puedes volver a las opciones e ingresar al visor de Giros permitidos.';
-                    volver.focus();
-                });
-            });
-            if (volver) volver.addEventListener('click', regresarOpciones);
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && !modal.classList.contains('oculto')) {
-                    if (pantallaConsultaCiiu && !pantallaConsultaCiiu.hidden) cerrarConsultaCiiu();
-                    else if (!pantallaProximamente.hidden) regresarOpciones();
-                }
-                if (e.key === 'Escape' && document.body.classList.contains('modo-retiros')) cerrarVisorRetiros();
-                if (e.key === 'Escape') cerrarMenuVisores();
-            });
-            function aplicarRuta() {
-                if (window.rutasVisores.esRetiros()) abrirVisorRetiros();
-                else if (document.body.classList.contains('modo-retiros')) cerrarVisorRetiros();
-                document.documentElement.classList.remove('inicio-retiros');
-            }
-            window.addEventListener('popstate', aplicarRuta);
-            // Esperar a que los controles, las vías y los scripts defer estén listos.
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', aplicarRuta, { once: true });
-            } else {
-                aplicarRuta();
-            }
-        })();
+(function () {
+    'use strict';
+    var modal = document.getElementById('welcome-modal');
+    if (!modal) return;
+    var info = document.getElementById('portada-info');
+    var consulta = document.getElementById('portada-consulta-ciiu');
+    var cerrar = document.getElementById('btn-cerrar-portada');
+    var ingresar = document.getElementById('btn-ingresar-visor');
+    var abrirConsulta = document.getElementById('boton-consulta-ciiu');
+    var volverConsulta = document.getElementById('btn-volver-consulta-ciiu');
+    var focoAnterior = null;
+    function cerrarModal() {
+        modal.classList.add('oculto');
+        var destino = focoAnterior || document.getElementById('map');
+        if (destino) destino.focus();
+    }
+    function mostrarConsulta() {
+        focoAnterior = abrirConsulta;
+        if (window.cerrarPanelesMapa) window.cerrarPanelesMapa();
+        info.hidden = true;
+        consulta.hidden = false;
+        modal.querySelector('.modal-content').classList.add('consulta-ciiu-activa');
+        modal.setAttribute('aria-labelledby', 'consulta-ciiu-titulo');
+        cerrar.title = 'Volver al mapa';
+        cerrar.setAttribute('aria-label', 'Cerrar consulta y volver al mapa');
+        modal.classList.remove('oculto');
+        consulta.scrollTop = 0;
+        var campo = consulta.querySelector('[data-ciiu-panel]:not([hidden]) input, [data-ciiu-panel]:not([hidden]) select');
+        if (campo) campo.focus();
+    }
+    cerrar.addEventListener('click', cerrarModal);
+    ingresar.addEventListener('click', cerrarModal);
+    if (abrirConsulta && consulta) abrirConsulta.addEventListener('click', mostrarConsulta);
+    if (volverConsulta) volverConsulta.addEventListener('click', cerrarModal);
+    document.addEventListener('keydown', function (evento) {
+        if (modal.classList.contains('oculto')) return;
+        if (evento.key === 'Escape') cerrarModal();
+        if (evento.key !== 'Tab') return;
+        var elementos = Array.from(modal.querySelectorAll('button, input, select, a[href], summary, [tabindex="0"]'))
+            .filter(function (el) { return !el.disabled && el.getClientRects().length > 0; });
+        var primero = elementos[0], ultimo = elementos[elementos.length - 1];
+        if (evento.shiftKey && document.activeElement === primero) {
+            evento.preventDefault(); ultimo.focus();
+        } else if (!evento.shiftKey && document.activeElement === ultimo) {
+            evento.preventDefault(); primero.focus();
+        }
+    });
+    ingresar.focus();
+})();

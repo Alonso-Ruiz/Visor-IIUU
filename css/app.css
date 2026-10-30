@@ -2184,9 +2184,42 @@ body {
     display: none;
 }
 
-html.inicio-retiros #welcome-modal {
-    display: none;
+#portada-info { width: 100%; max-width: 620px; margin: auto; }
+#portada-info > p:not(.portada-municipalidad), #portada-info li { line-height: 1.6; }
+#portada-info ul { text-align: left; padding-left: 24px; }
+#portada-info li + li { margin-top: 8px; }
+#portada-info h3 { font-size: 18px; margin: 16px 0; color: #44534e; }
+.modal-divider { border: 0; border-top: 1px solid #e1eae6; margin: 24px 0 16px; }
+.modal-help-title { font-weight: 700; text-align: left; }
+.btn-ingresar { border: 0; border-radius: 8px; padding: 13px 28px; margin: 16px 0 20px; background: #075c49; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+.btn-ingresar:hover { background: #064b3c; }
+.btn-ingresar:focus-visible { outline: 3px solid #47b597; outline-offset: 3px; }
+
+/* Portada de la Ordenanza 2851, a escala de la referencia municipal. */
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) {
+    width: min(460px, calc(100vw - 48px));
+    max-height: calc(100vh - 64px);
+    padding: 20px 26px 16px;
 }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) #portada-info {
+    max-width: 410px;
+}
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) #portada-info > p:not(.portada-municipalidad),
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) #portada-info li { line-height: 1.5; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) .modal-logo-recorte { width: 46px; height: 55px; margin-bottom: 5px; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) .modal-logo-recorte .modal-logo { width: 114px !important; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) .portada-municipalidad { font-size: 9px !important; margin-bottom: 7px !important; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) .modal-content h2,
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) h2 { font-size: 21px; line-height: 1.18; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) #portada-info h3 { font-size: 15px; margin: 10px 0; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) #portada-info > p:not(.portada-municipalidad),
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) #portada-info li { font-size: 13px; line-height: 1.42; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) #portada-info ul { padding-left: 20px; margin: 9px 0; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) #portada-info li + li { margin-top: 5px; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) .modal-divider { margin: 17px 0 13px; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) .source { margin-top: 10px; font-size: 9px; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) .privacy-note { font-size: 9px; }
+#welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) .btn-ingresar { padding: 10px 23px; margin: 11px 0 13px; font-size: 14px; }
 
 .modal-content {
     position: relative;
@@ -2802,6 +2835,11 @@ body.panel-abierto .leaflet-bottom {
         max-height: calc(100vh - 28px);
         padding: 25px 18px 18px;
         flex: 0 1 auto;
+    }
+
+    #welcome-modal:not(.oculto) > .modal-content:has(#portada-info:not([hidden])) {
+        width: min(460px, calc(100vw - 32px));
+        padding: 20px 20px 14px;
     }
 
     .close-modal-icon {
